@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: discography-organizer.bundle
+Bundle-SymbolicName: discography-organizer.bundle;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Bundle-Activator: sk.lkrnac.discorg.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.console;bundle-version="3.5.100"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ClassPath: temp-dependencies/dependencies.jar
+Bundle-ActivationPolicy: lazy

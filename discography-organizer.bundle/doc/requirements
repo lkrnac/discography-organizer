@@ -1,0 +1,18 @@
+NORMAL UPDATE:
+1. if in reference storage is already non-full copy of music directory -> update it
+2. if in reference storage is only a full version of music directory and on input storage are missing music files 
+	(that means used don't like some of the tracks) -> backup full copy, create non-full copy even in reference storage 
+	and output storage (hard links of full backed up copy)
+3. if in reference storage exists flac mirror -> update also flac mirror
+4. formats that are not specified in preferences are considered as non-audio files (hard link copies are created everywhere and
+	ignored if are missing in input storage)
+
+?. deletion of some file types (e.g. mpu)  
+
+LOAD EXCEPTIONS:
+1. if music directory contains lossless (flac, wav) and even lossy (mp3, ogg, ...) music file types  -> error
+2. if music directory contains wav -> warning convert to flac
+3. if in input storage is flac directory -> warning 
+	     
+COMPARE EXCEPTIONS:
+1. if the music directory is missing in reference storage -> warning or copy it to reference storage and make hard link copy in output

@@ -1,0 +1,19 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>sk.lkrnac.discorg</groupId>
+	<artifactId>discography-organizer.parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<bundle.name>discography-organizer.bundle</bundle.name>
+		<temp.dependencies.folder>${project.basedir}/../${bundle.name}/temp-dependencies</temp.dependencies.folder>
+	</properties>
+	<modules>
+		<module>../discography-organizer.dependencies.parent</module>
+		<module>../discography-organizer.dependencies.bundle</module>
+		<module>../discography-organizer.bundle</module>
+		<module>../discography-organizer.tests</module>
+	</modules>
+</project>

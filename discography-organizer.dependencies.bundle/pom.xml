@@ -1,0 +1,74 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>discography-organizer.dependencies.bundle</artifactId>
+	<packaging>bundle</packaging>
+	
+	<parent>
+		<groupId>sk.lkrnac.discorg</groupId>
+		<artifactId>discography-organizer.dependencies.parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../discography-organizer.dependencies.parent</relativePath>
+	</parent>
+	
+	<build>
+		<plugins>
+			<!-- Creates jar with all dependencies -->
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.1.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Export-Package>*; -split-package:=merge-last</Export-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+			<!-- Antrun plug-in is used for copying jar with dependencies 
+			into a bundle project. Target file suppose to be used as dependency 
+			by bundle project -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<target>
+								<copy tofile="${temp.dependencies.folder}/dependencies.jar">
+									<fileset dir="${project.build.directory}" includes="*.jar" />
+								</copy>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
+				<configuration>
+					<archive>
+						<manifestFile>${manifest-location}/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<!-- This is dummy dependency section.
+	All the dependencies are specifies in parent pom.xml.
+	This dependency is redundant and is needed in the case 
+	when build is failing because of error "No sources found" -->
+<!-- 	<dependencies> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.commons</groupId> -->
+<!-- 			<artifactId>commons-lang3</artifactId> -->
+<!-- 			<version>${commons-lang3.version}</version> -->
+<!-- 		</dependency> -->
+<!-- 	</dependencies> -->
+</project>
