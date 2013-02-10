@@ -2,6 +2,9 @@ package sk.lkrnac.discorg.model.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.apache.commons.io.FileUtils;
 import org.testng.Assert;
@@ -18,9 +21,7 @@ import sk.lkrnac.discorg.test.utils.TestUtils;
  *
  */
 public class HardLinksHandlerTest {
-	private static final String TEST_ALBUM_PARTIAL = "test - album - partial";
-	private static final String TEST_ALBUM_NOK = "test - album - nok";
-	private static final String TEST_ALBUM_OK = "test - album - ok";
+	private static final String TEST_ALBUM = "test - album";
 	private static final String DIR_NAME_FULL_ALBUM = "=[full]";
 	private static final String DIR_NAME_TEMP = "temp";
 
@@ -28,7 +29,17 @@ public class HardLinksHandlerTest {
 	private HardLinksHandler testingObj;
 	private File fullDir;
 	private DirectoryComparator dirComparator;
-	                                 
+	                        
+	/**
+	 * Indicates type copy of testing data into testing temporary directory  
+	 * @author sitko
+	 */
+	private enum ECopyIntoTempType{
+		COPY_NORMAL,			//normal copy of all files
+		COPY_SOME_HARD_LINKS,	//copy files, some normally, some as hard links
+		COPY_ALL_HARD_LINKS		//make hard links of all files
+	}
+	
 	/**
 	 * Deletes temporary directory after test
 	 * @throws IOException if I/O error occurs during deletion
@@ -41,15 +52,15 @@ public class HardLinksHandlerTest {
 	
 	/**
 	 * Prepares testing data for test {@link HardLinksHandlerTest#
-	 * testVerifyHardLinks(String, boolean)}
+	 * testVerifyHardLinks(ECopyIntoTempType, boolean)}
 	 * @return parameters for test
  	 */
 	@DataProvider
 	public Object [][] testVerifyHardLinks(){
 		return new Object[][]{
-			new Object[] { TEST_ALBUM_OK, true },
-			new Object[] { TEST_ALBUM_NOK, false },
-			new Object[] { TEST_ALBUM_PARTIAL, false },
+			new Object[] {ECopyIntoTempType.COPY_ALL_HARD_LINKS, true},
+			new Object[] {ECopyIntoTempType.COPY_SOME_HARD_LINKS, false},
+			new Object[] {ECopyIntoTempType.COPY_NORMAL, false},
 		};
 	}
 
@@ -57,16 +68,19 @@ public class HardLinksHandlerTest {
 	 * Tests {@link HardLinksHandler#verifyHardLinks(File)}
 	 * <p>
 	 * This test expects specific testing directory and file structure on the hard disk
-	 * @param testingAlbumName testing full directory name (this should exist on HDD)
+	 * @param copyType type of the copying of testing data
 	 * @param expectedStatus expected node status
 	 * @throws IOException if some I/O error occurs
 	 */
 	@Test(dataProvider = "testVerifyHardLinks")
-	public void testVerifyHardLinks(String testingAlbumName, 
-			boolean expectedStatus) throws IOException{
+	public void testVerifyHardLinks(ECopyIntoTempType copyType,
+			boolean expectedStatus)	throws IOException{
 		resourcesPath = TestUtils.getResourcesPathMethod();
-		HardLinksHandler testingObj = getSelectionTestingObject(testingAlbumName, false);
-		File fullDir = getFullDir(testingAlbumName, false);
+		File selectionDir = getTestingDir(TEST_ALBUM, false, false);
+		HardLinksHandler testingObj = new HardLinksHandler(selectionDir);
+		File fullDir = getTestingDir(TEST_ALBUM, true, true);
+		
+		copyDirForTesting(fullDir, selectionDir, copyType);
 		
 		//call testing method
 		boolean result = testingObj.verifyHardLinks(fullDir);
@@ -76,55 +90,62 @@ public class HardLinksHandlerTest {
 	}
 
 	/**
-	 * Verifies if full directory mirror exists for selection directory 
-	 * and returns file object for it
-	 * @param testingFullDirName name of the testing directory
-	 * @param copyOriginalToTemp if there is needed to create a copy 
+	 * Verifies if directory exists and returns file object for it.
+	 * If needed copy of directory is created
+	 * @param testingDirName name of the testing directory
+	 * @param isFull  flag indicating full or selection directory
+	 * @param copyToTemp copy of directory into temporary is needed  
 	 * of the original in temporary directory
 	 * @return file object belonging to the testing directory
 	 * @throws IOException if I/O error occurs during copying into temporary directory
 	 */
-	private File getFullDir(String testingFullDirName, boolean copyOriginalToTemp) throws IOException {
-		String fullAlbumRelativePath = File.separator + DIR_NAME_FULL_ALBUM +
-						File.separator + testingFullDirName;
-		File fullDir = new File(resourcesPath + fullAlbumRelativePath);
-		if (!fullDir.exists()){
-			Assert.fail("Full mirror directory for testing directory doesn't exist: " + 
-					fullDir.getAbsolutePath());
-		}
+	private File getTestingDir(String testingDirName, boolean isFull, 
+			boolean copyToTemp)	throws IOException {
+		String albumRelativePath = ((isFull) ? File.separator + DIR_NAME_FULL_ALBUM : "") +
+						File.separator + testingDirName;
+		File testDir = new File(resourcesPath + albumRelativePath);
+		File tmpTestDir = new File(resourcesPath + File.separator + 
+				DIR_NAME_TEMP + albumRelativePath);
 		
-		if (copyOriginalToTemp){
-			File tmpFullDir = new File(resourcesPath + File.separator + 
-					DIR_NAME_TEMP + fullAlbumRelativePath);
-			FileUtils.copyDirectory(fullDir, tmpFullDir);
-			fullDir = tmpFullDir;
+		if (copyToTemp){
+			if (!testDir.exists()){
+				Assert.fail("Directory for testing doesn't exist: " + 
+						testDir.getAbsolutePath());
+			}
+			FileUtils.copyDirectory(testDir, tmpTestDir);
 		}
-		return fullDir;
+		testDir = tmpTestDir;
+		return testDir;
 	}
 	
 	/**
-	 * Verifies if selection directory exists and returns testing object for it
-	 * @param testingSelectionDirName name of the testing directory
-	 * @param copyOriginalToTemp if there is needed to create a copy 
-	 * of the original in temporary directory
-	 * @return testing object belonging to the testing directory
-	 * @throws IOException if some I/O error occurs 
+	 * Creates hard links of files from given source directory 
+	 * into destination directory. Ignores sub-directories. 
+	 * @param sourceDir source directory of the hard links
+	 * @param destinationDir destination directory of hard links
+	 * @param copyType type of copying
+	 * @throws IOException if I/O error occurs  
 	 */
-	private HardLinksHandler getSelectionTestingObject(String testingSelectionDirName, 
-			boolean copyOriginalToTemp) throws IOException{
-		File selectionDir = new File(resourcesPath + File.separator + testingSelectionDirName);
-
-		if (!selectionDir.exists()){
-			Assert.fail("Testing directory doesn't exist: " + selectionDir.getAbsolutePath());
+	private void copyDirForTesting(File sourceDir, File destinationDir, 
+			ECopyIntoTempType copyType) throws IOException {
+		if (!destinationDir.exists()){
+			destinationDir.mkdirs();		
 		}
-		if (copyOriginalToTemp){
-			File tmpSelectionDir = new File(resourcesPath + File.separator + 
-					DIR_NAME_TEMP + File.separator + testingSelectionDirName);
-			FileUtils.copyDirectory(selectionDir, tmpSelectionDir);
-			selectionDir = tmpSelectionDir;
+		if (ECopyIntoTempType.COPY_NORMAL.equals(copyType)){
+			FileUtils.copyDirectory(sourceDir, destinationDir);
+		} else{
+			int i = 0;
+			for (File file : sourceDir.listFiles()){
+				Path destinationPath = Paths.get(destinationDir.getAbsolutePath()
+						+ File.separator + file.getName());
+				if (ECopyIntoTempType.COPY_SOME_HARD_LINKS.equals(copyType) && 
+						i++ % 2 == 0){
+					Files.copy(file.toPath(), destinationPath);
+				}else{
+					Files.createLink(destinationPath, file.toPath());
+				}
+			}
 		}
-		
-		return new HardLinksHandler(selectionDir);
 	}
 	
 	/**
@@ -143,7 +164,8 @@ public class HardLinksHandlerTest {
 	}
 	
 	/**
-	 * Tests success use case of {@link HardLinksHandler#buildHardLinks(File, DirectoryComparator)} 
+	 * Tests success use case of 
+	 * {@link HardLinksHandler#buildHardLinks(File, DirectoryComparator)} 
 	 * <p>
 	 * This test expects specific testing directory and file structure on the hard disk
 	 * @param testingAlbumName album name for testing
@@ -151,7 +173,8 @@ public class HardLinksHandlerTest {
 	 * @throws DiscographyOrganizerException if directory comparison fails 
 	 */
 	@Test(dataProvider = "testBuildHardLinksSuccess")
-	public void testBuildHardLinksSuccess(String testingAlbumName) throws IOException, DiscographyOrganizerException{
+	public void testBuildHardLinksSuccess(String testingAlbumName) 
+			throws IOException, DiscographyOrganizerException{
 		testBuildHardLinks(testingAlbumName);
 		
 		Assert.assertEquals(testingObj.verifyHardLinks(fullDir), true,
@@ -197,15 +220,12 @@ public class HardLinksHandlerTest {
 	private void testBuildHardLinks(String testingAlbumName)
 			throws IOException, DiscographyOrganizerException {
 		resourcesPath = TestUtils.getResourcesPathMethod();
-		testingObj = getSelectionTestingObject(testingAlbumName, true);
-		fullDir = getFullDir(testingAlbumName, true);
+		File selectionDir = getTestingDir(testingAlbumName, false, true);
+		testingObj = new HardLinksHandler(selectionDir);
+		fullDir = getTestingDir(testingAlbumName, true, true);
 		dirComparator = new DirectoryComparator();
 		
 		//call testing method
 		testingObj.buildHardLinks(fullDir, dirComparator);
 	}
-
-}
-class b{
-	
 }

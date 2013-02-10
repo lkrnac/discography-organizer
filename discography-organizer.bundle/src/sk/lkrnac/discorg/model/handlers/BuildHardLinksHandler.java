@@ -1,6 +1,6 @@
 package sk.lkrnac.discorg.model.handlers;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import sk.lkrnac.discorg.controller.listeners.IBuildHardLinksListener;
 
@@ -9,7 +9,7 @@ import sk.lkrnac.discorg.controller.listeners.IBuildHardLinksListener;
  * by hard links of media files from full album mirrors 
  * @author sitko
  */
-@Component
+@Service
 public class BuildHardLinksHandler implements IBuildHardLinksListener {
 	/**
 	 * {@inheritDoc}

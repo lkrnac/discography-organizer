@@ -1,6 +1,6 @@
 package sk.lkrnac.discorg.model.handlers;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import sk.lkrnac.discorg.controller.listeners.ISyncStoragesListener;
 
@@ -9,7 +9,7 @@ import sk.lkrnac.discorg.controller.listeners.ISyncStoragesListener;
  * @author sitko
  *
  */
-@Component
+@Service
 public class SyncStoragesHandler implements ISyncStoragesListener{
 
 	@Override

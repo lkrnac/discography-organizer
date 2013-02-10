@@ -42,9 +42,6 @@
 						<phase>package</phase>
 						<configuration>
 							<target>
-<!-- 								<copy tofile="${temp.dependencies.folder}/${bundle.name}-TESTING.jar"> -->
-<!-- 									<fileset dir="${project.build.directory}" includes="*.jar" /> -->
-<!-- 								</copy> -->
 								<jar destfile="${temp.dependencies.folder}/${bundle.name}-TESTING.jar" 
 									basedir="${project.basedir}/bin"/>
 							</target>
