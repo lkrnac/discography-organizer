@@ -50,16 +50,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	
-	<!-- This is dummy dependency section.
-	All the dependencies are specifies in parent pom.xml.
-	This dependency is redundant and is needed in the case 
-	when build is failing because of error "No sources found" -->
-<!-- 	<dependencies> -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.apache.commons</groupId> -->
-<!-- 			<artifactId>commons-lang3</artifactId> -->
-<!-- 			<version>${commons-lang3.version}</version> -->
-<!-- 		</dependency> -->
-<!-- 	</dependencies> -->
 </project>
