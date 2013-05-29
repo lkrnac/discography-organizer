@@ -3,8 +3,6 @@ package sk.lkrnac.discorg.model.io;
 import java.io.File;
 import java.io.IOException;
 
-import sk.lkrnac.discorg.model.DiscographyOrganizerException;
-
 /**
  * Facade for directory I/O handlers. Lazy initialization of I/O handlers
  * @author sitko
@@ -35,10 +33,10 @@ public class DirectoryIoFacade {
 	 * If the extension is <code>null</code>, all the files are compared
 	 * @return <code>true</code> if all files from selectionDir match files in fullDir
 	 * (based on file size and file name) 
-	 * @throws DiscographyOrganizerException if I/O error occurs
+	 * @throws IOException if I/O error occurs
 	 */
 	public boolean compareDirectories(File fullDir, File selectionDir) 
-			throws DiscographyOrganizerException{
+			throws IOException{
 		return getDirectoryComparator().compareDirectories(fullDir, selectionDir);
 	}
 

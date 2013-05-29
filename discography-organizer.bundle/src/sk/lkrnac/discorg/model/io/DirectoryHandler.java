@@ -1,10 +1,9 @@
 package sk.lkrnac.discorg.model.io;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import sk.lkrnac.discorg.model.DiscographyOrganizerException;
 
 /**
  * Abstract class containing common logic for directory handlers 
@@ -19,10 +18,10 @@ public abstract class DirectoryHandler {
 	 * in child classes.  
 	 * @param fullDirFiles collection of files in full directory
 	 * @param selectionDirFiles collection of files in selection directory
-	 * @throws DiscographyOrganizerException if I/O error occurs
+	 * @throws IOException if I/O error occurs
 	 */
 	protected void fileFacingLoop(Collection<File> selectionDirFiles, 
-			Collection<File> fullDirFiles) throws DiscographyOrganizerException {
+			Collection<File> fullDirFiles) throws IOException {
 		//shallow copy of selection files collection
 		Collection<File> selectionsMissingInFull = new ArrayList<File>(selectionDirFiles);
 		//do the comparison
@@ -45,10 +44,10 @@ public abstract class DirectoryHandler {
 	 * Performs action for files that are matched in selection and full directory
 	 * @param fileInSelection file in selection directory
 	 * @param fileInFull file in full directory
-	 * @throws DiscographyOrganizerException if I/O error occurs
+	 * @throws IOException if I/O error occurs
 	 */
 	protected abstract void performActionFace(
-			File fileInSelection, File fileInFull) throws DiscographyOrganizerException;
+			File fileInSelection, File fileInFull) throws IOException;
 	
 	/**
 	 * Performs action for files that are missing in full directory
