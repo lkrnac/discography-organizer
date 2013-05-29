@@ -16,7 +16,7 @@
       <perspective
             class="sk.lkrnac.discorg.perspectives.TreePairPerspective"
             id="discographyorganizer.perspectives.TreePairPerspective"
-            name="Tree Pair">
+            name="%perspective.name">
       </perspective>
    </extension>
    <extension
@@ -24,17 +24,17 @@
       <view
             class="sk.lkrnac.discorg.view.ReferenceStorageView"
             id="discographyorganizer.views.ReferenceStorageView"
-            name="Reference Storage">
+            name="%view.name">
       </view>
       <view
             class="sk.lkrnac.discorg.view.InputStorageView"
             id="discographyorganizer.views.InputStorageView"
-            name="Input Storage">
+            name="%view.name.0">
       </view>
       <view
             class="sk.lkrnac.discorg.view.MediaIssuesView"
             id="discographyorganizer.views.MediaIssuesView"
-            name="Media Issues">
+            name="%view.name.1">
       </view>
    </extension>
    <extension
@@ -43,15 +43,15 @@
             allPopups="false"
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
-               label="File">
+               label="%menu.label">
             <command
                   commandId="org.eclipse.ui.window.preferences"
-                  label="Preferences"
+                  label="%command.label"
                   style="push">
             </command>
             <command
                   commandId="org.eclipse.ui.file.exit"
-                  label="Exit"
+                  label="%command.label.0"
                   style="push">
             </command>
          </menu>
@@ -61,20 +61,20 @@
             locationURI="toolbar:org.eclipse.ui.main.toolbar">
          <toolbar
                id="DiscographyOrganizer.compareToolbar"
-               label="Compare">
+               label="%toolbar.label">
             <command
                   commandId="DiscographyOrganizer.loadStorages"
-                  label="Load"
+                  label="%command.label.1"
                   style="push">
             </command>
             <command
                   commandId="DiscographyOrganizer.buildHardLinks"
-                  label="Build Hard Links"
+                  label="%command.label.2"
                   style="push">
             </command>
             <command
                   commandId="DiscographyOrganizer.syncStorages"
-                  label="Synchronize"
+                  label="%command.label.3"
                   style="push">
             </command>
          </toolbar>
@@ -85,17 +85,17 @@
       <page
             class="sk.lkrnac.discorg.preferences.StoragesPreferencePage"
             id="DiscographyOrganizer.storaged"
-            name="Storages">
+            name="%page.name">
       </page>
       <page
             class="sk.lkrnac.discorg.preferences.FileNamesPreferencePage"
             id="DiscographyOrganizer.fileNames"
-            name="File names">
+            name="%page.name.0">
       </page>
       <page
             class="sk.lkrnac.discorg.preferences.AudioFormatsPreferencePage"
             id="DiscographyOrganizer.audioFormats"
-            name="Audio formats">
+            name="%page.name.1">
       </page>
    </extension>
    <extension
@@ -103,17 +103,17 @@
       <command
             defaultHandler="sk.lkrnac.discorg.controller.handlers.SyncHandler"
             id="DiscographyOrganizer.syncStorages"
-            name="Sync Storages">
+            name="%command.name">
       </command>
       <command
             defaultHandler="sk.lkrnac.discorg.controller.handlers.LoadHandler"
             id="DiscographyOrganizer.loadStorages"
-            name="Load Storages">
+            name="%command.name.0">
       </command>
       <command
             defaultHandler="sk.lkrnac.discorg.controller.handlers.BuildHardLinksHandler"
             id="DiscographyOrganizer.buildHardLinks"
-            name="Build Hard Links">
+            name="%command.name.1">
       </command>
    </extension>
 
