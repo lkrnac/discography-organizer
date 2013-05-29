@@ -1,4 +1,4 @@
-package sk.lkrnac.discorg.model.io;
+package sk.lkrnac.discorg.model.dal.io;
 
 import java.io.File;
 import java.io.IOException;

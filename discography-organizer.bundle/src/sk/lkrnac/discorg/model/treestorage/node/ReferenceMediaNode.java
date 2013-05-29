@@ -7,8 +7,8 @@ import java.util.HashSet;
 
 import org.apache.commons.lang3.StringUtils;
 
+import sk.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
 import sk.lkrnac.discorg.model.dal.messages.MediaIssueMessages;
-import sk.lkrnac.discorg.model.io.DirectoryIoFacade;
 import sk.lkrnac.discorg.model.metadata.MediaIssue;
 import sk.lkrnac.discorg.model.metadata.StorageMetadataMaps;
 
