@@ -27,12 +27,16 @@
 			<artifactId>jmockit</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<!-- provides dependency for OSGi resource bundler loader (NLS) -->
+		<dependency>
+			<groupId>org.eclipse.tycho</groupId>
+			<artifactId>org.eclipse.osgi</artifactId>
+			<version>3.8.1.v20120830-144521</version>
+		</dependency>
 		<dependency>
 			<groupId>sk.lkrnac.discorg</groupId>
 			<artifactId>${bundle.name}</artifactId>
-			<version>TESTING</version>
-			<scope>system</scope>
-			<systemPath>${temp.dependencies.folder}/${bundle.name}-TESTING.jar</systemPath>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>
