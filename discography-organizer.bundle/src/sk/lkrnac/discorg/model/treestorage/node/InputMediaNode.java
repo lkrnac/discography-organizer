@@ -8,8 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.dal.messages.MediaIssueMessages;
-import sk.lkrnac.discorg.model.metadata.MediaIssue;
 
 /**
  * Represents media node in input storage

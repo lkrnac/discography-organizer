@@ -7,10 +7,10 @@ import java.util.HashSet;
 
 import org.apache.commons.lang3.StringUtils;
 
+import sk.lkrnac.discorg.model.cache.MediaIssue;
+import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
 import sk.lkrnac.discorg.model.dal.messages.MediaIssueMessages;
-import sk.lkrnac.discorg.model.metadata.MediaIssue;
-import sk.lkrnac.discorg.model.metadata.StorageMetadataMaps;
 
 /**
  * Represents media node in reference storage
@@ -237,7 +237,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 	 * Raises warning for selection albums without full album mirror
 	 * <p>
 	 * It expects that whole storage was loaded into meta-data maps (see
-	 * {@link StorageMetadataMaps}) before
+	 * {@link ReferenceStorageCache}) before
 	 * 
 	 * @param fullSubDirectory
 	 *            full sub-directory name

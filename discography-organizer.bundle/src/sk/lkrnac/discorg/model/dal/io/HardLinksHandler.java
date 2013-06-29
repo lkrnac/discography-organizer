@@ -124,5 +124,6 @@ public class HardLinksHandler extends DirectoryHandler {
 	@Override
 	protected void performActionMissingInFull(File fileInSelection) {
 		// TODO not implemented
+		throw new UnsupportedOperationException("not implemented");
 	}
 }

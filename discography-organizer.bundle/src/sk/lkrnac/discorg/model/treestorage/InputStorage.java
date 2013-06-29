@@ -7,8 +7,8 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
-import sk.lkrnac.discorg.model.metadata.StorageMetadataMaps;
 import sk.lkrnac.discorg.model.treestorage.node.BranchNodeStatus;
 import sk.lkrnac.discorg.model.treestorage.node.InputMediaNode;
 import sk.lkrnac.discorg.model.treestorage.node.MediaBranchNode;
@@ -23,7 +23,7 @@ import sk.lkrnac.discorg.preferences.StoragesPreferencesFacade;
 @Service
 public class InputStorage extends TreeStorage {
 	@Autowired
-	private StorageMetadataMaps storageMetadataMaps;
+	private ReferenceStorageCache storageMetadataMaps;
 	
 	@Autowired
 	private StoragesPreferencesFacade storagesPreferences;

@@ -1,4 +1,4 @@
-package sk.lkrnac.discorg.model.metadata;
+package sk.lkrnac.discorg.model.cache;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +19,7 @@ import sk.lkrnac.discorg.preferences.FileNamesPreferences;
  * @author sitko
  */
 @Service
-public class StorageMetadataMaps {
+public class ReferenceStorageCache {
 	@Autowired
 	private FileNamesPreferences fileNamesPreferences;
 	
@@ -35,7 +35,7 @@ public class StorageMetadataMaps {
 	/**
 	 * Creates instance of storage meta-data holder
 	 */
-	public StorageMetadataMaps() {
+	public ReferenceStorageCache() {
 		normalizedReferenceLossyItems = new HashMap<String, Collection<ReferenceMediaNode>>();
 		normalizedReferenceLosslessItems = new HashMap<String, Collection<ReferenceMediaNode>>();
 		itemsForUpdate = new HashMap<String, MediaBranchNode>();
