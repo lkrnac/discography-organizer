@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import sk.lkrnac.discorg.controller.listeners.ILoadStoragesListener;
+import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
+import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.listeners.IVisualizeStoragesListener;
-import sk.lkrnac.discorg.model.metadata.MediaIssuesCollection;
-import sk.lkrnac.discorg.model.metadata.StorageMetadataMaps;
 import sk.lkrnac.discorg.model.treestorage.InputStorage;
 import sk.lkrnac.discorg.model.treestorage.ReferenceStorage;
 
@@ -24,10 +24,10 @@ public class LoadStoragesHandler implements ILoadStoragesListener {
 	private ReferenceStorage referenceStorage;
 	
 	@Autowired 
-	private StorageMetadataMaps storageMetadataMaps;
+	private ReferenceStorageCache referenceStorageCache;
 	
 	@Autowired
-	private MediaIssuesCollection mediaIssuesList;
+	private MediaIssuesCache mediaIssuesCache;
 
 	@Autowired
 	private IVisualizeStoragesListener visualizeStoragesListener;
@@ -37,7 +37,7 @@ public class LoadStoragesHandler implements ILoadStoragesListener {
 	 */
 	@Override
 	public void loadStorages() {
-		storageMetadataMaps.removeAll();
+		referenceStorageCache.removeAll();
 		referenceStorage.loadStorage();
 		inputStorage.loadStorage();
 		
@@ -45,7 +45,7 @@ public class LoadStoragesHandler implements ILoadStoragesListener {
 		visualizeStoragesListener.visualizeStorages(
 				referenceStorage.getRootNode(),
 				inputStorage.getRootNode(),
-				mediaIssuesList.getIterator());
+				mediaIssuesCache.getIterator());
 	}
 
 }

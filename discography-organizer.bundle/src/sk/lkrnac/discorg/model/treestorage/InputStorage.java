@@ -7,8 +7,8 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
-import sk.lkrnac.discorg.model.metadata.StorageMetadataMaps;
 import sk.lkrnac.discorg.model.treestorage.node.BranchNodeStatus;
 import sk.lkrnac.discorg.model.treestorage.node.InputMediaNode;
 import sk.lkrnac.discorg.model.treestorage.node.MediaBranchNode;
@@ -23,7 +23,7 @@ import sk.lkrnac.discorg.preferences.StoragesPreferencesFacade;
 @Service
 public class InputStorage extends TreeStorage {
 	@Autowired
-	private StorageMetadataMaps storageMetadataMaps;
+	private ReferenceStorageCache referenceStorageCache;
 	
 	@Autowired
 	private StoragesPreferencesFacade storagesPreferences;
@@ -45,7 +45,7 @@ public class InputStorage extends TreeStorage {
 			InputMediaNode mediaNode = (InputMediaNode) node;
 			// find pairs
 			Collection<ReferenceMediaNode> referenceMirrors =
-			storageMetadataMaps.getReferenceItems(mediaNode.getRelativePath());
+			referenceStorageCache.getReferenceItems(mediaNode.getRelativePath());
 
 			if (referenceMirrors == null || referenceMirrors.size() == 0){
 				mediaNode.setNodeStatus(BranchNodeStatus.UPLOAD);

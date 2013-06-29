@@ -6,8 +6,8 @@ import java.io.File;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
-import sk.lkrnac.discorg.model.metadata.StorageMetadataMaps;
 import sk.lkrnac.discorg.model.treestorage.node.MediaBranchNode;
 import sk.lkrnac.discorg.model.treestorage.node.ReferenceMediaNode;
 import sk.lkrnac.discorg.model.treestorage.node.TreeStorageBranchNode;
@@ -22,7 +22,7 @@ import sk.lkrnac.discorg.preferences.StoragesPreferencesFacade;
 @Service
 public class ReferenceStorage extends TreeStorage {
 	@Autowired
-	private StorageMetadataMaps storageMetadataMaps;
+	private ReferenceStorageCache referenceStorageCache;
 	
 	@Autowired
 	private StoragesPreferencesFacade storagesPreferences;
@@ -53,7 +53,7 @@ public class ReferenceStorage extends TreeStorage {
 			mediaNode.checkMediaSubDir();
 
 			// save media node into meta data map
-			storageMetadataMaps.putReferenceItem(mediaNode);
+			referenceStorageCache.putReferenceItem(mediaNode);
 		}
 	}
 

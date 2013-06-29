@@ -1,4 +1,4 @@
-package sk.lkrnac.discorg.model.metadata;
+package sk.lkrnac.discorg.model.cache;
 
 import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
 

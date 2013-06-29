@@ -1,4 +1,4 @@
-package sk.lkrnac.discorg.model.metadata;
+package sk.lkrnac.discorg.model.cache;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -16,7 +16,7 @@ import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
  *
  */
 @Service
-public class MediaIssuesCollection {
+public class MediaIssuesCache {
 	private Set<IMediaIssue> mediaIssues;
 	
 	/**
@@ -24,7 +24,7 @@ public class MediaIssuesCollection {
 	 * <p>
 	 * Initializes list where instances media issues will be stored
 	 */
-	public MediaIssuesCollection(){
+	public MediaIssuesCache(){
 		mediaIssues = new HashSet<IMediaIssue>();
 	}
 	

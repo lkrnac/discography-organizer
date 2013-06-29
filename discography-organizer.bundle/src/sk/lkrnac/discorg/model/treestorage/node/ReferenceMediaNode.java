@@ -7,10 +7,10 @@ import java.util.HashSet;
 
 import org.apache.commons.lang3.StringUtils;
 
+import sk.lkrnac.discorg.model.cache.MediaIssue;
+import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
 import sk.lkrnac.discorg.model.dal.messages.MediaIssueMessages;
-import sk.lkrnac.discorg.model.metadata.MediaIssue;
-import sk.lkrnac.discorg.model.metadata.StorageMetadataMaps;
 
 /**
  * Represents media node in reference storage
@@ -152,14 +152,14 @@ public class ReferenceMediaNode extends MediaBranchNode {
 		if (getFullMirror() != null) {
 			try {
 				if (!this.getDirectoryIoFacade().verifyHardLinks(getFullMirror().getFile())) {
-					this.getMediaIssuesList().add(
+					this.getMediaIssuesCache().add(
 							new MediaIssue(this.getAbsolutePath(),
 									MediaIssueMessages.REFERENCE_NO_HARD_LINK_IN_SELECTION, this
 											.getRelativePath(), true));
 					this.setNodeStatus(BranchNodeStatus.ERROR);
 				}
 			} catch (IOException e) {
-				getMediaIssuesList().add(
+				getMediaIssuesCache().add(
 						new MediaIssue(this.getAbsolutePath(),
 								MediaIssueMessages.REFERENCE_HARD_LINK_IO_ERROR, this
 										.getRelativePath(), true));
@@ -191,7 +191,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 						fullSubDirectory + File.separator, "");
 
 				// get selection mirror for full album
-				Collection<ReferenceMediaNode> selectionMirrors = getStorageMetadataMaps()
+				Collection<ReferenceMediaNode> selectionMirrors = getReferenceStorageCache()
 						.getReferenceItems(selectionPath);
 
 				for (ReferenceMediaNode mirror : selectionMirrors) {
@@ -199,7 +199,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 							mirror.getFile())) {
 						if (selectionMirror != null) {
 							this.setNodeStatus(BranchNodeStatus.ERROR);
-							getMediaIssuesList()
+							getMediaIssuesCache()
 									.add(new MediaIssue(
 											this.getAbsolutePath(),
 											MediaIssueMessages.REFERENCE_VARIOUS_SELECTION_MIRRORS_FOUND,
@@ -214,7 +214,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 					// if selection mirror wasn't found for full album ->
 					// ignored status
 					this.setNodeStatus(BranchNodeStatus.IGNORED);
-					getMediaIssuesList().add(
+					getMediaIssuesCache().add(
 							new MediaIssue(this.getAbsolutePath(),
 									MediaIssueMessages.REFERENCE_MISSING_SELECTION_MIRROR, this
 											.getRelativePath(), false));
@@ -222,7 +222,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 			}
 		} catch (IOException e) {
 			this.setNodeStatus(BranchNodeStatus.ERROR);
-			getMediaIssuesList().add(
+			getMediaIssuesCache().add(
 					new MediaIssue(this.getAbsolutePath(), e.getMessage(), this.getRelativePath(),
 							true));
 
@@ -237,7 +237,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 	 * Raises warning for selection albums without full album mirror
 	 * <p>
 	 * It expects that whole storage was loaded into meta-data maps (see
-	 * {@link StorageMetadataMaps}) before
+	 * {@link ReferenceStorageCache}) before
 	 * 
 	 * @param fullSubDirectory
 	 *            full sub-directory name
@@ -258,7 +258,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 
 				String fullAlbumMirrorPath = pathBuilder.toString();
 				ReferenceMediaNode fullMirror = null;
-				for (ReferenceMediaNode tmpMirror : getStorageMetadataMaps().getReferenceItems(
+				for (ReferenceMediaNode tmpMirror : getReferenceStorageCache().getReferenceItems(
 						fullAlbumMirrorPath)) {
 					if (this.getDirectoryIoFacade().compareDirectories(tmpMirror.getFile(),
 							this.getFile())) {
@@ -267,7 +267,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 						} else {
 							fullMirror = null;
 							this.setNodeStatus(BranchNodeStatus.ERROR);
-							getMediaIssuesList()
+							getMediaIssuesCache()
 									.add(new MediaIssue(
 											this.getAbsolutePath(),
 											MediaIssueMessages.REFERENCE_VARIOUS_FULL_MIRRORS_FOUND,
@@ -278,7 +278,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 				if (!BranchNodeStatus.ERROR.equals(this.getNodeStatus())) {
 					if (fullMirror == null) {
 						this.setNodeStatus(BranchNodeStatus.WARNING);
-						getMediaIssuesList().add(
+						getMediaIssuesCache().add(
 								new MediaIssue(this.getAbsolutePath(),
 										MediaIssueMessages.REFERENCE_FULL_MIRROR_MISSING, this
 												.getRelativePath(), false));
@@ -293,7 +293,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 			}
 		} catch (IOException e) {
 			this.setNodeStatus(BranchNodeStatus.ERROR);
-			getMediaIssuesList().add(
+			getMediaIssuesCache().add(
 					new MediaIssue(this.getAbsolutePath(), e.getMessage(), this.getRelativePath(),
 							true));
 		}

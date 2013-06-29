@@ -8,8 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.dal.messages.MediaIssueMessages;
-import sk.lkrnac.discorg.model.metadata.MediaIssue;
 
 /**
  * Represents media node in input storage
@@ -81,7 +81,7 @@ public class InputMediaNode extends MediaBranchNode {
 			int difference = mediaFilesNames.size() - this.getMediaFilesNames().size();
 
 			if (difference < 0) {
-				getMediaIssuesList().add(
+				getMediaIssuesCache().add(
 						new MediaIssue(getAbsolutePath(),
 								MediaIssueMessages.INPUT_MISSING_MEDIA_FILES, this
 										.getRelativePath(), true));
@@ -89,13 +89,13 @@ public class InputMediaNode extends MediaBranchNode {
 			} else {
 				if (difference > 0) {
 					this.setNodeStatus(BranchNodeStatus.UPDATE);
-					getStorageMetadataMaps().putItemForUpdate(this);
+					getReferenceStorageCache().putItemForUpdate(this);
 				}
 				for (String mediaFile : this.getMediaFilesNames()) {
 					mediaFilesNames.remove(mediaFile);
 				}
 				if (mediaFilesNames.size() != difference) {
-					getMediaIssuesList().add(
+					getMediaIssuesCache().add(
 							new MediaIssue(this.getAbsolutePath(),
 									MediaIssueMessages.INPUT_DIFFERENT_NAMES, this
 											.getRelativePath(), false));
@@ -111,7 +111,7 @@ public class InputMediaNode extends MediaBranchNode {
 		if (NodeStatus.LOSSLESS.equals(this.getAudioFormatType())) {
 			this.setNodeStatus(BranchNodeStatus.WARNING);
 
-			getMediaIssuesList().add(
+			getMediaIssuesCache().add(
 					new MediaIssue(this.getAbsolutePath(),
 							MediaIssueMessages.INPUT_LOSSLESS_AUDIO_FORMAT, this.getRelativePath(),
 							false));

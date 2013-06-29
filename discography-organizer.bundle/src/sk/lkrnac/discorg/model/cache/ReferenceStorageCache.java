@@ -1,4 +1,4 @@
-package sk.lkrnac.discorg.model.metadata;
+package sk.lkrnac.discorg.model.cache;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +19,7 @@ import sk.lkrnac.discorg.preferences.FileNamesPreferences;
  * @author sitko
  */
 @Service
-public class StorageMetadataMaps {
+public class ReferenceStorageCache {
 	@Autowired
 	private FileNamesPreferences fileNamesPreferences;
 	
@@ -35,7 +35,7 @@ public class StorageMetadataMaps {
 	/**
 	 * Creates instance of storage meta-data holder
 	 */
-	public StorageMetadataMaps() {
+	public ReferenceStorageCache() {
 		normalizedReferenceLossyItems = new HashMap<String, Collection<ReferenceMediaNode>>();
 		normalizedReferenceLosslessItems = new HashMap<String, Collection<ReferenceMediaNode>>();
 		itemsForUpdate = new HashMap<String, MediaBranchNode>();
@@ -52,10 +52,10 @@ public class StorageMetadataMaps {
 				.getPathWithoutIgnoredParts(referenceStorageNode.getRelativePath());
 		//put node into normalized maps
 		if (NodeStatus.LOSSY.equals(referenceStorageNode.getAudioFormatType())){
-			addNodeIntoMetadataMaps(normalizedReferenceLossyItems, path, referenceStorageNode);
+			addNodeIntoReferenceStorageCache(normalizedReferenceLossyItems, path, referenceStorageNode);
 		} else if (NodeStatus.LOSSLESS.equals(referenceStorageNode
 				.getAudioFormatType())){
-			addNodeIntoMetadataMaps(normalizedReferenceLosslessItems, path, referenceStorageNode);
+			addNodeIntoReferenceStorageCache(normalizedReferenceLosslessItems, path, referenceStorageNode);
 		}
 		
 		//put item into absolute path map
@@ -69,7 +69,7 @@ public class StorageMetadataMaps {
 	 * @param path key in meta-data map
 	 * @param referenceStorageNode node to be added
 	 */
-	private void addNodeIntoMetadataMaps(
+	private void addNodeIntoReferenceStorageCache(
 			Map<String, Collection<ReferenceMediaNode>> referenceLossyItems,
 			String path, ReferenceMediaNode referenceStorageNode) {
 		Collection<ReferenceMediaNode> nodes =   

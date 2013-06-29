@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sk.lkrnac.discorg.context.DiscOrgContextHolder;
+import sk.lkrnac.discorg.model.cache.MediaIssue;
+import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
+import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.dal.messages.MediaIssueMessages;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
-import sk.lkrnac.discorg.model.metadata.MediaIssue;
-import sk.lkrnac.discorg.model.metadata.MediaIssuesCollection;
-import sk.lkrnac.discorg.model.metadata.StorageMetadataMaps;
 import sk.lkrnac.discorg.preferences.AudioFormatsPreferencesException;
 
 /**
@@ -73,15 +73,15 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	/**
 	 * @return List where media issues are stored
 	 */
-	public MediaIssuesCollection getMediaIssuesList() {
-		return DiscOrgContextHolder.getInstance().getContext().getBean(MediaIssuesCollection.class);
+	public MediaIssuesCache getMediaIssuesCache() {
+		return DiscOrgContextHolder.getInstance().getContext().getBean(MediaIssuesCache.class);
 	}
 
 	/**
 	 * @return Meta-data holder object
 	 */
-	public StorageMetadataMaps getStorageMetadataMaps() {
-		return DiscOrgContextHolder.getInstance().getContext().getBean(StorageMetadataMaps.class);
+	public ReferenceStorageCache getReferenceStorageCache() {
+		return DiscOrgContextHolder.getInstance().getContext().getBean(ReferenceStorageCache.class);
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 					} else if ((losslessAudioFormat || lossyAudioFormat)
 							&& previousAudioFormatString != null
 							&& !previousAudioFormatString.equals(extension)) {
-						getMediaIssuesList().add(
+						getMediaIssuesCache().add(
 								new MediaIssue(getAbsolutePath(),
 										MediaIssueMessages.GENERIC_VARIOUS_AUDIO_FORMAT_TYPES, this
 												.getRelativePath(), true));
@@ -152,7 +152,7 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 
 					if (childNode instanceof MediaBranchNode) {
 						this.setNodeStatus(BranchNodeStatus.ERROR);
-						getMediaIssuesList().add(
+						getMediaIssuesCache().add(
 								new MediaIssue(this.getAbsolutePath(),
 										MediaIssueMessages.GENERIC_MEDIA_FILES_AND_SUBDIRS, this
 												.getRelativePath(), true));
