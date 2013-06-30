@@ -1,0 +1,124 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<!-- This project gathers JaCoCo's test coverage reports and merge them into one report -->
+	<!-- It is crucial for project that has tests and code split in various projects -->
+	<!-- Configuration was created according to http://www.lordofthejars.com/2012/07/jacoco-in-maven-multi-module-projects.html -->
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>sk.lkrnac.discorg</groupId>
+	<artifactId>discography-organizer.coverage</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<parent>
+		<groupId>sk.lkrnac.discorg</groupId>
+		<artifactId>discography-organizer.dependencies.parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../discography-organizer.dependencies.parent</relativePath>
+	</parent>
+
+	<properties>
+		<build.directory>../discography-organizer.bundle/target</build.directory>
+		<build.directory.tests>../discography-organizer.tests/target</build.directory.tests>
+		
+		<classes.directory>../discography-organizer.bundle/target/classes</classes.directory>
+		<classes.directory.tests>../discography-organizer.tests/target/classes</classes.directory.tests>
+		
+		<sources.directory>../discography-organizer.bundle/src</sources.directory>
+		<sources.directory.tests>../discography-organizer.tests/src</sources.directory.tests>
+		
+		<generated-sources.directory>../discography-organizer.bundle/target/generated-sources/annotations</generated-sources.directory>
+		<generated-sources.directory.tests>../discography-organizer.tests/target/generated-sources/annotations</generated-sources.directory.tests>
+	</properties>
+
+	<build>
+		<plugins>
+			<!-- Dependencies -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<!-- Copy the ant tasks jar. Needed for ts.jacoco.report-ant . -->
+					<execution>
+						<id>jacoco-dependency-ant</id>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<phase>process-test-resources</phase>
+						<inherited>false</inherited>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.jacoco</groupId>
+									<artifactId>org.jacoco.ant</artifactId>
+									<version>${jacoco.version}</version>
+								</artifactItem>
+							</artifactItems>
+							<stripVersion>true</stripVersion>
+							<outputDirectory>${basedir}/target/jacoco-jars</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Ant plugin. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<!-- Execute an ant task within maven -->
+								<echo message="Generating JaCoCo Reports" />
+								<taskdef name="report" classname="org.jacoco.ant.ReportTask">
+									<classpath path="${basedir}/target/jacoco-jars/org.jacoco.ant.jar" />
+								</taskdef>
+								<mkdir dir="${basedir}/target/coverage-report" />
+								<report>
+									<executiondata>
+										<fileset dir="${build.directory}">
+											<include name="jacoco.exec" />
+										</fileset>
+										<fileset dir="${build.directory.tests}">
+											<include name="jacoco.exec" />
+										</fileset>
+									</executiondata>
+									<structure name="discography-organizer Coverage Project">
+										<group name="discography-organizer">
+											<classfiles>
+												<fileset dir="${classes.directory}" />
+												<fileset dir="${classes.directory.tests}" />
+											</classfiles>
+											<sourcefiles encoding="UTF-8">
+												<fileset dir="${sources.directory}" />
+												<fileset dir="${sources.directory.tests}"/>
+
+<!-- 												<fileset dir="${generated-sources.directory}"/>  -->
+<!-- 												<fileset dir="${generated-sources.directory.tests}"/> -->
+											</sourcefiles>
+										</group>
+									</structure>
+									<html destdir="${basedir}/target/coverage-report/html" />
+									<xml destfile="${basedir}/target/coverage-report/coverage-report.xml" />
+									<csv destfile="${basedir}/target/coverage-report/coverage-report.csv" />
+								</report>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.jacoco</groupId>
+						<artifactId>org.jacoco.ant</artifactId>
+						<version>${jacoco.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -15,5 +15,6 @@
 		<module>../discography-organizer.dependencies.bundle</module>
 		<module>../discography-organizer.bundle</module>
 		<module>../discography-organizer.tests</module>
+		<module>../discography-organizer.coverage</module>
 	</modules>
 </project>

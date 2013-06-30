@@ -14,6 +14,7 @@
 	<properties>
 		<spring.version>3.2.2.RELEASE</spring.version>
 		<commons-lang3.version>3.1</commons-lang3.version>
+		<jacoco.version>0.6.3.201306030806</jacoco.version>
 	</properties>
 
 	<build>
@@ -43,6 +44,27 @@
 					<source>1.7</source>
 					<target>1.7</target>
 				</configuration>
+			</plugin>
+			
+			<!-- Following plug-in is used for generation JaCoCo test coverage report in child projects -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
