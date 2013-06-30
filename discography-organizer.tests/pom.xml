@@ -10,33 +10,45 @@
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../discography-organizer.dependencies.parent</relativePath>
 	</parent>
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 			<version>1.8.4</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<version>6.8</version>
+			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.googlecode.jmockit</groupId>
-			<artifactId>jmockit</artifactId>
-			<version>1.0</version>
-		</dependency>
+
 		<!-- provides dependency for OSGi resource bundler loader (NLS) -->
 		<dependency>
 			<groupId>org.eclipse.tycho</groupId>
 			<artifactId>org.eclipse.osgi</artifactId>
 			<version>3.8.1.v20120830-144521</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>sk.lkrnac.discorg</groupId>
 			<artifactId>${bundle.name}</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.15</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 </project>
