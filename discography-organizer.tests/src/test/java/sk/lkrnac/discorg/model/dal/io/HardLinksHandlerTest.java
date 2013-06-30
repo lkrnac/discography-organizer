@@ -12,7 +12,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import sk.lkrnac.discorg.model.DiscographyOrganizerException;
+import sk.lkrnac.discorg.model.dal.exception.DiscOrgDalException;
 import sk.lkrnac.discorg.test.utils.TestUtils;
 
 /**
@@ -189,12 +189,12 @@ public class HardLinksHandlerTest {
 	 *            album name for testing
 	 * @throws IOException
 	 *             if I/O error occurs during test
-	 * @throws DiscographyOrganizerException
+	 * @throws DiscOrgDalException
 	 *             if directory comparison fails
 	 */
 	@Test(dataProvider = "testBuildHardLinksSuccess")
 	public void testBuildHardLinksSuccess(String testingAlbumName) throws IOException,
-			DiscographyOrganizerException {
+			DiscOrgDalException {
 		testBuildHardLinks(testingAlbumName);
 
 		Assert.assertEquals(testingObj.verifyHardLinks(fullDir), true,
@@ -222,12 +222,15 @@ public class HardLinksHandlerTest {
 	 * 
 	 * @param testingAlbumName
 	 *            album name for testing
+	 * @throws DiscOrgDalException
+	 *             if directory comparison fails. It is expected for this test
+	 *             case.
 	 * @throws IOException
-	 *             if I/O error occurs during test or if directory comparison
-	 *             fails It is expected for this test case.
+	 *             if I/O error occurs during test or
 	 */
-	@Test(dataProvider = "testBuildHardLinksFail", expectedExceptions = IOException.class)
-	public void testBuildHardLinksFail(String testingAlbumName) throws IOException {
+	@Test(dataProvider = "testBuildHardLinksFail", expectedExceptions = DiscOrgDalException.class)
+	public void testBuildHardLinksFail(String testingAlbumName) throws DiscOrgDalException,
+			IOException {
 		testBuildHardLinks(testingAlbumName);
 	}
 
@@ -238,10 +241,13 @@ public class HardLinksHandlerTest {
 	 * @param testingAlbumName
 	 *            album name for testing
 	 * @throws IOException
-	 *             if I/O error occurs during test or if directory comparison
-	 *             fails
+	 *             if I/O error occurs during test or if
+	 * 
+	 * @throws DiscOrgDalException
+	 *             directory comparison fails
 	 */
-	private void testBuildHardLinks(String testingAlbumName) throws IOException {
+	private void testBuildHardLinks(String testingAlbumName) throws IOException,
+			DiscOrgDalException {
 		resourcesPath = TestUtils.getResourcesPathMethod();
 		File selectionDir = getTestingDir(testingAlbumName, false, true);
 		testingObj = new HardLinksHandler(selectionDir);

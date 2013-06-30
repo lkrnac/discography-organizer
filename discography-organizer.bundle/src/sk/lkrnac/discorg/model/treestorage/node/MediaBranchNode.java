@@ -5,11 +5,11 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 
+import sk.lkrnac.discorg.constants.MediaIssueCode;
 import sk.lkrnac.discorg.context.DiscOrgContextHolder;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
-import sk.lkrnac.discorg.model.dal.messages.MediaIssueMessages;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
 import sk.lkrnac.discorg.preferences.AudioFormatsPreferencesException;
 
@@ -114,7 +114,7 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 							&& !previousAudioFormatString.equals(extension)) {
 						getMediaIssuesCache().add(
 								new MediaIssue(getAbsolutePath(),
-										MediaIssueMessages.GENERIC_VARIOUS_AUDIO_FORMAT_TYPES, this
+										MediaIssueCode.GENERIC_VARIOUS_AUDIO_FORMAT_TYPES, this
 												.getRelativePath(), true));
 						break;
 					}
@@ -154,7 +154,7 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 						this.setNodeStatus(BranchNodeStatus.ERROR);
 						getMediaIssuesCache().add(
 								new MediaIssue(this.getAbsolutePath(),
-										MediaIssueMessages.GENERIC_MEDIA_FILES_AND_SUBDIRS, this
+										MediaIssueCode.GENERIC_MEDIA_FILES_AND_SUBDIRS, this
 												.getRelativePath(), true));
 					}
 				}

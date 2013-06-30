@@ -59,7 +59,7 @@ public class MediaIssueComparator extends ViewerComparator {
 				rc = (p1.isError() ? 1 : -1);
 			break;
 		case 1:
-			rc = p1.getIssueMessage().compareTo(p2.getIssueMessage());
+			rc = p1.getIssueCode().compareTo(p2.getIssueCode());
 			break;
 		case 2:
 			rc = p1.getRelativePath().compareTo(p2.getRelativePath());

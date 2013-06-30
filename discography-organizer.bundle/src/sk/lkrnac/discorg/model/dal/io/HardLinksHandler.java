@@ -9,7 +9,8 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 
-import sk.lkrnac.discorg.model.dal.messages.MediaIssueMessages;
+import sk.lkrnac.discorg.constants.MediaIssueCode;
+import sk.lkrnac.discorg.model.dal.exception.DiscOrgDalException;
 
 /**
  * Generates hard links of full album media files
@@ -71,6 +72,15 @@ public class HardLinksHandler extends DirectoryHandler {
 		return result;
 	}
 
+	/**
+	 * Reads hard link key for file
+	 * 
+	 * @param file
+	 *            file on disk
+	 * @return hard link key value
+	 * @throws IOException
+	 *             if I/O error occurs
+	 */
 	private static Object getFileKey(File file) throws IOException {
 		Path filePath = FileSystems.getDefault().getPath(file.getAbsolutePath());
 		BasicFileAttributes attrs = Files.readAttributes(filePath, BasicFileAttributes.class);
@@ -88,14 +98,18 @@ public class HardLinksHandler extends DirectoryHandler {
 	 * @throws IOException
 	 *             if there are more media files in selection mirror than in
 	 *             full album or if I/O error occurs
+	 * @throws DiscOrgDalException
+	 *             if full media directory contains less files than selection
+	 *             mirror
 	 */
-	public void buildHardLinks(File fullDir, DirectoryComparator dirComparator) throws IOException {
+	public void buildHardLinks(File fullDir, DirectoryComparator dirComparator) throws IOException,
+			DiscOrgDalException {
 		if (dirComparator.compareDirectories(fullDir, this.getSelectionDir())) {
 			File[] fullArray = fullDir.listFiles();
 			File[] selectionArray = selectionDir.listFiles();
 			fileFacingLoop(Arrays.asList(selectionArray), Arrays.asList(fullArray));
 		} else {
-			throw new IOException(MediaIssueMessages.GENERIC_MORE_FILES_IN_SELECTION);
+			throw new DiscOrgDalException(MediaIssueCode.GENERIC_MORE_FILES_IN_SELECTION);
 		}
 	}
 
@@ -107,11 +121,16 @@ public class HardLinksHandler extends DirectoryHandler {
 	 * </b> {@inheritDoc}
 	 */
 	@Override
-	protected void performActionFace(File fileInSelection, File fileInFull) throws IOException {
-		if (!getFileKey(fileInSelection).equals(getFileKey(fileInFull))) {
-			fileInSelection.delete();
-			Files.createLink(Paths.get(fileInSelection.getAbsolutePath()),
-					Paths.get(fileInFull.getAbsolutePath()));
+	protected void performActionFace(File fileInSelection, File fileInFull)
+			throws DiscOrgDalException {
+		try {
+			if (!getFileKey(fileInSelection).equals(getFileKey(fileInFull))) {
+				fileInSelection.delete();
+				Files.createLink(Paths.get(fileInSelection.getAbsolutePath()),
+						Paths.get(fileInFull.getAbsolutePath()));
+			}
+		} catch (IOException e) {
+			throw new DiscOrgDalException(MediaIssueCode.REFERENCE_HARD_LINK_IO_ERROR, e);
 		}
 	}
 

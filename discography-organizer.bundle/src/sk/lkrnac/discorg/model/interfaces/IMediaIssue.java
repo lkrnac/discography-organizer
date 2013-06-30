@@ -1,10 +1,12 @@
 package sk.lkrnac.discorg.model.interfaces;
 
+import sk.lkrnac.discorg.constants.MediaIssueCode;
 
 /**
- * Is used for marking some problems with media directory 
+ * Is used for marking some problems with media directory
+ * 
  * @author sitko
- *
+ * 
  */
 public interface IMediaIssue {
 	/**
@@ -13,20 +15,26 @@ public interface IMediaIssue {
 	public String getSourceAbsolutePath();
 
 	/**
-	 * @return message of the issue
+	 * @return code of the issue
 	 */
-	public String getIssueMessage();
+	public MediaIssueCode getIssueCode();
 
 	/**
 	 * Gets error flag
+	 * 
 	 * @return <code>false</code> - if warning<br>
-	 * <code>true</code> - if error
+	 *         <code>true</code> - if error
 	 */
 	public boolean isError();
-	
+
 	/**
-	 * @return relative path of item which caused error 
+	 * @return relative path of item which caused error
 	 */
 	public String getRelativePath();
-	
+
+	/**
+	 * @return optional error message belonging to the issue
+	 */
+	public String getErrorMessage();
+
 }

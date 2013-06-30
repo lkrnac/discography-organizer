@@ -7,10 +7,11 @@ import java.util.HashSet;
 
 import org.apache.commons.lang3.StringUtils;
 
+import sk.lkrnac.discorg.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
+import sk.lkrnac.discorg.model.dal.exception.DiscOrgDalException;
 import sk.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
-import sk.lkrnac.discorg.model.dal.messages.MediaIssueMessages;
 
 /**
  * Represents media node in reference storage
@@ -152,17 +153,17 @@ public class ReferenceMediaNode extends MediaBranchNode {
 		if (getFullMirror() != null) {
 			try {
 				if (!this.getDirectoryIoFacade().verifyHardLinks(getFullMirror().getFile())) {
-					this.getMediaIssuesCache().add(
-							new MediaIssue(this.getAbsolutePath(),
-									MediaIssueMessages.REFERENCE_NO_HARD_LINK_IN_SELECTION, this
-											.getRelativePath(), true));
+					MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
+							MediaIssueCode.REFERENCE_NO_HARD_LINK_IN_SELECTION,
+							this.getRelativePath(), true);
+					this.getMediaIssuesCache().add(mediaIssue);
 					this.setNodeStatus(BranchNodeStatus.ERROR);
 				}
 			} catch (IOException e) {
-				getMediaIssuesCache().add(
-						new MediaIssue(this.getAbsolutePath(),
-								MediaIssueMessages.REFERENCE_HARD_LINK_IO_ERROR, this
-										.getRelativePath(), true));
+				MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
+						MediaIssueCode.REFERENCE_HARD_LINK_IO_ERROR, this.getRelativePath(), true);
+				mediaIssue.setErrorMessage(e.getLocalizedMessage());
+				this.getMediaIssuesCache().add(mediaIssue);
 				this.setNodeStatus(BranchNodeStatus.ERROR);
 			}
 		}
@@ -202,7 +203,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 							getMediaIssuesCache()
 									.add(new MediaIssue(
 											this.getAbsolutePath(),
-											MediaIssueMessages.REFERENCE_VARIOUS_SELECTION_MIRRORS_FOUND,
+											MediaIssueCode.REFERENCE_VARIOUS_SELECTION_MIRRORS_FOUND,
 											this.getRelativePath(), true));
 							selectionMirror = null;
 						} else {
@@ -216,15 +217,15 @@ public class ReferenceMediaNode extends MediaBranchNode {
 					this.setNodeStatus(BranchNodeStatus.IGNORED);
 					getMediaIssuesCache().add(
 							new MediaIssue(this.getAbsolutePath(),
-									MediaIssueMessages.REFERENCE_MISSING_SELECTION_MIRROR, this
+									MediaIssueCode.REFERENCE_MISSING_SELECTION_MIRROR, this
 											.getRelativePath(), false));
 				}
 			}
-		} catch (IOException e) {
+		} catch (DiscOrgDalException e) {
 			this.setNodeStatus(BranchNodeStatus.ERROR);
 			getMediaIssuesCache().add(
-					new MediaIssue(this.getAbsolutePath(), e.getMessage(), this.getRelativePath(),
-							true));
+					new MediaIssue(this.getAbsolutePath(), e.getMediaIssueCode(), this
+							.getRelativePath(), true));
 
 		}
 		return selectionMirror != null;
@@ -267,10 +268,9 @@ public class ReferenceMediaNode extends MediaBranchNode {
 						} else {
 							fullMirror = null;
 							this.setNodeStatus(BranchNodeStatus.ERROR);
-							getMediaIssuesCache()
-									.add(new MediaIssue(
-											this.getAbsolutePath(),
-											MediaIssueMessages.REFERENCE_VARIOUS_FULL_MIRRORS_FOUND,
+							getMediaIssuesCache().add(
+									new MediaIssue(this.getAbsolutePath(),
+											MediaIssueCode.REFERENCE_VARIOUS_FULL_MIRRORS_FOUND,
 											this.getRelativePath(), true));
 						}
 					}
@@ -280,7 +280,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 						this.setNodeStatus(BranchNodeStatus.WARNING);
 						getMediaIssuesCache().add(
 								new MediaIssue(this.getAbsolutePath(),
-										MediaIssueMessages.REFERENCE_FULL_MIRROR_MISSING, this
+										MediaIssueCode.REFERENCE_FULL_MIRROR_MISSING, this
 												.getRelativePath(), false));
 					} else {
 						fullMirror.setFullAlbum(true);
@@ -291,11 +291,12 @@ public class ReferenceMediaNode extends MediaBranchNode {
 					}
 				}
 			}
-		} catch (IOException e) {
+		} catch (DiscOrgDalException e) {
 			this.setNodeStatus(BranchNodeStatus.ERROR);
-			getMediaIssuesCache().add(
-					new MediaIssue(this.getAbsolutePath(), e.getMessage(), this.getRelativePath(),
-							true));
+			MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(), e.getMediaIssueCode(),
+					this.getRelativePath(), true);
+			mediaIssue.setErrorMessage(e.getLocalizedMessage());
+			getMediaIssuesCache().add(mediaIssue);
 		}
 	}
 }

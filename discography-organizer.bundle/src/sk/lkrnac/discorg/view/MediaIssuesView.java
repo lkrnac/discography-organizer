@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.part.ViewPart;
 
 import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
+import sk.lkrnac.discorg.view.messages.MediaIssueMessages;
 
 /**
  * Visualizes media issues
@@ -41,39 +42,41 @@ public class MediaIssuesView extends ViewPart {
 	 * Create table where media issues will be visualized
 	 */
 	public void createPartControl(Composite parent) {
-		//createSwtTable(parent);
+		// createSwtTable(parent);
 		createTableViewer(parent);
 	}
 
-	private void createTableViewer(Composite parent){
-		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
-		        | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+	private void createTableViewer(Composite parent) {
+		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL
+				| SWT.FULL_SELECTION | SWT.BORDER);
 		createColumns(viewer);
-	    final Table table = viewer.getTable();
-	    table.setHeaderVisible(true);
-	    table.setLinesVisible(true);
-	    createSelectionListenerForTable();
+		final Table table = viewer.getTable();
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
+		createSelectionListenerForTable();
 
-	    viewer.setContentProvider(new ArrayContentProvider());
-	    // Make the selection available to other views
-	    getSite().setSelectionProvider(viewer);
-	    // Set the sorter for the table
-	    comparator = new MediaIssueComparator();
-	    viewer.setComparator(comparator);
-	    
-	    // Layout the viewer
-	    GridData gridData = new GridData();
-	    gridData.verticalAlignment = GridData.FILL;
-	    gridData.horizontalSpan = 2;
-	    gridData.grabExcessHorizontalSpace = true;
-	    gridData.grabExcessVerticalSpace = true;
-	    gridData.horizontalAlignment = GridData.FILL;
-	    viewer.getControl().setLayoutData(gridData);		
+		viewer.setContentProvider(new ArrayContentProvider());
+		// Make the selection available to other views
+		getSite().setSelectionProvider(viewer);
+		// Set the sorter for the table
+		comparator = new MediaIssueComparator();
+		viewer.setComparator(comparator);
+
+		// Layout the viewer
+		GridData gridData = new GridData();
+		gridData.verticalAlignment = GridData.FILL;
+		gridData.horizontalSpan = 2;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.horizontalAlignment = GridData.FILL;
+		viewer.getControl().setLayoutData(gridData);
 	}
-	
+
 	/**
 	 * This will create columns for the table
-	 * @param viewer table viewer object
+	 * 
+	 * @param viewer
+	 *            table viewer object
 	 */
 	private void createColumns(final TableViewer viewer) {
 		String[] titles = { COLUMN_TYPE, COLUMN_TEXT, COLUMN_MEDIA_DIRECTORY_NAME };
@@ -95,7 +98,9 @@ public class MediaIssuesView extends ViewPart {
 			@Override
 			public String getText(Object element) {
 				IMediaIssue i = (IMediaIssue) element;
-				return i.getIssueMessage();
+				String errorMessage = (i.getErrorMessage() == null) ? "" : ": "
+						+ i.getErrorMessage();
+				return MediaIssueMessages.getMessageForMessageCode(i.getIssueCode()) + errorMessage;
 			}
 		});
 
@@ -109,18 +114,20 @@ public class MediaIssuesView extends ViewPart {
 			}
 		});
 	}
-	
+
 	/**
 	 * Creates viewer table column
-	 * @param title title of the column
-	 * @param bound bound of the column
-	 * @param colNumber column number
-	 * @return created table viewer column 
+	 * 
+	 * @param title
+	 *            title of the column
+	 * @param bound
+	 *            bound of the column
+	 * @param colNumber
+	 *            column number
+	 * @return created table viewer column
 	 */
-	private TableViewerColumn createTableViewerColumn(String title, int bound,
-			final int colNumber) {
-		final TableViewerColumn viewerColumn = new TableViewerColumn(viewer,
-				SWT.NONE);
+	private TableViewerColumn createTableViewerColumn(String title, int bound, final int colNumber) {
+		final TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
 		final TableColumn column = viewerColumn.getColumn();
 		column.setText(title);
 		column.setWidth(bound);
@@ -129,9 +136,8 @@ public class MediaIssuesView extends ViewPart {
 		column.addSelectionListener(getSelectionAdapter(column, colNumber));
 		return viewerColumn;
 	}
-	
-	private SelectionAdapter getSelectionAdapter(final TableColumn column,
-			final int index) {
+
+	private SelectionAdapter getSelectionAdapter(final TableColumn column, final int index) {
 		SelectionAdapter selectionAdapter = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -161,7 +167,7 @@ public class MediaIssuesView extends ViewPart {
 	 */
 	public void visualiseIssues(Iterator<IMediaIssue> issuesIterator) {
 		List<IMediaIssue> mediaIssues = new ArrayList<IMediaIssue>();
-		for (; issuesIterator.hasNext(); ){
+		for (; issuesIterator.hasNext();) {
 			mediaIssues.add(issuesIterator.next());
 		}
 		viewer.setInput(mediaIssues);
@@ -188,8 +194,8 @@ public class MediaIssuesView extends ViewPart {
 					// select issue source in Reference storage
 					ReferenceStorageView referenceStorageView = VisualiseStoragesHandler
 							.getTreeView(ReferenceStorageView.ID);
-					referenceStorageView.selectAllMirrors(
-							issue.getSourceAbsolutePath(), InputStorageView.ID);
+					referenceStorageView.selectAllMirrors(issue.getSourceAbsolutePath(),
+							InputStorageView.ID);
 				}
 			}
 
