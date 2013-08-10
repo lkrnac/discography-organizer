@@ -1,12 +1,12 @@
 package sk.lkrnac.discorg.model.dal.io;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import sk.lkrnac.discorg.model.dal.exception.DiscOrgDalException;
 import sk.lkrnac.discorg.test.utils.TestUtils;
 
 /**
@@ -45,12 +45,12 @@ public class DirectoryComparatorTest {
 	 *            name of the directory on HDD where are testing data stored
 	 * @param expectedResult
 	 *            expected status for the test
-	 * @throws DiscOrgDalException
+	 * @throws IOException
 	 *             if I/O error occurs
 	 */
 	@Test(dataProvider = "testCompareDirectories")
 	public void testCompareDirectories(String testingDataLocation, boolean expectedResult)
-			throws DiscOrgDalException {
+			throws IOException {
 		String resourcesPath = TestUtils.getResourcesPathMethod() + File.separator
 				+ testingDataLocation + File.separator;
 

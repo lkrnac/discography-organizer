@@ -1,14 +1,13 @@
 package sk.lkrnac.discorg.model.dal.io;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import sk.lkrnac.discorg.model.dal.exception.DiscOrgDalException;
 
 /**
  * Unit tests for {@link DirectoryHandler}
@@ -72,13 +71,13 @@ public class DirectoryHandlerTest {
 	 *            expected matches of the files' facing
 	 * @param expectedFullMissings
 	 *            expected missing files in reference directory
-	 * @throws DiscOrgDalException
+	 * @throws IOException
 	 *             if I/O error occurs
 	 */
 	@Test(dataProvider = "testFileFacingLoop")
 	public void testFileFacingLoop(int testCaseId, Map<Integer, File> selectionMap,
 			Map<Integer, File> fullMap, Integer[] expectedMatches, Integer[] expectedFullMissings)
-			throws DiscOrgDalException {
+			throws IOException {
 		DirectoryHandler dirHandler = new TestingDirectoryHandler();
 		DirectoryHandler dirHandlerSpy = Mockito.spy(dirHandler);
 

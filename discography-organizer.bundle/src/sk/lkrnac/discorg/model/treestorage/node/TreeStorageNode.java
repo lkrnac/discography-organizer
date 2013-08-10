@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 
-import sk.lkrnac.discorg.context.DiscOrgContextHolder;
+import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
 import sk.lkrnac.discorg.model.interfaces.INodeStatus;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
 

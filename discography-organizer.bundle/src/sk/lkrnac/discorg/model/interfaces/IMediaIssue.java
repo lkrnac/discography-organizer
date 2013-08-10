@@ -1,6 +1,6 @@
 package sk.lkrnac.discorg.model.interfaces;
 
-import sk.lkrnac.discorg.constants.MediaIssueCode;
+import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 
 /**
  * Is used for marking some problems with media directory

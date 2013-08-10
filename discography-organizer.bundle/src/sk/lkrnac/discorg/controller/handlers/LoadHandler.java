@@ -5,8 +5,8 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import sk.lkrnac.discorg.context.DiscOrgContextHolder;
 import sk.lkrnac.discorg.controller.listeners.ILoadStoragesListener;
+import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
 
 
 /**

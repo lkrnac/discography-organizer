@@ -9,7 +9,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.springframework.context.ApplicationContext;
 
-import sk.lkrnac.discorg.context.DiscOrgContextHolder;
+import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
 
 /**
  * This class controls all aspects of the application's execution

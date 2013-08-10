@@ -5,8 +5,8 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 
-import sk.lkrnac.discorg.constants.MediaIssueCode;
-import sk.lkrnac.discorg.context.DiscOrgContextHolder;
+import sk.lkrnac.discorg.general.constants.MediaIssueCode;
+import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;

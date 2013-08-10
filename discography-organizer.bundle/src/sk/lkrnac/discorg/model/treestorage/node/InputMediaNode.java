@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import sk.lkrnac.discorg.constants.MediaIssueCode;
+import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
 
 /**
@@ -81,10 +81,9 @@ public class InputMediaNode extends MediaBranchNode {
 			int difference = mediaFilesNames.size() - this.getMediaFilesNames().size();
 
 			if (difference < 0) {
-				getMediaIssuesCache().add(
-						new MediaIssue(getAbsolutePath(),
-								MediaIssueCode.INPUT_MISSING_MEDIA_FILES, this.getRelativePath(),
-								true));
+				MediaIssue mediaIssue = new MediaIssue(getAbsolutePath(),
+						MediaIssueCode.INPUT_MISSING_MEDIA_FILES, this.getRelativePath(), true);
+				getMediaIssuesCache().add(mediaIssue);
 				this.setNodeStatus(BranchNodeStatus.ERROR);
 			} else {
 				if (difference > 0) {
@@ -95,10 +94,9 @@ public class InputMediaNode extends MediaBranchNode {
 					mediaFilesNames.remove(mediaFile);
 				}
 				if (mediaFilesNames.size() != difference) {
-					getMediaIssuesCache().add(
-							new MediaIssue(this.getAbsolutePath(),
-									MediaIssueCode.INPUT_DIFFERENT_NAMES, this.getRelativePath(),
-									false));
+					MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
+							MediaIssueCode.INPUT_DIFFERENT_NAMES, this.getRelativePath(), false);
+					getMediaIssuesCache().add(mediaIssue);
 				}
 			}
 		}
@@ -111,10 +109,9 @@ public class InputMediaNode extends MediaBranchNode {
 		if (NodeStatus.LOSSLESS.equals(this.getAudioFormatType())) {
 			this.setNodeStatus(BranchNodeStatus.WARNING);
 
-			getMediaIssuesCache().add(
-					new MediaIssue(this.getAbsolutePath(),
-							MediaIssueCode.INPUT_LOSSLESS_AUDIO_FORMAT, this.getRelativePath(),
-							false));
+			MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
+					MediaIssueCode.INPUT_LOSSLESS_AUDIO_FORMAT, this.getRelativePath(), false);
+			getMediaIssuesCache().add(mediaIssue);
 		}
 	}
 

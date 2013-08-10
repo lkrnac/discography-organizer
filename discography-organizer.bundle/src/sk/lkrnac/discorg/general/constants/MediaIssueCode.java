@@ -1,4 +1,4 @@
-package sk.lkrnac.discorg.constants;
+package sk.lkrnac.discorg.general.constants;
 
 /**
  * Media directories issue codes
@@ -29,6 +29,8 @@ public enum MediaIssueCode {
 	REFERENCE_VARIOUS_SELECTION_MIRRORS_FOUND,
 
 	/*----------------------------------------------------------------------*/
+	/** I/O error occurred during comparing of directories */
+	GENERIC_IO_ERROR_DURING_COMPARISON,
 	/**
 	 * Message when media directory contains media files and also media
 	 * directories

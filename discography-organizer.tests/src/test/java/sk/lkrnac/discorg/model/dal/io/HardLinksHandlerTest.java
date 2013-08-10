@@ -12,7 +12,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import sk.lkrnac.discorg.model.dal.exception.DiscOrgDalException;
+import sk.lkrnac.discorg.general.DiscOrgException;
 import sk.lkrnac.discorg.test.utils.TestUtils;
 
 /**
@@ -189,12 +189,12 @@ public class HardLinksHandlerTest {
 	 *            album name for testing
 	 * @throws IOException
 	 *             if I/O error occurs during test
-	 * @throws DiscOrgDalException
+	 * @throws DiscOrgException
 	 *             if directory comparison fails
 	 */
 	@Test(dataProvider = "testBuildHardLinksSuccess")
 	public void testBuildHardLinksSuccess(String testingAlbumName) throws IOException,
-			DiscOrgDalException {
+			DiscOrgException {
 		testBuildHardLinks(testingAlbumName);
 
 		Assert.assertEquals(testingObj.verifyHardLinks(fullDir), true,
@@ -222,14 +222,14 @@ public class HardLinksHandlerTest {
 	 * 
 	 * @param testingAlbumName
 	 *            album name for testing
-	 * @throws DiscOrgDalException
+	 * @throws DiscOrgException
 	 *             if directory comparison fails. It is expected for this test
 	 *             case.
 	 * @throws IOException
 	 *             if I/O error occurs during test or
 	 */
-	@Test(dataProvider = "testBuildHardLinksFail", expectedExceptions = DiscOrgDalException.class)
-	public void testBuildHardLinksFail(String testingAlbumName) throws DiscOrgDalException,
+	@Test(dataProvider = "testBuildHardLinksFail", expectedExceptions = DiscOrgException.class)
+	public void testBuildHardLinksFail(String testingAlbumName) throws DiscOrgException,
 			IOException {
 		testBuildHardLinks(testingAlbumName);
 	}
@@ -243,11 +243,11 @@ public class HardLinksHandlerTest {
 	 * @throws IOException
 	 *             if I/O error occurs during test or if
 	 * 
-	 * @throws DiscOrgDalException
+	 * @throws DiscOrgException
 	 *             directory comparison fails
 	 */
 	private void testBuildHardLinks(String testingAlbumName) throws IOException,
-			DiscOrgDalException {
+			DiscOrgException {
 		resourcesPath = TestUtils.getResourcesPathMethod();
 		File selectionDir = getTestingDir(testingAlbumName, false, true);
 		testingObj = new HardLinksHandler(selectionDir);

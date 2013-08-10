@@ -11,7 +11,7 @@ import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
 import sk.lkrnac.discorg.model.treestorage.node.MediaBranchNode;
 import sk.lkrnac.discorg.model.treestorage.node.ReferenceMediaNode;
 import sk.lkrnac.discorg.model.treestorage.node.TreeStorageBranchNode;
-import sk.lkrnac.discorg.preferences.StoragesPreferencesFacade;
+import sk.lkrnac.discorg.preferences.StoragesPreferences;
 
 /**
  * Reference media storage. This media storage contains all the full albums 
@@ -25,12 +25,12 @@ public class ReferenceStorage extends TreeStorage {
 	private ReferenceStorageCache referenceStorageCache;
 	
 	@Autowired
-	private StoragesPreferencesFacade storagesPreferences;
+	private StoragesPreferences storagesPreferences;
 
 	/**
 	 * @return application preferences concerning to storages 
 	 */
-	public StoragesPreferencesFacade getSroragesPreferences() {
+	public StoragesPreferences getSroragesPreferences() {
 		return storagesPreferences;
 	}
 

@@ -1,6 +1,6 @@
 package sk.lkrnac.discorg.model.cache;
 
-import sk.lkrnac.discorg.constants.MediaIssueCode;
+import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
 
 /**

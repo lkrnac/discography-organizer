@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import sk.lkrnac.discorg.constants.MediaIssueCode;
+import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
 
 /**

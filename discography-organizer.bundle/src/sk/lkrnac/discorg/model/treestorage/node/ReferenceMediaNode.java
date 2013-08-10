@@ -7,10 +7,9 @@ import java.util.HashSet;
 
 import org.apache.commons.lang3.StringUtils;
 
-import sk.lkrnac.discorg.constants.MediaIssueCode;
+import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
-import sk.lkrnac.discorg.model.dal.exception.DiscOrgDalException;
 import sk.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
 
 /**
@@ -154,8 +153,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 			try {
 				if (!this.getDirectoryIoFacade().verifyHardLinks(getFullMirror().getFile())) {
 					MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
-							MediaIssueCode.REFERENCE_NO_HARD_LINK_IN_SELECTION,
-							this.getRelativePath(), true);
+							MediaIssueCode.REFERENCE_NO_HARD_LINK_IN_SELECTION, this.getRelativePath(), true);
 					this.getMediaIssuesCache().add(mediaIssue);
 					this.setNodeStatus(BranchNodeStatus.ERROR);
 				}
@@ -188,23 +186,20 @@ public class ReferenceMediaNode extends MediaBranchNode {
 		}
 		try {
 			if (getSelectionMirror() == null) {
-				String selectionPath = this.getRelativePath().replace(
-						fullSubDirectory + File.separator, "");
+				String selectionPath = this.getRelativePath().replace(fullSubDirectory + File.separator, "");
 
 				// get selection mirror for full album
 				Collection<ReferenceMediaNode> selectionMirrors = getReferenceStorageCache()
 						.getReferenceItems(selectionPath);
 
 				for (ReferenceMediaNode mirror : selectionMirrors) {
-					if (this.getDirectoryIoFacade().compareDirectories(this.getFile(),
-							mirror.getFile())) {
+					if (this.getDirectoryIoFacade().compareDirectories(this.getFile(), mirror.getFile())) {
 						if (selectionMirror != null) {
 							this.setNodeStatus(BranchNodeStatus.ERROR);
-							getMediaIssuesCache()
-									.add(new MediaIssue(
-											this.getAbsolutePath(),
-											MediaIssueCode.REFERENCE_VARIOUS_SELECTION_MIRRORS_FOUND,
-											this.getRelativePath(), true));
+							MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
+									MediaIssueCode.REFERENCE_VARIOUS_SELECTION_MIRRORS_FOUND,
+									this.getRelativePath(), true);
+							getMediaIssuesCache().add(mediaIssue);
 							selectionMirror = null;
 						} else {
 							selectionMirror = mirror;
@@ -215,17 +210,17 @@ public class ReferenceMediaNode extends MediaBranchNode {
 					// if selection mirror wasn't found for full album ->
 					// ignored status
 					this.setNodeStatus(BranchNodeStatus.IGNORED);
-					getMediaIssuesCache().add(
-							new MediaIssue(this.getAbsolutePath(),
-									MediaIssueCode.REFERENCE_MISSING_SELECTION_MIRROR, this
-											.getRelativePath(), false));
+					MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
+							MediaIssueCode.REFERENCE_MISSING_SELECTION_MIRROR, this.getRelativePath(), false);
+					getMediaIssuesCache().add(mediaIssue);
 				}
 			}
-		} catch (DiscOrgDalException e) {
+		} catch (IOException e) {
 			this.setNodeStatus(BranchNodeStatus.ERROR);
-			getMediaIssuesCache().add(
-					new MediaIssue(this.getAbsolutePath(), e.getMediaIssueCode(), this
-							.getRelativePath(), true));
+			MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
+					MediaIssueCode.REFERENCE_HARD_LINK_IO_ERROR, this.getRelativePath(), true);
+			mediaIssue.setErrorMessage(e.getLocalizedMessage());
+			getMediaIssuesCache().add(mediaIssue);
 
 		}
 		return selectionMirror != null;
@@ -245,9 +240,8 @@ public class ReferenceMediaNode extends MediaBranchNode {
 	 */
 	public void checkFullAlbumForSelection(String fullSubDirectory) {
 		if (this.isFullAlbum()) {
-			throw new IllegalArgumentException(
-					this.getClass().getSimpleName()
-							+ ".checkFullAlbumForSelection(String) should be invoked only for selection album.");
+			throw new IllegalArgumentException(this.getClass().getSimpleName()
+					+ ".checkFullAlbumForSelection(String) should be called only for selection album.");
 		}
 		try {
 			if (!this.isFullAlbum()) {
@@ -261,27 +255,25 @@ public class ReferenceMediaNode extends MediaBranchNode {
 				ReferenceMediaNode fullMirror = null;
 				for (ReferenceMediaNode tmpMirror : getReferenceStorageCache().getReferenceItems(
 						fullAlbumMirrorPath)) {
-					if (this.getDirectoryIoFacade().compareDirectories(tmpMirror.getFile(),
-							this.getFile())) {
+					if (this.getDirectoryIoFacade().compareDirectories(tmpMirror.getFile(), this.getFile())) {
 						if (fullMirror == null) {
 							fullMirror = tmpMirror;
 						} else {
 							fullMirror = null;
 							this.setNodeStatus(BranchNodeStatus.ERROR);
-							getMediaIssuesCache().add(
-									new MediaIssue(this.getAbsolutePath(),
-											MediaIssueCode.REFERENCE_VARIOUS_FULL_MIRRORS_FOUND,
-											this.getRelativePath(), true));
+							MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
+									MediaIssueCode.REFERENCE_VARIOUS_FULL_MIRRORS_FOUND,
+									this.getRelativePath(), true);
+							getMediaIssuesCache().add(mediaIssue);
 						}
 					}
 				}
 				if (!BranchNodeStatus.ERROR.equals(this.getNodeStatus())) {
 					if (fullMirror == null) {
 						this.setNodeStatus(BranchNodeStatus.WARNING);
-						getMediaIssuesCache().add(
-								new MediaIssue(this.getAbsolutePath(),
-										MediaIssueCode.REFERENCE_FULL_MIRROR_MISSING, this
-												.getRelativePath(), false));
+						MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
+								MediaIssueCode.REFERENCE_FULL_MIRROR_MISSING, this.getRelativePath(), false);
+						getMediaIssuesCache().add(mediaIssue);
 					} else {
 						fullMirror.setFullAlbum(true);
 						if (fullMirror.checkSelectionForFullAlbum(fullSubDirectory)) {
@@ -291,10 +283,10 @@ public class ReferenceMediaNode extends MediaBranchNode {
 					}
 				}
 			}
-		} catch (DiscOrgDalException e) {
+		} catch (IOException e) {
 			this.setNodeStatus(BranchNodeStatus.ERROR);
-			MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(), e.getMediaIssueCode(),
-					this.getRelativePath(), true);
+			MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
+					MediaIssueCode.GENERIC_IO_ERROR_DURING_COMPARISON, this.getRelativePath(), true);
 			mediaIssue.setErrorMessage(e.getLocalizedMessage());
 			getMediaIssuesCache().add(mediaIssue);
 		}

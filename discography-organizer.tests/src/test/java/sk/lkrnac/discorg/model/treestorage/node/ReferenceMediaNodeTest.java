@@ -1,6 +1,7 @@
 package sk.lkrnac.discorg.model.treestorage.node;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -11,11 +12,10 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import sk.lkrnac.discorg.constants.MediaIssueCode;
+import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
-import sk.lkrnac.discorg.model.dal.exception.DiscOrgDalException;
 import sk.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
 import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
 
@@ -30,8 +30,7 @@ public class ReferenceMediaNodeTest {
 	private static final String TEST_PATH = "test-path";
 	private static final String DIR_NAME_TEST_ALBUM_1 = "test - album 1";
 	private static final String DIR_NAME_FULL_ALBUM = "=[full]";
-	private static final String FULL_PARENT_ABSOLUTE_PATH = TEST_PATH + File.separator
-			+ DIR_NAME_FULL_ALBUM;
+	private static final String FULL_PARENT_ABSOLUTE_PATH = TEST_PATH + File.separator + DIR_NAME_FULL_ALBUM;
 
 	/**
 	 * Prepares testing data for test
@@ -41,25 +40,24 @@ public class ReferenceMediaNodeTest {
 	 */
 	@DataProvider(name = DP_TEST_CHECK_FULL_ALBUM_FOR_SELECTION)
 	public Object[][] testCheckFullAlbumForSelection() {
-		String pathToFullMirror = FULL_PARENT_ABSOLUTE_PATH + File.separator
-				+ DIR_NAME_TEST_ALBUM_1;
+		String pathToFullMirror = FULL_PARENT_ABSOLUTE_PATH + File.separator + DIR_NAME_TEST_ALBUM_1;
 		String relativePath = TEST_PATH + File.separator + DIR_NAME_TEST_ALBUM_1;
 		MediaIssue mediaIssueMissing = new MediaIssue(TEST_PATH,
 				MediaIssueCode.REFERENCE_FULL_MIRROR_MISSING, relativePath, false);
 		MediaIssue mediaIssueVarious = new MediaIssue(TEST_PATH,
 				MediaIssueCode.REFERENCE_VARIOUS_FULL_MIRRORS_FOUND, relativePath, true);
 		MediaIssue mediaIssueIoError = new MediaIssue(TEST_PATH,
-				MediaIssueCode.GENERIC_MORE_FILES_IN_SELECTION, relativePath, true);
+				MediaIssueCode.GENERIC_IO_ERROR_DURING_COMPARISON, relativePath, true);
 		int i = 0;
 		return new Object[][] {
 				// create one full album mirror in storages meta-data maps and
 				// expect no issue
 				new Object[] { i++, pathToFullMirror,
-						getReferenceStorageCacheMock(pathToFullMirror, 1, true),
-						BranchNodeStatus.FOLDER, null, true, false },
+						getReferenceStorageCacheMock(pathToFullMirror, 1, true), BranchNodeStatus.FOLDER,
+						null, true, false },
 				new Object[] { i++, pathToFullMirror,
-						getReferenceStorageCacheMock(pathToFullMirror, 1, false),
-						BranchNodeStatus.FOLDER, null, true, false },
+						getReferenceStorageCacheMock(pathToFullMirror, 1, false), BranchNodeStatus.FOLDER,
+						null, true, false },
 
 				// - don't create mirror in storages meta-data maps
 				// and expect warning and media issue creation
@@ -78,19 +76,19 @@ public class ReferenceMediaNodeTest {
 				// expect error about various full mirrors found
 				// - full mirror checks shouldn't affect the result
 				new Object[] { i++, pathToFullMirror,
-						getReferenceStorageCacheMock(pathToFullMirror, 2, false),
-						BranchNodeStatus.ERROR, mediaIssueVarious, true, false },
+						getReferenceStorageCacheMock(pathToFullMirror, 2, false), BranchNodeStatus.ERROR,
+						mediaIssueVarious, true, false },
 				new Object[] { i++, pathToFullMirror,
-						getReferenceStorageCacheMock(pathToFullMirror, 2, true),
-						BranchNodeStatus.ERROR, mediaIssueVarious, true, false },
+						getReferenceStorageCacheMock(pathToFullMirror, 2, true), BranchNodeStatus.ERROR,
+						mediaIssueVarious, true, false },
 
 				// test cases with IO error throwing
 				new Object[] { i++, pathToFullMirror,
-						getReferenceStorageCacheMock(pathToFullMirror, 1, true),
-						BranchNodeStatus.ERROR, mediaIssueIoError, true, true },
+						getReferenceStorageCacheMock(pathToFullMirror, 1, true), BranchNodeStatus.ERROR,
+						mediaIssueIoError, true, true },
 				new Object[] { i++, pathToFullMirror,
-						getReferenceStorageCacheMock(pathToFullMirror, 1, false),
-						BranchNodeStatus.ERROR, mediaIssueIoError, true, true },
+						getReferenceStorageCacheMock(pathToFullMirror, 1, false), BranchNodeStatus.ERROR,
+						mediaIssueIoError, true, true },
 
 				new Object[] { i++, pathToFullMirror, getReferenceStorageCacheMock(null, 0, false),
 						BranchNodeStatus.WARNING, mediaIssueMissing, false, true },
@@ -102,11 +100,11 @@ public class ReferenceMediaNodeTest {
 						BranchNodeStatus.WARNING, mediaIssueMissing, true, true },
 
 				new Object[] { i++, pathToFullMirror,
-						getReferenceStorageCacheMock(pathToFullMirror, 2, false),
-						BranchNodeStatus.ERROR, mediaIssueIoError, true, true },
+						getReferenceStorageCacheMock(pathToFullMirror, 2, false), BranchNodeStatus.ERROR,
+						mediaIssueIoError, true, true },
 				new Object[] { i++, pathToFullMirror,
-						getReferenceStorageCacheMock(pathToFullMirror, 2, true),
-						BranchNodeStatus.ERROR, mediaIssueIoError, true, true }, };
+						getReferenceStorageCacheMock(pathToFullMirror, 2, true), BranchNodeStatus.ERROR,
+						mediaIssueIoError, true, true }, };
 	}
 
 	/**
@@ -139,14 +137,13 @@ public class ReferenceMediaNodeTest {
 	 *            should succeed
 	 * @param throwIoError
 	 *            if comparison of directories should throw IO error
-	 * @throws DiscOrgDalException
+	 * @throws IOException
 	 *             if I/O error occurs
 	 */
 	@Test(dataProvider = DP_TEST_CHECK_FULL_ALBUM_FOR_SELECTION)
 	public void testCheckFullAlbumForSelection(int testCaseId, String pathToFullMirror,
 			ReferenceStorageCache referenceStorageCache, BranchNodeStatus expectedStatus,
-			MediaIssue expectedIssue, boolean dirComparisonSucceed, boolean throwIoError)
-			throws DiscOrgDalException {
+			MediaIssue expectedIssue, boolean dirComparisonSucceed, boolean throwIoError) throws IOException {
 		ReferenceMediaNode testingObjectSpy = initializeMocks(TEST_PATH, referenceStorageCache,
 				dirComparisonSucceed, throwIoError);
 
@@ -175,8 +172,7 @@ public class ReferenceMediaNodeTest {
 				Mockito.verify(fullMirror, Mockito.times(1)).setSelectionMirror(testingObjectSpy);
 
 				// verify if hard link check was invoked
-				Mockito.verify(testingObjectSpy, Mockito.times(1))
-						.checkHardLinksForSelectionMirror();
+				Mockito.verify(testingObjectSpy, Mockito.times(1)).checkHardLinksForSelectionMirror();
 			}
 		}
 	}
@@ -196,7 +192,7 @@ public class ReferenceMediaNodeTest {
 		MediaIssue mediaIssueVarious = new MediaIssue(FULL_PARENT_ABSOLUTE_PATH,
 				MediaIssueCode.REFERENCE_VARIOUS_SELECTION_MIRRORS_FOUND, relativePath, true);
 		MediaIssue mediaIssueIoError = new MediaIssue(FULL_PARENT_ABSOLUTE_PATH,
-				MediaIssueCode.GENERIC_MORE_FILES_IN_SELECTION, relativePath, true);
+				MediaIssueCode.REFERENCE_HARD_LINK_IO_ERROR, relativePath, true);
 		int i = 0;
 		return new Object[][] {
 				// create one selection album mirror in storages meta-data maps
@@ -209,10 +205,10 @@ public class ReferenceMediaNodeTest {
 				// and expect warning and media issue creation
 				// - comparison of directories doesn't have any sense and
 				// shouldn't affect the result
-				new Object[] { i++, getReferenceStorageCacheMock(null, 0, null),
-						BranchNodeStatus.IGNORED, mediaIssueMissing, false, false, false },
-				new Object[] { i++, getReferenceStorageCacheMock(null, 0, null),
-						BranchNodeStatus.IGNORED, mediaIssueMissing, true, false, false },
+				new Object[] { i++, getReferenceStorageCacheMock(null, 0, null), BranchNodeStatus.IGNORED,
+						mediaIssueMissing, false, false, false },
+				new Object[] { i++, getReferenceStorageCacheMock(null, 0, null), BranchNodeStatus.IGNORED,
+						mediaIssueMissing, true, false, false },
 
 				// - create various selection album mirrors in storages
 				// meta-data maps and
@@ -224,10 +220,10 @@ public class ReferenceMediaNodeTest {
 				new Object[] { i++, getReferenceStorageCacheMock(pathToSelectionMirror, 1, null),
 						BranchNodeStatus.ERROR, mediaIssueIoError, true, false, true },
 
-				new Object[] { i++, getReferenceStorageCacheMock(null, 0, null),
-						BranchNodeStatus.IGNORED, mediaIssueMissing, false, false, true },
-				new Object[] { i++, getReferenceStorageCacheMock(null, 0, null),
-						BranchNodeStatus.IGNORED, mediaIssueMissing, true, false, true },
+				new Object[] { i++, getReferenceStorageCacheMock(null, 0, null), BranchNodeStatus.IGNORED,
+						mediaIssueMissing, false, false, true },
+				new Object[] { i++, getReferenceStorageCacheMock(null, 0, null), BranchNodeStatus.IGNORED,
+						mediaIssueMissing, true, false, true },
 
 				new Object[] { i++, getReferenceStorageCacheMock(pathToSelectionMirror, 2, null),
 						BranchNodeStatus.ERROR, mediaIssueIoError, true, false, true }, };
@@ -260,14 +256,13 @@ public class ReferenceMediaNodeTest {
 	 *            identifies test case (not used)
 	 * @param throwIoError
 	 *            if comparison of directories should throw IO error
-	 * @throws DiscOrgDalException
+	 * @throws IOException
 	 *             if I/O error occurs
 	 */
 	@Test(dataProvider = DP_TEST_CHECK_SELECTION_FOR_FULL_ALBUM)
-	public void testCheckSelectionForFullAlbum(int testCaseId,
-			ReferenceStorageCache referenceStorageCache, BranchNodeStatus expectedStatus,
-			MediaIssue expectedIssue, boolean dirComparisonSucceed, boolean expectedResult,
-			boolean throwIoError) throws DiscOrgDalException {
+	public void testCheckSelectionForFullAlbum(int testCaseId, ReferenceStorageCache referenceStorageCache,
+			BranchNodeStatus expectedStatus, MediaIssue expectedIssue, boolean dirComparisonSucceed,
+			boolean expectedResult, boolean throwIoError) throws IOException {
 		ReferenceMediaNode testingObjectSpy = initializeMocks(FULL_PARENT_ABSOLUTE_PATH,
 				referenceStorageCache, dirComparisonSucceed, throwIoError);
 		testingObjectSpy.setFullAlbum(true);
@@ -310,22 +305,19 @@ public class ReferenceMediaNodeTest {
 	 * @param throwIoError
 	 *            if comparison of directories should throw IO error
 	 * @return testing object spy
-	 * @throws DiscOrgDalException
+	 * @throws IOException
 	 *             declared to avoid compiler error (method is stubbed)
 	 */
 	private ReferenceMediaNode initializeMocks(String parentDirectoryPath,
-			ReferenceStorageCache referenceStorageCache, boolean dirComparisonSucceed,
-			boolean throwIoError) throws DiscOrgDalException {
+			ReferenceStorageCache referenceStorageCache, boolean dirComparisonSucceed, boolean throwIoError)
+			throws IOException {
 		DirectoryIoFacade dirIoFacadeMock = Mockito.mock(DirectoryIoFacade.class);
 		if (throwIoError) {
-			Mockito.when(
-					dirIoFacadeMock.compareDirectories(Mockito.any(File.class),
-							Mockito.any(File.class))).thenThrow(
-					new DiscOrgDalException(MediaIssueCode.GENERIC_MORE_FILES_IN_SELECTION));
+			Mockito.when(dirIoFacadeMock.compareDirectories(Mockito.any(File.class), Mockito.any(File.class)))
+					.thenThrow(new IOException());
 		} else {
-			Mockito.when(
-					dirIoFacadeMock.compareDirectories(Mockito.any(File.class),
-							Mockito.any(File.class))).thenReturn(dirComparisonSucceed);
+			Mockito.when(dirIoFacadeMock.compareDirectories(Mockito.any(File.class), Mockito.any(File.class)))
+					.thenReturn(dirComparisonSucceed);
 		}
 
 		File dirMock = Mockito.mock(File.class);
@@ -334,8 +326,7 @@ public class ReferenceMediaNodeTest {
 		Mockito.when(dirMock.getAbsolutePath()).thenReturn(parentDirectoryPath);
 
 		// create testing object and it's spy
-		ReferenceMediaNode testingObject = new ReferenceMediaNode(null, dirMock,
-				parentDirectoryPath);
+		ReferenceMediaNode testingObject = new ReferenceMediaNode(null, dirMock, parentDirectoryPath);
 		ReferenceMediaNode testingObjectSpy = Mockito.spy(testingObject);
 
 		Mockito.doReturn(referenceStorageCache).when(testingObjectSpy).getReferenceStorageCache();
@@ -359,30 +350,28 @@ public class ReferenceMediaNodeTest {
 	 *            if the checks for full mirror should pass
 	 * @return storage meta-data maps mock for testing
 	 */
-	private ReferenceStorageCache getReferenceStorageCacheMock(String pathToFileMock,
-			int numberOfMirrors, Boolean passFullMirrorChecks) {
+	private ReferenceStorageCache getReferenceStorageCacheMock(String pathToFileMock, int numberOfMirrors,
+			Boolean passFullMirrorChecks) {
 		ReferenceStorageCache referenceStorageCache = Mockito.mock(ReferenceStorageCache.class);
 		Mockito.when(referenceStorageCache.toString()).thenReturn(
 				"Mock for " + ReferenceStorageCache.class.getSimpleName() + "[pathToFileMock = \""
 						+ ((pathToFileMock == null) ? "null" : pathToFileMock) + "\"]");
 
-		Collection<ReferenceMediaNode> mirrorMocksList = new ArrayList<ReferenceMediaNode>(
-				numberOfMirrors);
+		Collection<ReferenceMediaNode> mirrorMocksList = new ArrayList<ReferenceMediaNode>(numberOfMirrors);
 
 		if (pathToFileMock != null && numberOfMirrors > 0) {
 			for (int i = 0; i < numberOfMirrors; i++) {
 				ReferenceMediaNode fullMirrorMock = Mockito.mock(ReferenceMediaNode.class);
 
 				if (passFullMirrorChecks != null) {
-					Mockito.when(fullMirrorMock.checkSelectionForFullAlbum(Mockito.anyString()))
-							.thenReturn(passFullMirrorChecks);
+					Mockito.when(fullMirrorMock.checkSelectionForFullAlbum(Mockito.anyString())).thenReturn(
+							passFullMirrorChecks);
 				}
 				mirrorMocksList.add(fullMirrorMock);
 			}
 		}
 
-		Mockito.when(referenceStorageCache.getReferenceItems(pathToFileMock)).thenReturn(
-				mirrorMocksList);
+		Mockito.when(referenceStorageCache.getReferenceItems(pathToFileMock)).thenReturn(mirrorMocksList);
 		return referenceStorageCache;
 	}
 

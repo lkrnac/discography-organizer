@@ -4,8 +4,9 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import sk.lkrnac.discorg.context.DiscOrgContextHolder;
 import sk.lkrnac.discorg.controller.listeners.IBuildHardLinksListener;
+import sk.lkrnac.discorg.general.DiscOrgException;
+import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
 
 /**
  * Handler for replacing media files in selection mirror directories by hard
@@ -28,7 +29,14 @@ public class BuildHardLinksHandler extends AbstractHandler {
 		IBuildHardLinksListener listener = DiscOrgContextHolder.getInstance().getContext()
 				.getBean(IBuildHardLinksListener.class);
 
-		listener.onBuildHardLinks();
+		String errorMessage = null;
+		try {
+			listener.onBuildHardLinks();
+		} catch (DiscOrgException e) {
+			errorMessage = String.format(e.getLocalizedMessage(), (Object[]) e.getMessageParameters());
+		} catch (Throwable t) {
+
+		}
 
 		return null;
 	}

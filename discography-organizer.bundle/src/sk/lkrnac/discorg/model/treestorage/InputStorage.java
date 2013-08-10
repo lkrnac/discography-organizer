@@ -14,7 +14,7 @@ import sk.lkrnac.discorg.model.treestorage.node.InputMediaNode;
 import sk.lkrnac.discorg.model.treestorage.node.MediaBranchNode;
 import sk.lkrnac.discorg.model.treestorage.node.ReferenceMediaNode;
 import sk.lkrnac.discorg.model.treestorage.node.TreeStorageBranchNode;
-import sk.lkrnac.discorg.preferences.StoragesPreferencesFacade;
+import sk.lkrnac.discorg.preferences.StoragesPreferences;
 
 /**
  * Handles operations on input media storage
@@ -26,7 +26,7 @@ public class InputStorage extends TreeStorage {
 	private ReferenceStorageCache referenceStorageCache;
 	
 	@Autowired
-	private StoragesPreferencesFacade storagesPreferences;
+	private StoragesPreferences storagesPreferences;
 
 	/**
 	 * {@inheritDoc}

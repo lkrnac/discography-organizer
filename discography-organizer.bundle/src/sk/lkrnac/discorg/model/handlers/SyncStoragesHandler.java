@@ -7,16 +7,15 @@ import sk.lkrnac.discorg.controller.listeners.ISyncStoragesListener;
 /**
  * 
  * @author sitko
- *
+ * 
  */
 @Service
-public class SyncStoragesHandler implements ISyncStoragesListener{
+public class SyncStoragesHandler implements ISyncStoragesListener {
 
 	@Override
 	public void syncStorages() {
 		// TODO implement
-		new UnsupportedOperationException("not implemented");
+		throw new UnsupportedOperationException("not implemented");
 	}
-	
-}
 
+}

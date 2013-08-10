@@ -3,7 +3,7 @@ package sk.lkrnac.discorg.model.dal.io;
 import java.io.File;
 import java.io.IOException;
 
-import sk.lkrnac.discorg.model.dal.exception.DiscOrgDalException;
+import sk.lkrnac.discorg.general.DiscOrgException;
 
 /**
  * Facade for directory I/O handlers. Lazy initialization of I/O handlers
@@ -41,10 +41,10 @@ public class DirectoryIoFacade {
 	 *            the extension is <code>null</code>, all the files are compared
 	 * @return <code>true</code> if all files from selectionDir match files in
 	 *         fullDir (based on file size and file name)
-	 * @throws DiscOrgDalException
-	 *             if some I/O or application error occurs
+	 * @throws IOException
+	 *             if some I/O error occurs
 	 */
-	public boolean compareDirectories(File fullDir, File selectionDir) throws DiscOrgDalException {
+	public boolean compareDirectories(File fullDir, File selectionDir) throws IOException {
 		return getDirectoryComparator().compareDirectories(fullDir, selectionDir);
 	}
 
@@ -60,6 +60,23 @@ public class DirectoryIoFacade {
 	 */
 	public boolean verifyHardLinks(File fullDir) throws IOException {
 		return getHardLinksHandler().verifyHardLinks(fullDir);
+	}
+
+	/**
+	 * Builds hard links in {@link HardLinksHandler#getSelectionDir()}. Original
+	 * files are read from given full album
+	 * 
+	 * @param fullDir
+	 *            full album from which to create hard links
+	 * @throws IOException
+	 *             if there are more media files in selection mirror than in
+	 *             full album or if I/O error occurs
+	 * @throws DiscOrgException
+	 *             if full media directory contains less files than selection
+	 *             mirror
+	 */
+	public void buildHardLinks(File fullDir) throws IOException, DiscOrgException {
+		this.getHardLinksHandler().buildHardLinks(fullDir, getDirectoryComparator());
 	}
 
 	/**

@@ -9,8 +9,8 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 
-import sk.lkrnac.discorg.constants.MediaIssueCode;
-import sk.lkrnac.discorg.model.dal.exception.DiscOrgDalException;
+import sk.lkrnac.discorg.general.DiscOrgException;
+import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 
 /**
  * Generates hard links of full album media files
@@ -98,18 +98,19 @@ public class HardLinksHandler extends DirectoryHandler {
 	 * @throws IOException
 	 *             if there are more media files in selection mirror than in
 	 *             full album or if I/O error occurs
-	 * @throws DiscOrgDalException
+	 * @throws DiscOrgException
 	 *             if full media directory contains less files than selection
 	 *             mirror
 	 */
 	public void buildHardLinks(File fullDir, DirectoryComparator dirComparator) throws IOException,
-			DiscOrgDalException {
+			DiscOrgException {
 		if (dirComparator.compareDirectories(fullDir, this.getSelectionDir())) {
 			File[] fullArray = fullDir.listFiles();
 			File[] selectionArray = selectionDir.listFiles();
 			fileFacingLoop(Arrays.asList(selectionArray), Arrays.asList(fullArray));
 		} else {
-			throw new DiscOrgDalException(MediaIssueCode.GENERIC_MORE_FILES_IN_SELECTION);
+			throw new DiscOrgException(selectionDir.getAbsolutePath(),
+					MediaIssueCode.GENERIC_MORE_FILES_IN_SELECTION);
 		}
 	}
 
@@ -121,16 +122,11 @@ public class HardLinksHandler extends DirectoryHandler {
 	 * </b> {@inheritDoc}
 	 */
 	@Override
-	protected void performActionFace(File fileInSelection, File fileInFull)
-			throws DiscOrgDalException {
-		try {
-			if (!getFileKey(fileInSelection).equals(getFileKey(fileInFull))) {
-				fileInSelection.delete();
-				Files.createLink(Paths.get(fileInSelection.getAbsolutePath()),
-						Paths.get(fileInFull.getAbsolutePath()));
-			}
-		} catch (IOException e) {
-			throw new DiscOrgDalException(MediaIssueCode.REFERENCE_HARD_LINK_IO_ERROR, e);
+	protected void performActionFace(File fileInSelection, File fileInFull) throws IOException {
+		if (!getFileKey(fileInSelection).equals(getFileKey(fileInFull))) {
+			fileInSelection.delete();
+			Files.createLink(Paths.get(fileInSelection.getAbsolutePath()),
+					Paths.get(fileInFull.getAbsolutePath()));
 		}
 	}
 

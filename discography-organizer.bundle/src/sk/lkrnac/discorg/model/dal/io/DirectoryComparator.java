@@ -1,11 +1,10 @@
 package sk.lkrnac.discorg.model.dal.io;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import sk.lkrnac.discorg.model.dal.exception.DiscOrgDalException;
 
 /**
  * Class for comparing directories
@@ -29,10 +28,10 @@ public class DirectoryComparator extends DirectoryHandler {
 	 *            the extension is <code>null</code>, all the files are compared
 	 * @return <code>true</code> if all files from selectionDir match files in
 	 *         fullDir (based on file size and file name)
-	 * @throws DiscOrgDalException
-	 *             if some I/O or application error occurs
+	 * @throws IOException
+	 *             if some I/O error occurs
 	 */
-	public boolean compareDirectories(File fullDir, File selectionDir) throws DiscOrgDalException {
+	public boolean compareDirectories(File fullDir, File selectionDir) throws IOException {
 		boolean result = false;
 
 		if (fullDir != null && selectionDir != null) {
@@ -61,8 +60,7 @@ public class DirectoryComparator extends DirectoryHandler {
 	 * </b> {@inheritDoc}
 	 */
 	@Override
-	protected void performActionFace(File fileInSelection, File fileInFull)
-			throws DiscOrgDalException {
+	protected void performActionFace(File fileInSelection, File fileInFull) throws IOException {
 		unmatchedList.remove(fileInSelection);
 	}
 

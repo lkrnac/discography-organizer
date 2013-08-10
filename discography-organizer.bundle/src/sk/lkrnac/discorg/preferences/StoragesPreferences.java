@@ -10,7 +10,7 @@ import sk.lkrnac.discorg.Activator;
  * @author sitko
  */
 @Controller
-public class StoragesPreferencesFacade {
+public class StoragesPreferences {
 	/**
 	 * @return Application preference - path for output lossy storage
 	 */
