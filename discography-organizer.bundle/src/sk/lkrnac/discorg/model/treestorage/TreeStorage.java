@@ -15,7 +15,7 @@ import sk.lkrnac.discorg.model.treestorage.node.TreeStorageBranchNode;
 import sk.lkrnac.discorg.model.treestorage.node.TreeStorageNode;
 
 /**
- * Abstract storage of tree elements
+ * Abstract storage of tree elements.
  * <p>
  * It reflects directory with media files
  * 
@@ -31,33 +31,36 @@ public abstract class TreeStorage {
 	 * @return file designator object<br>
 	 *         it designates files and directories types based on file name
 	 */
-	public FileDesignator getFileDesignator() {
+	public final FileDesignator getFileDesignator() {
 		return fileDesignator;
 	}
 
 	/**
 	 * @return root node of tree storage
 	 */
-	public TreeStorageBranchNode getRootNode() {
+	public final TreeStorageBranchNode getRootNode() {
 		return rootNode;
 	}
 
 	/**
-	 * Clear old meta data and reload storage from disk
+	 * Clear old meta data and reload storage from disk.
 	 */
-	public void loadStorage() {
+	public final void loadStorage() {
 		// if this is a first load -> create root node
-		if (getRootNode() == null)
+		if (getRootNode() == null) {
 			rootNode = new TreeStorageBranchNode(null, null, null);
+		}
 
 		// clear previous load and load again
 		getRootNode().clearAllChildren();
-		if (!"".equals(getStoragePath()))
+		if (!"".equals(getStoragePath())) {
 			loadTreeFromHdd(getStoragePath(), getRootNode());
+		}
 
 		// perform post load processing
-		if (needPostLoadProcessing())
+		if (needPostLoadProcessing()) {
 			processPostLoad(getRootNode());
+		}
 	}
 
 	/**
@@ -79,7 +82,7 @@ public abstract class TreeStorage {
 	}
 
 	/**
-	 * Loads music files storage into tree
+	 * Loads music files storage into tree.
 	 * 
 	 * @param path
 	 *            - absolute path of directory to load
@@ -92,7 +95,7 @@ public abstract class TreeStorage {
 	}
 
 	/**
-	 * Recursively loads whore directory subtree
+	 * Recursively loads whore directory subtree.
 	 * 
 	 * @param parentFile
 	 *            - parent File object
@@ -118,8 +121,9 @@ public abstract class TreeStorage {
 					childNode = createMediaNode(parentNode, childFile, relativePath);
 
 					loadNode(childNode);
-				} else
+				} else {
 					childNode = new TreeStorageBranchNode(parentNode, childFile, relativePath);
+				}
 
 				// recursively read sub items
 				loadSubNode(childFile, (TreeStorageBranchNode) childNode, childRelativePath);
@@ -133,7 +137,7 @@ public abstract class TreeStorage {
 	}
 
 	/**
-	 * Performs sort on sub-nodes
+	 * Performs sort on sub-nodes.
 	 * 
 	 * @param parent
 	 *            parent file
@@ -152,7 +156,7 @@ public abstract class TreeStorage {
 	}
 
 	/**
-	 * Create child storage specific media node
+	 * Create child storage specific media node.
 	 * 
 	 * @param parent
 	 *            parent node
@@ -166,7 +170,7 @@ public abstract class TreeStorage {
 			String relativePath);
 
 	/**
-	 * Is used for loading directory object and performing various checks
+	 * Is used for loading directory object and performing various checks.
 	 * 
 	 * @param treeNode
 	 *            - branch node in tree composite structure
@@ -185,7 +189,7 @@ public abstract class TreeStorage {
 	protected abstract boolean needPostLoadProcessing();
 
 	/**
-	 * Runs post load processing for tree node
+	 * Runs post load processing for tree node.
 	 * 
 	 * @param treeNode
 	 *            branch node in tree composite structure

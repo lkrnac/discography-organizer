@@ -13,7 +13,7 @@ import sk.lkrnac.discorg.general.DiscOrgException;
 import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 
 /**
- * Generates hard links of full album media files
+ * Generates hard links of full album media files.
  * 
  * @author sitko
  * 
@@ -22,7 +22,7 @@ public class HardLinksHandler extends DirectoryHandler {
 	private File selectionDir;
 
 	/**
-	 * Creates instance of hard links generator for full directory
+	 * Creates instance of hard links generator for full directory.
 	 * 
 	 * @param selectionDir
 	 *            selection media directory for which is instance of hard link
@@ -30,21 +30,21 @@ public class HardLinksHandler extends DirectoryHandler {
 	 */
 	public HardLinksHandler(File selectionDir) {
 		if (selectionDir == null) {
-			throw new IllegalArgumentException("selectionDir can't be null");
+			throw new IllegalArgumentException("selectionDir can't be null"); //$NON-NLS-1$
 		}
 		this.selectionDir = selectionDir;
 	}
 
 	/**
-	 * @return selection directory for this hard links handler
+	 * @return selection directory for this hard links handler.
 	 */
-	public File getSelectionDir() {
+	public final File getSelectionDir() {
 		return selectionDir;
 	}
 
 	/**
 	 * Verify if all files in selection media directory are hard links of files
-	 * in full directory
+	 * in full directory.
 	 * 
 	 * @param fullDir
 	 *            full media directory to compare
@@ -52,7 +52,7 @@ public class HardLinksHandler extends DirectoryHandler {
 	 * @throws IOException
 	 *             if I/O error occurs
 	 */
-	public boolean verifyHardLinks(File fullDir) throws IOException {
+	public final boolean verifyHardLinks(File fullDir) throws IOException {
 		boolean result = false;
 		for (File selectionFile : selectionDir.listFiles()) {
 			boolean hasHardLink = false;
@@ -62,7 +62,7 @@ public class HardLinksHandler extends DirectoryHandler {
 					break;
 				}
 			}
-			if (hasHardLink == false) {
+			if (!hasHardLink) {
 				result = false;
 				break;
 			} else {
@@ -73,7 +73,7 @@ public class HardLinksHandler extends DirectoryHandler {
 	}
 
 	/**
-	 * Reads hard link key for file
+	 * Reads hard link key for file.
 	 * 
 	 * @param file
 	 *            file on disk
@@ -102,7 +102,7 @@ public class HardLinksHandler extends DirectoryHandler {
 	 *             if full media directory contains less files than selection
 	 *             mirror
 	 */
-	public void buildHardLinks(File fullDir, DirectoryComparator dirComparator) throws IOException,
+	public final void buildHardLinks(File fullDir, DirectoryComparator dirComparator) throws IOException,
 			DiscOrgException {
 		if (dirComparator.compareDirectories(fullDir, this.getSelectionDir())) {
 			File[] fullArray = fullDir.listFiles();
@@ -116,13 +116,13 @@ public class HardLinksHandler extends DirectoryHandler {
 
 	/**
 	 * Verifies if files are hard links and if not deletes file in selection
-	 * directory and creates hard link copy of full file
+	 * directory and creates hard link copy of full file.
 	 * <p>
 	 * <b> Javadoc from parent class:<br>
 	 * </b> {@inheritDoc}
 	 */
 	@Override
-	protected void performActionFace(File fileInSelection, File fileInFull) throws IOException {
+	protected final void performActionFace(File fileInSelection, File fileInFull) throws IOException {
 		if (!getFileKey(fileInSelection).equals(getFileKey(fileInFull))) {
 			fileInSelection.delete();
 			Files.createLink(Paths.get(fileInSelection.getAbsolutePath()),
@@ -131,14 +131,14 @@ public class HardLinksHandler extends DirectoryHandler {
 	}
 
 	/**
-	 * Creates hard link of selection file in full directory
+	 * Creates hard link of selection file in full directory.
 	 * <p>
 	 * <b> Javadoc from parent class:<br>
 	 * </b> {@inheritDoc}
 	 */
 	@Override
-	protected void performActionMissingInFull(File fileInSelection) {
+	protected final void performActionMissingInFull(File fileInSelection) {
 		// TODO not implemented
-		throw new UnsupportedOperationException("not implemented");
+		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
 	}
 }

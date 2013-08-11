@@ -9,5 +9,4 @@ package sk.lkrnac.discorg;
  * 
  */
 public class JacocoDummyClass {
-
 }

@@ -18,14 +18,14 @@ import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
 public class BuildHardLinksHandler extends AbstractHandler {
 	/**
 	 * Build hard links of media files from full album mirrors in selection
-	 * mirrors directories
+	 * mirrors directories.
 	 * <p>
 	 * Retrieves build hard links listener from Spring context and sends command
 	 * <p>
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public final Object execute(ExecutionEvent event) throws ExecutionException {
 		IBuildHardLinksListener listener = DiscOrgContextHolder.getInstance().getContext()
 				.getBean(IBuildHardLinksListener.class);
 

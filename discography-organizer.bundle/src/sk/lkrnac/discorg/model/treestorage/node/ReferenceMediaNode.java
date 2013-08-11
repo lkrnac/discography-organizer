@@ -13,7 +13,7 @@ import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
 
 /**
- * Represents media node in reference storage
+ * Represents media node in reference storage.
  * <p>
  * It is part of composite structure
  * 
@@ -27,7 +27,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 	private DirectoryIoFacade directoryIoFacade;
 
 	/**
-	 * Creates instance of media node in reference storage
+	 * Creates instance of media node in reference storage.
 	 * 
 	 * @param parent
 	 *            parent node
@@ -41,11 +41,11 @@ public class ReferenceMediaNode extends MediaBranchNode {
 	}
 
 	/**
-	 * Gets directory handler IO handlers facade
+	 * Gets directory handler IO handlers facade.
 	 * 
 	 * @return IO handlers facade for this media node
 	 */
-	public DirectoryIoFacade getDirectoryIoFacade() {
+	public final DirectoryIoFacade getDirectoryIoFacade() {
 		if (directoryIoFacade == null) {
 			directoryIoFacade = new DirectoryIoFacade(getFile());
 		}
@@ -55,34 +55,30 @@ public class ReferenceMediaNode extends MediaBranchNode {
 	/**
 	 * @return input mirror belonging to this reference media node
 	 */
-	public InputMediaNode getInputMirror() {
+	public final InputMediaNode getInputMirror() {
 		return inputMirror;
 	}
 
 	/**
-	 * Setter
-	 * 
 	 * @param inputMirror
 	 *            input mirror belonging to this reference media node
 	 */
-	public void setInputMirror(InputMediaNode inputMirror) {
+	public final void setInputMirror(InputMediaNode inputMirror) {
 		this.inputMirror = inputMirror;
 	}
 
 	/**
 	 * @return full album mirror
 	 */
-	public ReferenceMediaNode getFullMirror() {
+	public final ReferenceMediaNode getFullMirror() {
 		return fullMirror;
 	}
 
 	/**
-	 * Setter
-	 * 
 	 * @param fullMirror
 	 *            full album mirror
 	 */
-	public void setFullMirror(ReferenceMediaNode fullMirror) {
+	public final void setFullMirror(ReferenceMediaNode fullMirror) {
 		this.fullMirror = fullMirror;
 		if (!this.equals(fullMirror.getSelectionMirror())) {
 			fullMirror.setSelectionMirror(this);
@@ -92,17 +88,15 @@ public class ReferenceMediaNode extends MediaBranchNode {
 	/**
 	 * @return selection album mirror
 	 */
-	public ReferenceMediaNode getSelectionMirror() {
+	public final ReferenceMediaNode getSelectionMirror() {
 		return selectionMirror;
 	}
 
 	/**
-	 * Setter
-	 * 
 	 * @param selectionMirror
 	 *            selection album mirror
 	 */
-	public void setSelectionMirror(ReferenceMediaNode selectionMirror) {
+	public final void setSelectionMirror(ReferenceMediaNode selectionMirror) {
 		this.selectionMirror = selectionMirror;
 		if (!this.equals(selectionMirror.getFullMirror())) {
 			selectionMirror.setFullMirror(this);
@@ -112,22 +106,23 @@ public class ReferenceMediaNode extends MediaBranchNode {
 	/**
 	 * @return flag if the media node is full album
 	 */
-	public boolean isFullAlbum() {
+	@Override
+	public final boolean isFullAlbum() {
 		return fullAlbum;
 	}
 
 	/**
-	 * Sets full album flag
+	 * Sets full album flag.
 	 * 
 	 * @param fullAlbum
 	 *            full album flag
 	 */
-	public void setFullAlbum(boolean fullAlbum) {
+	public final void setFullAlbum(boolean fullAlbum) {
 		this.fullAlbum = fullAlbum;
 	}
 
 	@Override
-	public Collection<String> getMirrorsAbsolutePaths() {
+	public final Collection<String> getMirrorsAbsolutePaths() {
 		Collection<String> retVal = new HashSet<String>();
 		if (getFullMirror() != null) {
 			retVal.add(getFullMirror().getAbsolutePath());
@@ -143,12 +138,12 @@ public class ReferenceMediaNode extends MediaBranchNode {
 	}
 
 	/**
-	 * Checks if selection mirror contains hard links of this full album
+	 * Checks if selection mirror contains hard links of this full album.
 	 * <p>
 	 * <b> This method expects that full mirror is initialized for this node
 	 * (see {@link ReferenceMediaNode#checkSelectionForFullAlbum(String)}) </b>
 	 */
-	void checkHardLinksForSelectionMirror() {
+	final void checkHardLinksForSelectionMirror() {
 		if (getFullMirror() != null) {
 			try {
 				if (!this.getDirectoryIoFacade().verifyHardLinks(getFullMirror().getFile())) {
@@ -178,15 +173,15 @@ public class ReferenceMediaNode extends MediaBranchNode {
 	 *            full sub-directory name
 	 * @return true - if full album has selection mirror
 	 */
-	public boolean checkSelectionForFullAlbum(String fullSubDirectory) {
+	public final boolean checkSelectionForFullAlbum(String fullSubDirectory) {
 		ReferenceMediaNode selectionMirror = null;
 		if (!this.isFullAlbum()) {
 			throw new IllegalArgumentException(this.getClass().getSimpleName()
-					+ ".checkSelectionForFullAlbum(String) should be invoked only for full album.");
+					+ ".checkSelectionForFullAlbum(String) should be invoked only for full album."); //$NON-NLS-1$
 		}
 		try {
 			if (getSelectionMirror() == null) {
-				String selectionPath = this.getRelativePath().replace(fullSubDirectory + File.separator, "");
+				String selectionPath = this.getRelativePath().replace(fullSubDirectory + File.separator, ""); //$NON-NLS-1$
 
 				// get selection mirror for full album
 				Collection<ReferenceMediaNode> selectionMirrors = getReferenceStorageCache()
@@ -228,7 +223,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 
 	/**
 	 * Tries to find full album mirror for selection and if this is successful
-	 * marks these two as a selection <--> full pair
+	 * marks these two as a selection <--> full pair.
 	 * <p>
 	 * Raises warning for selection albums without full album mirror
 	 * <p>
@@ -238,15 +233,15 @@ public class ReferenceMediaNode extends MediaBranchNode {
 	 * @param fullSubDirectory
 	 *            full sub-directory name
 	 */
-	public void checkFullAlbumForSelection(String fullSubDirectory) {
+	public final void checkFullAlbumForSelection(String fullSubDirectory) {
 		if (this.isFullAlbum()) {
 			throw new IllegalArgumentException(this.getClass().getSimpleName()
-					+ ".checkFullAlbumForSelection(String) should be called only for selection album.");
+					+ ".checkFullAlbumForSelection(String) should be called only for selection album."); //$NON-NLS-1$
 		}
 		try {
 			if (!this.isFullAlbum()) {
 				int pathEndIndex = StringUtils.lastIndexOf(this.getRelativePath(), File.separator) + 1;
-				StringBuilder pathBuilder = new StringBuilder((pathEndIndex == 0) ? ""
+				StringBuilder pathBuilder = new StringBuilder((pathEndIndex == 0) ? "" //$NON-NLS-1$
 						: StringUtils.substring(this.getRelativePath(), 0, pathEndIndex));
 				pathBuilder.append(fullSubDirectory).append(File.separator)
 						.append(StringUtils.substring(this.getRelativePath(), pathEndIndex));

@@ -51,6 +51,12 @@ public class BuildHardLinksHandlerTest {
 		MockitoAnnotations.initMocks(this);
 	}
 
+	/**
+	 * Data provider for test
+	 * {@link BuildHardLinksHandlerTest#testOnBuildHardLinks(ArrayList, ArrayList, ArrayList)}
+	 * 
+	 * @return test cases
+	 */
 	@DataProvider
 	public Object[][] testOnBuildHardLinks() {
 		// prepare media issues cache mock
@@ -83,6 +89,18 @@ public class BuildHardLinksHandlerTest {
 		return new Object[][] { new Object[] { selectionPaths, fullPaths, directoryIoFacadeMocks }, };
 	}
 
+	/**
+	 * Unite test for {@link BuildHardLinksHandler#onBuildHardLinks()}
+	 * 
+	 * @param selectionPaths
+	 *            collection of directories to test
+	 * @param fullPaths
+	 *            collection of full storage mirrors
+	 * @param directoryIoFacadeMocks
+	 *            collection of mocks to test IO layer with
+	 * @throws Exception
+	 *             if error occurs
+	 */
 	// @Test(dataProvider = "testOnBuildHardLinks")
 	public void testOnBuildHardLinks(ArrayList<String> selectionPaths, ArrayList<String> fullPaths,
 			ArrayList<DirectoryIoFacade> directoryIoFacadeMocks) throws Exception {

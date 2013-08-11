@@ -17,7 +17,7 @@ public class DirectoryIoFacade {
 	private HardLinksHandler hardLinksHandler;
 
 	/**
-	 * Creates directory facade instance
+	 * Creates directory facade instance.
 	 * 
 	 * @param selectionDir
 	 *            selection directory to which directory IO facade belongs
@@ -44,13 +44,13 @@ public class DirectoryIoFacade {
 	 * @throws IOException
 	 *             if some I/O error occurs
 	 */
-	public boolean compareDirectories(File fullDir, File selectionDir) throws IOException {
+	public final boolean compareDirectories(File fullDir, File selectionDir) throws IOException {
 		return getDirectoryComparator().compareDirectories(fullDir, selectionDir);
 	}
 
 	/**
 	 * Verify if all files in selection media directory are hard links of files
-	 * in full directory
+	 * in full directory.
 	 * 
 	 * @param fullDir
 	 *            full media directory to compare
@@ -58,7 +58,7 @@ public class DirectoryIoFacade {
 	 * @throws IOException
 	 *             if I/O error occurs
 	 */
-	public boolean verifyHardLinks(File fullDir) throws IOException {
+	public final boolean verifyHardLinks(File fullDir) throws IOException {
 		return getHardLinksHandler().verifyHardLinks(fullDir);
 	}
 
@@ -75,7 +75,7 @@ public class DirectoryIoFacade {
 	 *             if full media directory contains less files than selection
 	 *             mirror
 	 */
-	public void buildHardLinks(File fullDir) throws IOException, DiscOrgException {
+	public final void buildHardLinks(File fullDir) throws IOException, DiscOrgException {
 		this.getHardLinksHandler().buildHardLinks(fullDir, getDirectoryComparator());
 	}
 

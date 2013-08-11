@@ -11,7 +11,7 @@ import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
 
 /**
- * Class for holding media issues meta-data
+ * Class for holding media issues meta-data.
  * 
  * @author sitko
  * 
@@ -21,7 +21,7 @@ public class MediaIssuesCache {
 	private Set<IMediaIssue> mediaIssues;
 
 	/**
-	 * Creates instance of the media issues list
+	 * Creates instance of the media issues list.
 	 * <p>
 	 * Initializes list where instances media issues will be stored
 	 */
@@ -32,35 +32,35 @@ public class MediaIssuesCache {
 	/**
 	 * @return iterator for media issues
 	 */
-	public Iterator<IMediaIssue> getIterator() {
+	public final Iterator<IMediaIssue> getIterator() {
 		return mediaIssues.iterator();
 	}
 
 	/**
-	 * Add media issue into issues holder
+	 * Add media issue into issues holder.
 	 * 
 	 * @param mediaIssue
 	 *            - new media issue
 	 */
-	public void add(IMediaIssue mediaIssue) {
+	public final void add(IMediaIssue mediaIssue) {
 		mediaIssues.add(mediaIssue);
 	}
 
 	/**
-	 * clear all media issues
+	 * Clear all media issues.
 	 */
-	public void clear() {
+	public final void clear() {
 		mediaIssues = new HashSet<IMediaIssue>();
 	}
 
 	/**
-	 * Builds collection of all media issues with given code
+	 * Builds collection of all media issues with given code.
 	 * 
 	 * @param issueCode
 	 *            code of media issues
 	 * @return media issues collection
 	 */
-	public Collection<String> getSourceAbsolutePaths(MediaIssueCode issueCode) {
+	public final Collection<String> getSourceAbsolutePaths(MediaIssueCode issueCode) {
 		Collection<String> sourceAbsolutePaths = new HashSet<String>();
 		for (Iterator<IMediaIssue> i = this.getIterator(); i.hasNext();) {
 			IMediaIssue mediaIssue = i.next();

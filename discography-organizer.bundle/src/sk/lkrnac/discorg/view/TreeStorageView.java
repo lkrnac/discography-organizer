@@ -1,6 +1,5 @@
 package sk.lkrnac.discorg.view;
 
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,30 +32,31 @@ import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
  * 
  */
 public abstract class TreeStorageView extends ViewPart {
-	private static final String ICONS_DIR = "icons" + File.separator
-			+ "status-small" + File.separator;
-	private static final Map<String, Image> icons = new HashMap<String, Image>();
+	private static final String ICONS_DIR = "icons" + File.separator + //$NON-NLS-1$ 
+			"status-small" + File.separator; //$NON-NLS-1$
+	private static Map<String, Image> icons = new HashMap<String, Image>();
 
-	/** map of tree items based on itemId */
+	/** map of tree items based on itemId. */
 	private Map<String, TreeItem> treeItemsMap;
 
-	/** tree object representing directory tree */
+	/** tree object representing directory tree. */
 	private Tree tree;
 
 	/**
 	 * @return tree object representing directory tree
 	 */
-	public Tree getTree() {
+	public final Tree getTree() {
 		return tree;
 	}
 
 	/**
 	 * Create contents of the view part.
 	 * 
-	 * @param parent parent composite object
+	 * @param parent
+	 *            parent composite object
 	 */
 	@Override
-	public void createPartControl(Composite parent) {
+	public final void createPartControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NONE);
 		container.setLayout(new FillLayout(SWT.HORIZONTAL));
 
@@ -81,8 +81,7 @@ public abstract class TreeStorageView extends ViewPart {
 	 */
 	private void initializeToolBar() {
 		@SuppressWarnings("unused")
-		IToolBarManager toolbarManager = getViewSite().getActionBars()
-				.getToolBarManager();
+		IToolBarManager toolbarManager = getViewSite().getActionBars().getToolBarManager();
 	}
 
 	/**
@@ -90,8 +89,7 @@ public abstract class TreeStorageView extends ViewPart {
 	 */
 	private void initializeMenu() {
 		@SuppressWarnings("unused")
-		IMenuManager menuManager = getViewSite().getActionBars()
-				.getMenuManager();
+		IMenuManager menuManager = getViewSite().getActionBars().getMenuManager();
 	}
 
 	/**
@@ -103,7 +101,7 @@ public abstract class TreeStorageView extends ViewPart {
 	}
 
 	/**
-	 * Is used for creation of FocusListener
+	 * Is used for creation of FocusListener.
 	 */
 	protected abstract void createSelectionListenerForTree();
 
@@ -113,18 +111,19 @@ public abstract class TreeStorageView extends ViewPart {
 	private static Display getDisplay() {
 		Display display = Display.getCurrent();
 		// may be null if outside the UI thread
-		if (display == null)
+		if (display == null) {
 			display = Display.getDefault();
+		}
 		return display;
 	}
 
 	/**
-	 * Visualizes media storage on this view
+	 * Visualizes media storage on this view.
 	 * 
 	 * @param rootNode
 	 *            - root storage node
 	 */
-	void visualizeStorageNode(ITreeStorageNode rootNode) {
+	final void visualizeStorageNode(ITreeStorageNode rootNode) {
 		treeItemsMap.clear();
 		getTree().removeAll();
 		visualizeStorageNode(getTree(), rootNode);
@@ -140,15 +139,16 @@ public abstract class TreeStorageView extends ViewPart {
 	 */
 	private Image getIcon(String iconName) {
 		Image oldIcon = icons.get(iconName);
-		if (oldIcon != null)
+		if (oldIcon != null) {
 			return oldIcon;
+		}
 
-		ImageDescriptor d = Activator.getImageDescriptor(File.separator
-				+ ICONS_DIR + File.separator + iconName);
+		ImageDescriptor d = Activator.getImageDescriptor(File.separator + ICONS_DIR + File.separator
+				+ iconName);
 		Image icon = null;
-		if (d != null)
+		if (d != null) {
 			icon = d.createImage();
-		else {
+		} else {
 			// TODO: handle error
 			icon = new Image(getDisplay(), 1, 1);
 		}
@@ -157,26 +157,23 @@ public abstract class TreeStorageView extends ViewPart {
 	}
 
 	/**
-	 * Creates tree view representation of a storage recursively
+	 * Creates tree view representation of a storage recursively.
 	 * 
 	 * @param parentWidget
 	 *            - parent widget in the visualisation tree
 	 * @param parentNode
 	 *            - parent storage node
 	 */
-	private void visualizeStorageNode(Widget parentWidget,
-			ITreeStorageNode parentNode) {
+	private void visualizeStorageNode(Widget parentWidget, ITreeStorageNode parentNode) {
 		while (parentNode.hasNextChild()) {
 			ITreeStorageNode childNode = parentNode.getNextChild();
-			TreeItem childTreeItem = (parentWidget instanceof Tree) ? new TreeItem(
-					(Tree) parentWidget, SWT.NULL) : new TreeItem(
-					(TreeItem) parentWidget, SWT.NULL);
+			TreeItem childTreeItem = (parentWidget instanceof Tree) ? new TreeItem((Tree) parentWidget,
+					SWT.NULL) : new TreeItem((TreeItem) parentWidget, SWT.NULL);
 			childTreeItem.setText(childNode.getName());
-			childTreeItem.setImage(getIcon(childNode.getNodeStatus()
-					.getIconName()));
+			childTreeItem.setImage(getIcon(childNode.getNodeStatus().getIconName()));
 			childTreeItem.setData(childNode);
 			processNode(childNode);
-			if (childNode.isFullAlbum()){
+			if (childNode.isFullAlbum()) {
 				FontData[] fontData = childTreeItem.getFont().getFontData();
 				fontData[0].setStyle(SWT.ITALIC);
 				childTreeItem.setFont(new Font(childTreeItem.getFont().getDevice(), fontData));
@@ -189,31 +186,36 @@ public abstract class TreeStorageView extends ViewPart {
 	}
 
 	/**
-	 * Handle processing for node in subclasses
-	 * @param childNode child node in the tree view
+	 * Handle processing for node in subclasses.
+	 * 
+	 * @param childNode
+	 *            child node in the tree view
 	 */
 	protected abstract void processNode(ITreeStorageNode childNode);
 
 	/**
-	 * Select tree items on the view based on item IDs
+	 * Select tree items on the view based on item IDs.
 	 * 
 	 * @param mirrorIds
 	 *            - list of item IDs to select
 	 * @return number of selected items
 	 */
-	public int selectItems(Collection<String> mirrorIds) {
+	public final int selectItems(Collection<String> mirrorIds) {
 		Collection<TreeItem> itemsForSelection = new ArrayList<TreeItem>();
 		for (String mirrorId : mirrorIds) {
-			TreeItem treeItem = null;
-			if ((treeItem = treeItemsMap.get(mirrorId)) != null) {
+			TreeItem treeItem = treeItemsMap.get(mirrorId);
+			if (treeItem != null) {
 				itemsForSelection.add(treeItem);
 
 				// select also full mirror of mirrors
 				// to ensure that also full albums are selected
 				ITreeStorageNode node = (ITreeStorageNode) treeItem.getData();
-				for (String fullMirrorId : node.getMirrorsAbsolutePaths())
-					if ((treeItem = treeItemsMap.get(fullMirrorId)) != null)
+				for (String fullMirrorId : node.getMirrorsAbsolutePaths()) {
+					treeItem = treeItemsMap.get(fullMirrorId);
+					if (treeItem != null) {
 						itemsForSelection.add(treeItem);
+					}
+				}
 			}
 		}
 		tree.setSelection(itemsForSelection.toArray(new TreeItem[0]));
@@ -221,24 +223,28 @@ public abstract class TreeStorageView extends ViewPart {
 	}
 
 	/**
-	 * Retrieve TreeItem object
-	 * @param itemId item ID
+	 * Retrieve TreeItem object.
+	 * 
+	 * @param itemId
+	 *            item ID
 	 * @return tree item object for ID
 	 */
-	protected TreeItem getItem(String itemId) {
+	protected final TreeItem getItem(String itemId) {
 		return treeItemsMap.get(itemId);
 	}
 
 	/**
 	 * Is used for selecting source media node and its mirror items on this and
-	 * mirror storage view
-	 * @param sourceId ID of the selection source tree item  
-	 * @param mirrorViewId ID of the mirror tree item 
+	 * mirror storage view.
+	 * 
+	 * @param sourceId
+	 *            ID of the selection source tree item
+	 * @param mirrorViewId
+	 *            ID of the mirror tree item
 	 */
-	public void selectAllMirrors(String sourceId, String mirrorViewId) {
+	public final void selectAllMirrors(String sourceId, String mirrorViewId) {
 		TreeItem source = this.getItem(sourceId);
-		if (source!= null && source.getData() != null
-				&& source.getData() instanceof ITreeStorageNode) {
+		if (source != null && source.getData() != null && source.getData() instanceof ITreeStorageNode) {
 			ITreeStorageNode mediaDir = (ITreeStorageNode) source.getData();
 
 			// create list of items to select (include source item)
@@ -249,8 +255,7 @@ public abstract class TreeStorageView extends ViewPart {
 			selectItems(mirrorIds);
 
 			// find reference view instance
-			TreeStorageView mirrorStorageView = VisualiseStoragesHandler
-					.getTreeView(mirrorViewId);
+			TreeStorageView mirrorStorageView = VisualiseStoragesHandler.getTreeView(mirrorViewId);
 
 			// select mirror items on reference view
 			mirrorStorageView.selectItems(mirrorIds);

@@ -24,7 +24,7 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	private String audioFormatName;
 
 	/**
-	 * Creates new instance of {@link MediaBranchNode}
+	 * Creates new instance of {@link MediaBranchNode}.
 	 * 
 	 * @param parent
 	 *            - parent directory node
@@ -40,7 +40,7 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	/**
 	 * @return audio format type
 	 */
-	public NodeStatus getAudioFormatType() {
+	public final NodeStatus getAudioFormatType() {
 		if (audioFormatType == null) {
 			initializeAudioFormat();
 		}
@@ -50,7 +50,7 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	/**
 	 * @return get audio format name
 	 */
-	public String getAudioFormatName() {
+	public final String getAudioFormatName() {
 		if (audioFormatName == null) {
 			initializeAudioFormat();
 		}
@@ -60,7 +60,7 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	/**
 	 * @return list of the media files in this directory
 	 */
-	public List<String> getMediaFilesNames() {
+	public final List<String> getMediaFilesNames() {
 		ArrayList<String> retVal = new ArrayList<String>();
 		for (File subFile : getFile().listFiles()) {
 			if (getFileDesignator().isMediaFile(subFile)) {
@@ -73,19 +73,19 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	/**
 	 * @return List where media issues are stored
 	 */
-	public MediaIssuesCache getMediaIssuesCache() {
+	public final MediaIssuesCache getMediaIssuesCache() {
 		return DiscOrgContextHolder.getInstance().getContext().getBean(MediaIssuesCache.class);
 	}
 
 	/**
 	 * @return Meta-data holder object
 	 */
-	public ReferenceStorageCache getReferenceStorageCache() {
+	public final ReferenceStorageCache getReferenceStorageCache() {
 		return DiscOrgContextHolder.getInstance().getContext().getBean(ReferenceStorageCache.class);
 	}
 
 	/**
-	 * Initializes audio format of media directory node
+	 * Initializes audio format of media directory node.
 	 */
 	private void initializeAudioFormat() {
 		if (getFile() != null) {
@@ -109,8 +109,7 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 					} else if (losslessAudioFormat) {
 						previousAudioFormatString = extension;
 						audioFormatType = NodeStatus.LOSSLESS;
-					} else if ((losslessAudioFormat || lossyAudioFormat)
-							&& previousAudioFormatString != null
+					} else if ((losslessAudioFormat || lossyAudioFormat) && previousAudioFormatString != null
 							&& !previousAudioFormatString.equals(extension)) {
 						getMediaIssuesCache().add(
 								new MediaIssue(getAbsolutePath(),
@@ -121,10 +120,11 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 				}
 			}
 
-			if (previousAudioFormatString == null)
+			if (previousAudioFormatString == null) {
 				audioFormatType = NodeStatus.NONE;
-			else
+			} else {
 				audioFormatName = previousAudioFormatString;
+			}
 
 			setNodeStatus(audioFormatType);
 		}
@@ -134,7 +134,7 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	 * Checks if media directory does not contain other media directory. If yes
 	 * creates media issue.
 	 */
-	public void checkMediaSubDir() {
+	public final void checkMediaSubDir() {
 		if (this.getFile() != null && this.getFile().isDirectory()) {
 			// check if directory is that contains only files
 			boolean isLeaf = this.getFile().listFiles(new FileFilter() {

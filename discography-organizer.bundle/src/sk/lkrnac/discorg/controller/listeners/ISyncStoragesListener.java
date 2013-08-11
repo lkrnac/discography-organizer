@@ -1,13 +1,15 @@
 package sk.lkrnac.discorg.controller.listeners;
 
 /**
- * Is used for registering listeners for Sync storages controller command by user
+ * Is used for registering listeners for Sync storages controller command by
+ * user.
+ * 
  * @author sitko
- *
+ * 
  */
 public interface ISyncStoragesListener {
 	/**
-	 * Sync storages command
+	 * Sync storages command.
 	 */
-	public void syncStorages();
+	void syncStorages();
 }

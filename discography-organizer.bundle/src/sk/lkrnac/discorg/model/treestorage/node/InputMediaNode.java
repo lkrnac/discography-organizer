@@ -12,7 +12,7 @@ import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
 
 /**
- * Represents media node in input storage
+ * Represents media node in input storage.
  * <p>
  * It is part of composite structure
  * 
@@ -23,7 +23,7 @@ public class InputMediaNode extends MediaBranchNode {
 	private Collection<ReferenceMediaNode> referenceMirrors;
 
 	/**
-	 * Creates instance of media node in input storage
+	 * Creates instance of media node in input storage.
 	 * 
 	 * @param parent
 	 *            parent node
@@ -38,12 +38,12 @@ public class InputMediaNode extends MediaBranchNode {
 	}
 
 	/**
-	 * Adds belonging mirror node in reference storage
+	 * Adds belonging mirror node in reference storage.
 	 * 
 	 * @param referenceMirror
 	 *            mirror node to be added
 	 */
-	public void addReferenceMirror(ReferenceMediaNode referenceMirror) {
+	public final void addReferenceMirror(ReferenceMediaNode referenceMirror) {
 		referenceMirrors.add(referenceMirror);
 		referenceMirror.setInputMirror(this);
 	}
@@ -51,12 +51,12 @@ public class InputMediaNode extends MediaBranchNode {
 	/**
 	 * @return iterator of reference mirrors
 	 */
-	public Iterator<ReferenceMediaNode> getReferenceMirrorsIterator() {
+	public final Iterator<ReferenceMediaNode> getReferenceMirrorsIterator() {
 		return referenceMirrors.iterator();
 	}
 
 	@Override
-	public Collection<String> getMirrorsAbsolutePaths() {
+	public final Collection<String> getMirrorsAbsolutePaths() {
 		Set<String> retVal = new HashSet<String>();
 		for (Iterator<ReferenceMediaNode> i = getReferenceMirrorsIterator(); i.hasNext();) {
 			ReferenceMediaNode next = i.next();
@@ -70,12 +70,12 @@ public class InputMediaNode extends MediaBranchNode {
 
 	/**
 	 * Compares names of media files in media directory and adjusts status of
-	 * the tree node
+	 * the tree node.
 	 * 
 	 * @param mirror
 	 *            reference mirror node to compare
 	 */
-	public void compareMediaFilesWithMirror(ReferenceMediaNode mirror) {
+	public final void compareMediaFilesWithMirror(ReferenceMediaNode mirror) {
 		if (mirror != null) {
 			List<String> mediaFilesNames = mirror.getMediaFilesNames();
 			int difference = mediaFilesNames.size() - this.getMediaFilesNames().size();
@@ -103,9 +103,9 @@ public class InputMediaNode extends MediaBranchNode {
 	}
 
 	/**
-	 * Raises media issue of media node on input storage is loss-less
+	 * Raises media issue of media node on input storage is loss-less.
 	 */
-	public void checkLossless() {
+	public final void checkLossless() {
 		if (NodeStatus.LOSSLESS.equals(this.getAudioFormatType())) {
 			this.setNodeStatus(BranchNodeStatus.WARNING);
 

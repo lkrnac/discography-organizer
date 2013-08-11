@@ -1,6 +1,5 @@
 package sk.lkrnac.discorg.model.treestorage;
 
-
 import java.io.File;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,23 +13,24 @@ import sk.lkrnac.discorg.model.treestorage.node.TreeStorageBranchNode;
 import sk.lkrnac.discorg.preferences.StoragesPreferences;
 
 /**
- * Reference media storage. This media storage contains all the full albums 
- * and also album selections. Full albums are in sub-directories marked according to 
- * preferences setting  
+ * Reference media storage. This media storage contains all the full albums and
+ * also album selections. Full albums are in sub-directories marked according to
+ * preferences setting
+ * 
  * @author sitko
  */
 @Service
 public class ReferenceStorage extends TreeStorage {
 	@Autowired
 	private ReferenceStorageCache referenceStorageCache;
-	
+
 	@Autowired
 	private StoragesPreferences storagesPreferences;
 
 	/**
-	 * @return application preferences concerning to storages 
+	 * @return application preferences concerning to storages
 	 */
-	public StoragesPreferences getSroragesPreferences() {
+	public final StoragesPreferences getSroragesPreferences() {
 		return storagesPreferences;
 	}
 
@@ -38,7 +38,7 @@ public class ReferenceStorage extends TreeStorage {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected String getStoragePath() {
+	protected final String getStoragePath() {
 		return getSroragesPreferences().getReferenceStorage();
 	}
 
@@ -46,7 +46,7 @@ public class ReferenceStorage extends TreeStorage {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void loadNode(ITreeStorageNode node) {
+	protected final void loadNode(ITreeStorageNode node) {
 		if (node instanceof ReferenceMediaNode) {
 			ReferenceMediaNode mediaNode = (ReferenceMediaNode) node;
 
@@ -61,7 +61,7 @@ public class ReferenceStorage extends TreeStorage {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected boolean needPostLoadProcessing() {
+	protected final boolean needPostLoadProcessing() {
 		return true;
 	}
 
@@ -69,13 +69,13 @@ public class ReferenceStorage extends TreeStorage {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void processNodePostLoad(ITreeStorageNode treeNode) {
+	protected final void processNodePostLoad(ITreeStorageNode treeNode) {
 		if (treeNode instanceof ReferenceMediaNode) {
 			ReferenceMediaNode mediaNode = (ReferenceMediaNode) treeNode;
-			
+
 			// check if this album is not stored in full album sub-directory
 			String fullSubDirectory = getSroragesPreferences().getFullSubDirectory();
-			
+
 			if (mediaNode.getRelativePath().contains(fullSubDirectory)) {
 				mediaNode.setFullAlbum(true);
 				mediaNode.checkSelectionForFullAlbum(fullSubDirectory);
@@ -87,11 +87,12 @@ public class ReferenceStorage extends TreeStorage {
 
 	/**
 	 * {@inheritDoc}
+	 * 
 	 * @return {@link ReferenceMediaNode} instance
 	 */
 	@Override
-	protected MediaBranchNode createMediaNode(TreeStorageBranchNode parent,
-			File file, String relativePath) {
+	protected final MediaBranchNode createMediaNode(TreeStorageBranchNode parent, File file,
+			String relativePath) {
 		return new ReferenceMediaNode(parent, file, relativePath);
 	}
 }

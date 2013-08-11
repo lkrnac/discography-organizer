@@ -4,27 +4,31 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
- * Holder of the spring context instance
+ * Holder of the spring context instance.
+ * 
  * @author sitko
  */
-public class DiscOrgContextHolder {
+public final class DiscOrgContextHolder {
 	private ApplicationContext context;
-	
-	/** Private constructor of singleton class */
-	private DiscOrgContextHolder(){
-		context = new AnnotationConfigApplicationContext(
-				DiscOrgContext.class);
+
+	/** Private constructor of singleton class. */
+	private DiscOrgContextHolder() {
+		context = new AnnotationConfigApplicationContext(DiscOrgContext.class);
 	}
-	 
-	private static class SingletonHolder{
-		public static final DiscOrgContextHolder 
-			SINGLETON_HOLDER = new DiscOrgContextHolder(); 
-	} 
-	
+
+	/**
+	 * Singleton static holder inner class.
+	 * 
+	 * @author sitko
+	 */
+	private static class SingletonHolder {
+		public static final DiscOrgContextHolder SINGLETON_HOLDER = new DiscOrgContextHolder();
+	}
+
 	/**
 	 * @return instance of singleton
 	 */
-	public static DiscOrgContextHolder getInstance(){
+	public static DiscOrgContextHolder getInstance() {
 		return SingletonHolder.SINGLETON_HOLDER;
 	}
 
@@ -34,6 +38,5 @@ public class DiscOrgContextHolder {
 	public ApplicationContext getContext() {
 		return context;
 	}
-	
-	
+
 }

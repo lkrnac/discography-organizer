@@ -7,17 +7,18 @@ import org.eclipse.swt.SWT;
 import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
 
 /**
- * Media issues comparator. Is used for sorting media issues table viewer  
+ * Media issues comparator. Is used for sorting media issues table viewer
+ * 
  * @author sitko
- *
+ * 
  */
 public class MediaIssueComparator extends ViewerComparator {
 	private int propertyIndex;
 	private static final int DESCENDING = 1;
 	private int direction = DESCENDING;
-	
+
 	/**
-	 * Creates media issue comparator object
+	 * Creates media issue comparator object.
 	 */
 	public MediaIssueComparator() {
 		this.propertyIndex = 0;
@@ -27,15 +28,17 @@ public class MediaIssueComparator extends ViewerComparator {
 	/**
 	 * @return direction of the sorting
 	 */
-	public int getDirection() {
+	public final int getDirection() {
 		return direction == 1 ? SWT.DOWN : SWT.UP;
 	}
 
 	/**
-	 * Sets the column of the table viewer comparator
-	 * @param column sorting column index
+	 * Sets the column of the table viewer comparator.
+	 * 
+	 * @param column
+	 *            sorting column index
 	 */
-	public void setColumn(int column) {
+	public final void setColumn(int column) {
 		if (column == this.propertyIndex) {
 			// Same column as last sort; toggle the direction
 			direction = 1 - direction;
@@ -47,7 +50,7 @@ public class MediaIssueComparator extends ViewerComparator {
 	}
 
 	@Override
-	public int compare(Viewer viewer, Object e1, Object e2) {
+	public final int compare(Viewer viewer, Object e1, Object e2) {
 		IMediaIssue p1 = (IMediaIssue) e1;
 		IMediaIssue p2 = (IMediaIssue) e2;
 		int rc = 0;
@@ -55,8 +58,9 @@ public class MediaIssueComparator extends ViewerComparator {
 		case 0:
 			if (p1.isError() == p2.isError()) {
 				rc = 0;
-			} else
+			} else {
 				rc = (p1.isError() ? 1 : -1);
+			}
 			break;
 		case 1:
 			rc = p1.getIssueCode().compareTo(p2.getIssueCode());

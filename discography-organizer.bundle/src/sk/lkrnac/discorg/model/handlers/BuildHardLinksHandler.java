@@ -14,7 +14,7 @@ import sk.lkrnac.discorg.preferences.StoragesPreferences;
 
 /**
  * Replaces media files in selection mirror directories by hard links of media
- * files from full album mirrors
+ * files from full album mirrors.
  * 
  * @author sitko
  */
@@ -36,12 +36,11 @@ public class BuildHardLinksHandler implements IBuildHardLinksListener {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void onBuildHardLinks() throws Exception {
+	public final void onBuildHardLinks() throws Exception {
 		Collection<String> selectionPaths = mediaIssuesCache
 				.getSourceAbsolutePaths(MediaIssueCode.REFERENCE_NO_HARD_LINK_IN_SELECTION);
 		for (String selectionPath : selectionPaths) {
-			ReferenceMediaNode selectionNode = referenceStorageCache
-					.getReferenceMediaNode(selectionPath);
+			ReferenceMediaNode selectionNode = referenceStorageCache.getReferenceMediaNode(selectionPath);
 			ReferenceMediaNode fullNode = selectionNode.getFullMirror();
 			// selectionNode.getDirectoryIoFacade().buildHardLinks(fullNode.getFile());
 		}

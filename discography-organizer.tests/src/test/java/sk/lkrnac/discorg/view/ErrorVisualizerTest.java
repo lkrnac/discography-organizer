@@ -22,7 +22,7 @@ public class ErrorVisualizerTest {
 
 	/**
 	 * Data provider for test
-	 * {@link ErrorVisualizerTest#testVisualizeError(Throwable, String)}.
+	 * {@link ErrorVisualizerTest#testVisualizeError(DiscOrgException, String)}.
 	 * 
 	 * @return test cases
 	 */
@@ -38,15 +38,15 @@ public class ErrorVisualizerTest {
 	}
 
 	/**
+	 * Unit test for {@link ErrorMessages#getErrorMessage(boolean, String)}
 	 * 
 	 * @param testingError
+	 *            testing error
 	 * @param expectedMessage
+	 *            expected error message
 	 */
 	// @Test
 	public void testVisualizeError(DiscOrgException testingError, String expectedMessage) {
 		PowerMockito.mockStatic(PlatformUI.class);
-
-		ErrorVisualizer errorVisualizer = new ErrorVisualizer();
-
 	}
 }

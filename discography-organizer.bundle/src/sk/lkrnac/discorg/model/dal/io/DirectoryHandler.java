@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Abstract class containing common logic for directory handlers
+ * Abstract class containing common logic for directory handlers.
  * 
  * @author sitko
  * 
@@ -24,7 +24,7 @@ public abstract class DirectoryHandler {
 	 * @throws IOException
 	 *             if some I/O error occurs
 	 */
-	protected void fileFacingLoop(Collection<File> selectionDirFiles, Collection<File> fullDirFiles)
+	protected final void fileFacingLoop(Collection<File> selectionDirFiles, Collection<File> fullDirFiles)
 			throws IOException {
 		// shallow copy of selection files collection
 		Collection<File> selectionsMissingInFull = new ArrayList<File>(selectionDirFiles);
@@ -46,7 +46,7 @@ public abstract class DirectoryHandler {
 
 	/**
 	 * Performs action for files that are matched in selection and full
-	 * directory
+	 * directory.
 	 * 
 	 * @param fileInSelection
 	 *            file in selection directory
@@ -55,11 +55,10 @@ public abstract class DirectoryHandler {
 	 * @throws IOException
 	 *             if some I/O error occurs
 	 */
-	protected abstract void performActionFace(File fileInSelection, File fileInFull)
-			throws IOException;
+	protected abstract void performActionFace(File fileInSelection, File fileInFull) throws IOException;
 
 	/**
-	 * Performs action for files that are missing in full directory
+	 * Performs action for files that are missing in full directory.
 	 * 
 	 * @param fileInSelection
 	 *            file in selection directory

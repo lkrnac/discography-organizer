@@ -5,19 +5,30 @@ import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 /**
- * Class for configuring the application's workbench
+ * Class for configuring the application's workbench.
+ * 
  * @author sitko
- *
+ * 
  */
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
 	private static final String PERSPECTIVE_ID = "discographyorganizer.perspectives.TreePairPerspective"; //$NON-NLS-1$
 
-    public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
-        return new ApplicationWorkbenchWindowAdvisor(configurer);
-    }
+	/**
+	 * Creates workbench advisor.
+	 * 
+	 * @param configurer
+	 *            application configurer instance
+	 * @return workbench advisor
+	 */
+	public final WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
+		return new ApplicationWorkbenchWindowAdvisor(configurer);
+	}
 
-	public String getInitialWindowPerspectiveId() {
+	/**
+	 * @return perspective id
+	 */
+	public final String getInitialWindowPerspectiveId() {
 		return PERSPECTIVE_ID;
 	}
 }

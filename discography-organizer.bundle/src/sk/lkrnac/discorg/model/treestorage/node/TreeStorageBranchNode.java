@@ -4,40 +4,44 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
 
 /**
- * Represents branch node of storage tree in composite structure
+ * Represents branch node of storage tree in composite structure.
+ * 
  * @author sitko
- *
+ * 
  */
-public class TreeStorageBranchNode extends TreeStorageNode{
+public class TreeStorageBranchNode extends TreeStorageNode {
 	private String relativePath;
 	/**
-	 * Sub-nodes of storage tree in composite structure
+	 * Sub-nodes of storage tree in composite structure.
 	 */
+	// SUPPRESS CHECKSTYLE VisibilityModifier 10 inherited fields
 	protected List<ITreeStorageNode> children;
-	
+
 	/**
-	 * Children iterator
+	 * Children iterator.
 	 */
 	protected Iterator<ITreeStorageNode> iterator;
-	
+
 	/**
-	 * Creates instance of branch node
-	 * @param parent parent node
-	 * @param file belonging file object
-	 * @param relativePath relative part of the branch node within storage
+	 * Creates instance of branch node.
+	 * 
+	 * @param parent
+	 *            parent node
+	 * @param file
+	 *            belonging file object
+	 * @param relativePath
+	 *            relative part of the branch node within storage
 	 */
-	public TreeStorageBranchNode(TreeStorageBranchNode parent, File file, 
-			String relativePath){
+	public TreeStorageBranchNode(TreeStorageBranchNode parent, File file, String relativePath) {
 		super(parent, file);
 		children = new ArrayList<ITreeStorageNode>();
 		iterator = children.iterator();
 		this.setNodeStatus(BranchNodeStatus.FOLDER);
-		if (file == null){
+		if (file == null) {
 			this.relativePath = File.separator;
 		} else {
 			this.relativePath = relativePath + File.separator + file.getName();
@@ -47,7 +51,7 @@ public class TreeStorageBranchNode extends TreeStorageNode{
 	/**
 	 * @return relative path in the storage
 	 */
-	public String getRelativePath() {
+	public final String getRelativePath() {
 		return relativePath;
 	}
 
@@ -55,22 +59,22 @@ public class TreeStorageBranchNode extends TreeStorageNode{
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean hasNextChild(){
+	public final boolean hasNextChild() {
 		return iterator.hasNext();
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ITreeStorageNode getNextChild() throws NoSuchElementException{
+	public final ITreeStorageNode getNextChild() {
 		return iterator.next();
 	}
-	
+
 	/**
-	 * Clears all children nodes
+	 * Clears all children nodes.
 	 */
-	public void clearAllChildren(){
+	public final void clearAllChildren() {
 		children = new ArrayList<ITreeStorageNode>();
 		resetChildrenIterator();
 	}
@@ -79,7 +83,7 @@ public class TreeStorageBranchNode extends TreeStorageNode{
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void resetChildrenIterator() {
-		iterator = children.iterator(); 
+	public final void resetChildrenIterator() {
+		iterator = children.iterator();
 	}
 }

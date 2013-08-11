@@ -10,12 +10,11 @@ import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
 import sk.lkrnac.discorg.model.listeners.IVisualizeStoragesListener;
 
-
-
 /**
- * Used for visualization of tree media storages
+ * Used for visualization of tree media storages.
+ * 
  * @author sitko
- *
+ * 
  */
 @Controller
 public class VisualiseStoragesHandler implements IVisualizeStoragesListener {
@@ -23,33 +22,33 @@ public class VisualiseStoragesHandler implements IVisualizeStoragesListener {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void visualizeStorages(ITreeStorageNode referenceRootNode,
-			ITreeStorageNode inputRootNode, Iterator<IMediaIssue> issuesIterator) {
-		//visualize reference storage view
+	public final void visualizeStorages(ITreeStorageNode referenceRootNode, ITreeStorageNode inputRootNode,
+			Iterator<IMediaIssue> issuesIterator) {
+		// visualize reference storage view
 		TreeStorageView referenceStorageView = getTreeView(ReferenceStorageView.ID);
 		referenceStorageView.visualizeStorageNode(referenceRootNode);
-		
-		//visualize input storage view
+
+		// visualize input storage view
 		TreeStorageView inputStorageView = getTreeView(InputStorageView.ID);
 		inputStorageView.visualizeStorageNode(inputRootNode);
-		
-		//visualize media issues view
+
+		// visualize media issues view
 		MediaIssuesView issuesView = getTreeView(MediaIssuesView.ID);
 		issuesView.visualiseIssues(issuesIterator);
 	}
 
 	/**
-	 * Return view instance based on view Id
-	 * @param viewId ID of the view
+	 * Return view instance based on view Id.
+	 * 
+	 * @param viewId
+	 *            ID of the view
 	 * @return view instance
 	 */
-	static <T> T getTreeView (String viewId){
-		IViewReference referenceStorageViewRef = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage()
-				.findViewReference(viewId);
+	static <T> T getTreeView(String viewId) {
+		IViewReference referenceStorageViewRef = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.getActivePage().findViewReference(viewId);
 		@SuppressWarnings("unchecked")
-		T referenceStorageView = (T) referenceStorageViewRef
-				.getView(true);
+		T referenceStorageView = (T) referenceStorageViewRef.getView(true);
 		return referenceStorageView;
 	}
 }

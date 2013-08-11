@@ -23,7 +23,7 @@ import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
 import sk.lkrnac.discorg.view.messages.MediaIssueMessages;
 
 /**
- * Visualizes media issues
+ * Visualizes media issues.
  * 
  * @author sitko
  * 
@@ -32,23 +32,32 @@ public class MediaIssuesView extends ViewPart {
 	private static final String COLUMN_MEDIA_DIRECTORY_NAME = "Media directory name";
 	private static final String COLUMN_TEXT = "Text";
 	private static final String COLUMN_TYPE = "Type";
-	/** View ID */
+	/** View ID. */
 	public static final String ID = "discographyorganizer.views.MediaIssuesView"; //$NON-NLS-1$
 
 	private TableViewer viewer;
 	private MediaIssueComparator comparator;
 
 	/**
-	 * Create table where media issues will be visualized
+	 * Create table where media issues will be visualized.
+	 * 
+	 * @param parent
+	 *            parent GUI container
 	 */
-	public void createPartControl(Composite parent) {
+	public final void createPartControl(Composite parent) {
 		// createSwtTable(parent);
 		createTableViewer(parent);
 	}
 
+	/**
+	 * Creates table for viewing media issues.
+	 * 
+	 * @param parent
+	 *            parent UI container
+	 */
 	private void createTableViewer(Composite parent) {
-		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL
-				| SWT.FULL_SELECTION | SWT.BORDER);
+		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
+				| SWT.BORDER);
 		createColumns(viewer);
 		final Table table = viewer.getTable();
 		table.setHeaderVisible(true);
@@ -73,7 +82,7 @@ public class MediaIssuesView extends ViewPart {
 	}
 
 	/**
-	 * This will create columns for the table
+	 * This will create columns for the table.
 	 * 
 	 * @param viewer
 	 *            table viewer object
@@ -98,8 +107,7 @@ public class MediaIssuesView extends ViewPart {
 			@Override
 			public String getText(Object element) {
 				IMediaIssue i = (IMediaIssue) element;
-				String errorMessage = (i.getErrorMessage() == null) ? "" : ": "
-						+ i.getErrorMessage();
+				String errorMessage = (i.getErrorMessage() == null) ? "" : ": " + i.getErrorMessage();
 				return MediaIssueMessages.getMessageForMessageCode(i.getIssueCode()) + errorMessage;
 			}
 		});
@@ -116,7 +124,7 @@ public class MediaIssuesView extends ViewPart {
 	}
 
 	/**
-	 * Creates viewer table column
+	 * Creates viewer table column.
 	 * 
 	 * @param title
 	 *            title of the column
@@ -137,6 +145,16 @@ public class MediaIssuesView extends ViewPart {
 		return viewerColumn;
 	}
 
+	/**
+	 * Returns adapter that drives sorting of media issues based on user
+	 * actions.
+	 * 
+	 * @param column
+	 *            name of the column
+	 * @param index
+	 *            index of the column
+	 * @return selection adapter
+	 */
 	private SelectionAdapter getSelectionAdapter(final TableColumn column, final int index) {
 		SelectionAdapter selectionAdapter = new SelectionAdapter() {
 			@Override
@@ -155,17 +173,17 @@ public class MediaIssuesView extends ViewPart {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setFocus() {
+	public final void setFocus() {
 		viewer.getControl().setFocus();
 	}
 
 	/**
-	 * Visualize issues in view table
+	 * Visualize issues in view table.
 	 * 
 	 * @param issuesIterator
 	 *            media issues iterator
 	 */
-	public void visualiseIssues(Iterator<IMediaIssue> issuesIterator) {
+	public final void visualiseIssues(Iterator<IMediaIssue> issuesIterator) {
 		List<IMediaIssue> mediaIssues = new ArrayList<IMediaIssue>();
 		for (; issuesIterator.hasNext();) {
 			mediaIssues.add(issuesIterator.next());
@@ -188,14 +206,12 @@ public class MediaIssuesView extends ViewPart {
 					// select issue source in Input storage
 					InputStorageView inputStorageView = VisualiseStoragesHandler
 							.getTreeView(InputStorageView.ID);
-					inputStorageView.selectAllMirrors(issue.getSourceAbsolutePath(),
-							ReferenceStorageView.ID);
+					inputStorageView.selectAllMirrors(issue.getSourceAbsolutePath(), ReferenceStorageView.ID);
 
 					// select issue source in Reference storage
 					ReferenceStorageView referenceStorageView = VisualiseStoragesHandler
 							.getTreeView(ReferenceStorageView.ID);
-					referenceStorageView.selectAllMirrors(issue.getSourceAbsolutePath(),
-							InputStorageView.ID);
+					referenceStorageView.selectAllMirrors(issue.getSourceAbsolutePath(), InputStorageView.ID);
 				}
 			}
 

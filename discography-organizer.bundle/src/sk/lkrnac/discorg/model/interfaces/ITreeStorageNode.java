@@ -1,53 +1,51 @@
 package sk.lkrnac.discorg.model.interfaces;
 
 import java.util.Collection;
-import java.util.NoSuchElementException;
-
 
 /**
  * Represent node abstraction of tree storage in composite structure.
+ * 
  * @author sitko
- *
+ * 
  */
-public interface ITreeStorageNode extends Comparable<ITreeStorageNode>{
+public interface ITreeStorageNode extends Comparable<ITreeStorageNode> {
 	/**
 	 * @return status of tree storage node
 	 */
-	public INodeStatus getNodeStatus();
-	
+	INodeStatus getNodeStatus();
+
 	/**
 	 * @return <code>true</code> there is another child node to process
 	 */
-	public boolean hasNextChild();
-	
+	boolean hasNextChild();
+
 	/**
 	 * @return another child in iteration
-	 * @throws NoSuchElementException there isn't another child node to process
 	 */
-	public ITreeStorageNode getNextChild() throws NoSuchElementException;
-	
+	ITreeStorageNode getNextChild();
+
 	/**
-	 * Resets iterator of the children nodes 
+	 * Resets iterator of the children nodes.
 	 */
-	public void resetChildrenIterator();
-	
+	void resetChildrenIterator();
+
 	/**
 	 * @return name of the node
 	 */
-	public String getName();
-	
+	String getName();
+
 	/**
 	 * @return absolute path of the node
 	 */
-	public String getAbsolutePath(); 
-	
+	String getAbsolutePath();
+
 	/**
 	 * @return IDs of mirror directories on comparing storage
 	 */
-	public Collection<String> getMirrorsAbsolutePaths();
-	
+	Collection<String> getMirrorsAbsolutePaths();
+
 	/**
 	 * @return flag if this is full album media node
 	 */
-	public boolean isFullAlbum();
+	boolean isFullAlbum();
 }

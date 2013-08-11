@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Class for comparing directories
+ * Class for comparing directories.
  * 
  * @author sitko
  */
@@ -31,7 +31,7 @@ public class DirectoryComparator extends DirectoryHandler {
 	 * @throws IOException
 	 *             if some I/O error occurs
 	 */
-	public boolean compareDirectories(File fullDir, File selectionDir) throws IOException {
+	public final boolean compareDirectories(File fullDir, File selectionDir) throws IOException {
 		boolean result = false;
 
 		if (fullDir != null && selectionDir != null) {
@@ -54,18 +54,18 @@ public class DirectoryComparator extends DirectoryHandler {
 	}
 
 	/**
-	 * Remove selection file from unmatched list
+	 * Remove selection file from unmatched list.
 	 * <p>
 	 * <b> Javadoc from parent class:<br>
 	 * </b> {@inheritDoc}
 	 */
 	@Override
-	protected void performActionFace(File fileInSelection, File fileInFull) throws IOException {
+	protected final void performActionFace(File fileInSelection, File fileInFull) throws IOException {
 		unmatchedList.remove(fileInSelection);
 	}
 
 	/**
-	 * Ignores selection files missing in full directory
+	 * Ignores selection files missing in full directory.
 	 * <p>
 	 * <b> Javadoc from parent class:<br>
 	 * </b> {@inheritDoc}

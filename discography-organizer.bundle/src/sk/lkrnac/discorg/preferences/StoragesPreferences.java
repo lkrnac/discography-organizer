@@ -5,7 +5,8 @@ import org.springframework.stereotype.Controller;
 import sk.lkrnac.discorg.Activator;
 
 /**
- * Provides facade for retrieving application preferences concerning to storages
+ * Provides facade for retrieving application preferences concerning to
+ * storages.
  * 
  * @author sitko
  */
@@ -14,7 +15,7 @@ public class StoragesPreferences {
 	/**
 	 * @return Application preference - path for output lossy storage
 	 */
-	public String getOutputStorageLossy() {
+	public final String getOutputStorageLossy() {
 		return Activator.getDefault().getPreferenceStore()
 				.getString(StoragesPreferencePage.OUTPUT_STORAGE_LOSSY);
 	}
@@ -22,7 +23,7 @@ public class StoragesPreferences {
 	/**
 	 * @return Application preference - path for output loss-less storage
 	 */
-	public String getOutputStorageLossless() {
+	public final String getOutputStorageLossless() {
 		return Activator.getDefault().getPreferenceStore()
 				.getString(StoragesPreferencePage.OUTPUT_STORAGE_LOSSLESS);
 	}
@@ -30,15 +31,14 @@ public class StoragesPreferences {
 	/**
 	 * @return Application preference - path for input storage
 	 */
-	public String getInputStorage() {
-		return Activator.getDefault().getPreferenceStore()
-				.getString(StoragesPreferencePage.INPUT_STORAGE);
+	public final String getInputStorage() {
+		return Activator.getDefault().getPreferenceStore().getString(StoragesPreferencePage.INPUT_STORAGE);
 	}
 
 	/**
 	 * @return Application preference - path for reference storage
 	 */
-	public String getReferenceStorage() {
+	public final String getReferenceStorage() {
 		return Activator.getDefault().getPreferenceStore()
 				.getString(StoragesPreferencePage.REFERENCE_STORAGE);
 	}
@@ -46,8 +46,7 @@ public class StoragesPreferences {
 	/**
 	 * @return Application preference - name of full album (media sub-directory)
 	 */
-	public String getFullSubDirectory() {
-		return Activator.getDefault().getPreferenceStore()
-				.getString(StoragesPreferencePage.FULL_SUB_STORAGE);
+	public final String getFullSubDirectory() {
+		return Activator.getDefault().getPreferenceStore().getString(StoragesPreferencePage.FULL_SUB_STORAGE);
 	}
 }
