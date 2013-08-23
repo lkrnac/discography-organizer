@@ -79,7 +79,7 @@
    <rule ref="rulesets/java/comments.xml/CommentSize">
       <properties>
          <property name="maxLineLength" value="110"/>
-         <property name="maxLines" value="15"/>
+         <property name="maxLines" value="50"/>
       </properties>
    </rule>
    <rule ref="rulesets/java/design.xml/CompareObjectsWithEquals"/>
