@@ -14,7 +14,6 @@
    <rule ref="rulesets/ecmascript/basic.xml/AssignmentInOperand"/>
    <rule ref="rulesets/java/controversial.xml/AssignmentInOperand"/>
    <rule ref="rulesets/java/design.xml/AssignmentToNonFinalStatic"/>
-   <rule ref="rulesets/java/controversial.xml/AtLeastOneConstructor"/>
    <rule ref="rulesets/java/controversial.xml/AvoidAccessibilityAlteration"/>
    <rule ref="rulesets/java/optimizations.xml/AvoidArrayLoops"/>
    <rule ref="rulesets/java/migrating.xml/AvoidAssertAsIdentifier"/>
