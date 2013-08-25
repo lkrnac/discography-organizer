@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
+import sk.lkrnac.discorg.model.preferences.StoragesPreferences;
 import sk.lkrnac.discorg.model.treestorage.node.MediaBranchNode;
 import sk.lkrnac.discorg.model.treestorage.node.ReferenceMediaNode;
 import sk.lkrnac.discorg.model.treestorage.node.TreeStorageBranchNode;
-import sk.lkrnac.discorg.preferences.StoragesPreferences;
 
 /**
  * Reference media storage. This media storage contains all the full albums and

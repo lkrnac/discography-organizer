@@ -1,4 +1,4 @@
-package sk.lkrnac.discorg.preferences;
+package sk.lkrnac.discorg.model.preferences;
 
 import java.util.ArrayList;
 import java.util.List;

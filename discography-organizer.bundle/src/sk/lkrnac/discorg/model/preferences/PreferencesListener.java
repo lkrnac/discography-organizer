@@ -1,4 +1,4 @@
-package sk.lkrnac.discorg.preferences;
+package sk.lkrnac.discorg.model.preferences;
 
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;

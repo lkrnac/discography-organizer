@@ -8,10 +8,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sk.lkrnac.discorg.model.preferences.FileNamesPreferences;
 import sk.lkrnac.discorg.model.treestorage.node.MediaBranchNode;
 import sk.lkrnac.discorg.model.treestorage.node.NodeStatus;
 import sk.lkrnac.discorg.model.treestorage.node.ReferenceMediaNode;
-import sk.lkrnac.discorg.preferences.FileNamesPreferences;
 
 /**
  * Singleton that holds reference storage maps.

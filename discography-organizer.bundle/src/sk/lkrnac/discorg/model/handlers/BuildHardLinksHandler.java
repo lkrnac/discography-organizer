@@ -9,8 +9,8 @@ import sk.lkrnac.discorg.controller.listeners.IBuildHardLinksListener;
 import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
+import sk.lkrnac.discorg.model.preferences.StoragesPreferences;
 import sk.lkrnac.discorg.model.treestorage.node.ReferenceMediaNode;
-import sk.lkrnac.discorg.preferences.StoragesPreferences;
 
 /**
  * Replaces media files in selection mirror directories by hard links of media

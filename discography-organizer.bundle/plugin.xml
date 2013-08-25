@@ -83,17 +83,17 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="sk.lkrnac.discorg.preferences.StoragesPreferencePage"
+            class="sk.lkrnac.discorg.view.preferences.StoragesPreferencePage"
             id="DiscographyOrganizer.storaged"
             name="%page.name">
       </page>
       <page
-            class="sk.lkrnac.discorg.preferences.FileNamesPreferencePage"
+            class="sk.lkrnac.discorg.view.preferences.FileNamesPreferencePage"
             id="DiscographyOrganizer.fileNames"
             name="%page.name.0">
       </page>
       <page
-            class="sk.lkrnac.discorg.preferences.AudioFormatsPreferencePage"
+            class="sk.lkrnac.discorg.view.preferences.AudioFormatsPreferencePage"
             id="DiscographyOrganizer.audioFormats"
             name="%page.name.1">
       </page>

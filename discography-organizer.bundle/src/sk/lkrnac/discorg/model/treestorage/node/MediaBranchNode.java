@@ -12,7 +12,7 @@ import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
-import sk.lkrnac.discorg.preferences.AudioFormatsPreferencesException;
+import sk.lkrnac.discorg.model.preferences.AudioFormatsPreferencesException;
 
 /**
  * Represents branch node containing audio media files. <br>

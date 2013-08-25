@@ -1,4 +1,4 @@
-package sk.lkrnac.discorg.preferences;
+package sk.lkrnac.discorg.view.preferences;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -7,6 +7,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import sk.lkrnac.discorg.Activator;
+import sk.lkrnac.discorg.general.constants.AudioFormatsPreferenceIds;
+import sk.lkrnac.discorg.view.messages.AudiFormatsPreferenceMessages;
 
 /**
  * Preference page, where audio formats can be configured.
@@ -14,16 +16,6 @@ import sk.lkrnac.discorg.Activator;
  * @author sitko
  */
 public class AudioFormatsPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
-
-	/** Lossy audio formats preference ID. */
-	public static final String LOSSY_FORMATS = "lossyFormats"; //$NON-NLS-1$
-	/** Loss-less audio formats preference ID. */
-	public static final String LOSSLESS_FORMATS = "losslessFormats"; //$NON-NLS-1$
-	/** Warning audio formats preference ID. */
-	public static final String WARNING_FORMATS = "warningFormats"; //$NON-NLS-1$
-	/** Empty directory flag preference ID. */
-	public static final String WARNING_EMPTY_FLAG = "warningEmptyFlag"; //$NON-NLS-1$
-
 	/**
 	 * Create the preference page.
 	 */
@@ -37,11 +29,14 @@ public class AudioFormatsPreferencePage extends FieldEditorPreferencePage implem
 	@Override
 	protected final void createFieldEditors() {
 		// Create the field editors
-		addField(new StringFieldEditor(LOSSY_FORMATS, "Lossy audio formats", getFieldEditorParent()));
-		addField(new StringFieldEditor(LOSSLESS_FORMATS, "Lossless audio formats", getFieldEditorParent()));
-		addField(new StringFieldEditor(WARNING_FORMATS, "Warning audio formats", getFieldEditorParent()));
-		addField(new BooleanFieldEditor(WARNING_EMPTY_FLAG, "Warning if empty directory",
+		addField(new StringFieldEditor(AudioFormatsPreferenceIds.LOSSY_FORMATS, AudiFormatsPreferenceMessages.lossyFormats,
 				getFieldEditorParent()));
+		addField(new StringFieldEditor(AudioFormatsPreferenceIds.LOSSLESS_FORMATS, AudiFormatsPreferenceMessages.losslessFormats,
+				getFieldEditorParent()));
+		addField(new StringFieldEditor(AudioFormatsPreferenceIds.WARNING_FORMATS, AudiFormatsPreferenceMessages.warningFormats,
+				getFieldEditorParent()));
+		addField(new BooleanFieldEditor(AudioFormatsPreferenceIds.WARNING_EMPTY_FLAG,
+				AudiFormatsPreferenceMessages.warningEmptyFlag, getFieldEditorParent()));
 	}
 
 	/**

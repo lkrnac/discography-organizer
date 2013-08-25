@@ -1,4 +1,4 @@
-package sk.lkrnac.discorg.preferences;
+package sk.lkrnac.discorg.model.preferences;
 
 /**
  * Runtime exception that discribes situation when same extension is configured

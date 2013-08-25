@@ -7,7 +7,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import sk.lkrnac.discorg.preferences.AudioFormatsPreferences;
+import sk.lkrnac.discorg.model.preferences.AudioFormatsPreferences;
 
 /**
  * Service is used for resolving if file or directory contains some media data.

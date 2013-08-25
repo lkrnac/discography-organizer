@@ -15,8 +15,8 @@ import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
+import sk.lkrnac.discorg.model.preferences.StoragesPreferences;
 import sk.lkrnac.discorg.model.treestorage.node.ReferenceMediaNode;
-import sk.lkrnac.discorg.preferences.StoragesPreferences;
 
 /**
  * Unit test for {@link BuildHardLinksHandler}

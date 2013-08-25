@@ -1,10 +1,11 @@
-package sk.lkrnac.discorg.preferences;
+package sk.lkrnac.discorg.model.preferences;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import sk.lkrnac.discorg.Activator;
+import sk.lkrnac.discorg.general.constants.FileNamesPreferenceIds;
 
 /**
  * Component that holds file names preferences.
@@ -31,9 +32,9 @@ public class FileNamesPreferences extends AbstractPreferences {
 	 * Reads file name preferences from preference page.
 	 */
 	public final void readFileNamesPreferences() {
-		ignoreRegexes = parsePreferenceString(FileNamesPreferencePage.REGEX_IGNORE_PATTERN);
+		ignoreRegexes = parsePreferenceString(FileNamesPreferenceIds.REGEX_IGNORE_PATTERN);
 		ignoreCharacters = Activator.getDefault().getPreferenceStore()
-				.getString(FileNamesPreferencePage.CHARS_IGNORE_PATTERN);
+				.getString(FileNamesPreferenceIds.CHARS_IGNORE_PATTERN);
 	}
 
 	/**

@@ -21,6 +21,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
 import sk.lkrnac.discorg.view.messages.MediaIssueMessages;
+import sk.lkrnac.discorg.view.messages.MediaIssuesViewMessages;
 
 /**
  * Visualizes media issues.
@@ -32,9 +33,9 @@ public class MediaIssuesView extends ViewPart {
 	private static final int COLUMN_MEDIA_DIRECTORY_NAME_WIDTH = 400;
 	private static final int COLUMN_TEXT_WIDTH = 400;
 	private static final int COLUMN_TYPE_WIDTH = 100;
-	private static final String COLUMN_MEDIA_DIRECTORY_NAME = "Media directory name";
-	private static final String COLUMN_TEXT = "Text";
-	private static final String COLUMN_TYPE = "Type";
+	private static final String COLUMN_MEDIA_DIRECTORY_NAME = MediaIssuesViewMessages.mediaDirectoryNameColumn;
+	private static final String COLUMN_TEXT = MediaIssuesViewMessages.textColumn;
+	private static final String COLUMN_TYPE = MediaIssuesViewMessages.typeColumn;
 	/** View ID. */
 	public static final String VIEW_ID = "discographyorganizer.views.MediaIssuesView"; //$NON-NLS-1$
 
@@ -97,7 +98,7 @@ public class MediaIssuesView extends ViewPart {
 			@Override
 			public String getText(Object element) {
 				IMediaIssue issue = (IMediaIssue) element;
-				return issue.isError() ? "ERROR" : "WARNING";
+				return issue.isError() ? MediaIssuesViewMessages.errorTranslation : MediaIssuesViewMessages.warningTranslation;
 			}
 		});
 

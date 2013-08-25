@@ -1,10 +1,11 @@
-package sk.lkrnac.discorg.preferences;
+package sk.lkrnac.discorg.model.preferences;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import sk.lkrnac.discorg.Activator;
+import sk.lkrnac.discorg.general.constants.AudioFormatsPreferenceIds;
 
 /**
  * This component holds audio formats preferences.
@@ -39,11 +40,11 @@ public class AudioFormatsPreferences extends AbstractPreferences {
 	 * Reads audio formats from preference page.
 	 */
 	public final void readAudioFormats() {
-		lossy = parsePreferenceString(AudioFormatsPreferencePage.LOSSY_FORMATS);
-		lossless = parsePreferenceString(AudioFormatsPreferencePage.LOSSLESS_FORMATS);
-		warning = parsePreferenceString(AudioFormatsPreferencePage.WARNING_FORMATS);
+		lossy = parsePreferenceString(AudioFormatsPreferenceIds.LOSSY_FORMATS);
+		lossless = parsePreferenceString(AudioFormatsPreferenceIds.LOSSLESS_FORMATS);
+		warning = parsePreferenceString(AudioFormatsPreferenceIds.WARNING_FORMATS);
 		warningIfEmpty = Activator.getDefault().getPreferenceStore()
-				.getBoolean(AudioFormatsPreferencePage.WARNING_EMPTY_FLAG);
+				.getBoolean(AudioFormatsPreferenceIds.WARNING_EMPTY_FLAG);
 	}
 
 	/**
