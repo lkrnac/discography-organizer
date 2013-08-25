@@ -179,6 +179,8 @@ public class ReferenceMediaNode extends MediaBranchNode {
 	 *            full sub-directory name
 	 * @return true - if full album has selection mirror
 	 */
+	//NOPMD: we need to clear selection mirror link if various selection mirrors are found
+	@SuppressWarnings("PMD.NullAssignment")
 	public boolean checkSelectionForFullAlbum(String fullSubDirectory) {
 		if (!this.isFullAlbum()) {
 			throw new IllegalArgumentException(this.getClass().getSimpleName()
@@ -244,43 +246,70 @@ public class ReferenceMediaNode extends MediaBranchNode {
 			throw new IllegalArgumentException(this.getClass().getSimpleName()
 					+ ".checkFullAlbumForSelection(String) should be called only for selection album."); //$NON-NLS-1$
 		}
-		try {
-			if (!this.isFullAlbum()) {
-				int pathEndIndex = StringUtils.lastIndexOf(this.getRelativePath(), File.separator) + 1;
-				StringBuilder pathBuilder = new StringBuilder((pathEndIndex == 0) ? "" //$NON-NLS-1$
-						: StringUtils.substring(this.getRelativePath(), 0, pathEndIndex));
-				pathBuilder.append(fullSubDirectory).append(File.separator)
-						.append(StringUtils.substring(this.getRelativePath(), pathEndIndex));
+		if (!this.isFullAlbum()) {
+			int pathEndIndex = StringUtils.lastIndexOf(this.getRelativePath(), File.separator) + 1;
+			StringBuilder pathBuilder = new StringBuilder((pathEndIndex == 0) ? "" //$NON-NLS-1$
+					: StringUtils.substring(this.getRelativePath(), 0, pathEndIndex));
+			pathBuilder.append(fullSubDirectory).append(File.separator)
+					.append(StringUtils.substring(this.getRelativePath(), pathEndIndex));
 
-				String fullAlbumMirrorPath = pathBuilder.toString();
-				ReferenceMediaNode fullMirror = null;
-				for (ReferenceMediaNode tmpMirror : getReferenceStorageCache().getReferenceItems(
-						fullAlbumMirrorPath)) {
-					if (this.getDirectoryIoFacade().compareDirectories(tmpMirror.getFile(), this.getFile())) {
-						if (fullMirror == null) {
-							fullMirror = tmpMirror;
-						} else {
-							fullMirror = null;
-							this.setNodeStatus(BranchNodeStatus.ERROR);
-							MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
-									MediaIssueCode.REFERENCE_VARIOUS_FULL_MIRRORS_FOUND,
-									this.getRelativePath(), true);
-							getMediaIssuesCache().add(mediaIssue);
-						}
-					}
+			String fullAlbumMirrorPath = pathBuilder.toString();
+			ReferenceMediaNode fullMirror = compareDirectoryWithFullMirror(fullAlbumMirrorPath);
+			saveFullMirror(fullSubDirectory, fullMirror);
+		}
+	}
+
+	/**
+	 * Sets full mirror if no error was found. If error occurred, save it into
+	 * issues cache
+	 * 
+	 * @param fullSubDirectory
+	 *            name of the full sub-directory
+	 * @param fullMirror
+	 *            full mirror node instance
+	 */
+	private void saveFullMirror(String fullSubDirectory, ReferenceMediaNode fullMirror) {
+		if (!BranchNodeStatus.ERROR.equals(this.getNodeStatus())) {
+			if (fullMirror == null) {
+				this.setNodeStatus(BranchNodeStatus.WARNING);
+				MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
+						MediaIssueCode.REFERENCE_FULL_MIRROR_MISSING, this.getRelativePath(), false);
+				getMediaIssuesCache().add(mediaIssue);
+			} else {
+				fullMirror.setFullAlbum(true);
+				if (fullMirror.checkSelectionForFullAlbum(fullSubDirectory)) {
+					this.setFullMirror(fullMirror);
+					checkHardLinksForSelectionMirror();
 				}
-				if (!BranchNodeStatus.ERROR.equals(this.getNodeStatus())) {
+			}
+		}
+	}
+
+	/**
+	 * Compare selection media directory with its full mirror. Log error into
+	 * issues cache if occurs.
+	 * 
+	 * @param fullAlbumMirrorPath
+	 *            path of full media directory mirror
+	 * @return full mirror node instance
+	 */
+	//NOPMD: we need to clear full mirror link if various reference nodes are found
+	@SuppressWarnings("PMD.NullAssignment")
+	private ReferenceMediaNode compareDirectoryWithFullMirror(String fullAlbumMirrorPath) {
+		ReferenceMediaNode fullMirror = null;
+		try {
+			for (ReferenceMediaNode tmpMirror : getReferenceStorageCache().getReferenceItems(
+					fullAlbumMirrorPath)) {
+				if (this.getDirectoryIoFacade().compareDirectories(tmpMirror.getFile(), this.getFile())) {
 					if (fullMirror == null) {
-						this.setNodeStatus(BranchNodeStatus.WARNING);
-						MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
-								MediaIssueCode.REFERENCE_FULL_MIRROR_MISSING, this.getRelativePath(), false);
-						getMediaIssuesCache().add(mediaIssue);
+						fullMirror = tmpMirror;
 					} else {
-						fullMirror.setFullAlbum(true);
-						if (fullMirror.checkSelectionForFullAlbum(fullSubDirectory)) {
-							this.setFullMirror(fullMirror);
-							checkHardLinksForSelectionMirror();
-						}
+						fullMirror = null;
+						this.setNodeStatus(BranchNodeStatus.ERROR);
+						MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
+								MediaIssueCode.REFERENCE_VARIOUS_FULL_MIRRORS_FOUND, this.getRelativePath(),
+								true);
+						getMediaIssuesCache().add(mediaIssue);
 					}
 				}
 			}
@@ -291,5 +320,6 @@ public class ReferenceMediaNode extends MediaBranchNode {
 			mediaIssue.setErrorMessage(e.getLocalizedMessage());
 			getMediaIssuesCache().add(mediaIssue);
 		}
+		return fullMirror;
 	}
 }

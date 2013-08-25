@@ -5,6 +5,7 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 
+import sk.lkrnac.discorg.general.DiscOrgException;
 import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
@@ -88,46 +89,67 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	 * Initializes audio format of media directory node.
 	 */
 	private void initializeAudioFormat() {
-		if (getFile() != null) {
-			String previousAudioFormatString = null;
-			for (File subFile : getFile().listFiles()) {
-				if (subFile.isFile()) {
-					String extension = FileDesignator.getExtension(subFile);
-
-					// get type of format
-					boolean lossyAudioFormat = getFileDesignator().isLossyMediaFile(subFile);
-					boolean losslessAudioFormat = getFileDesignator().isLossLessMediaFile(subFile);
-
-					// check for errors
-					if (lossyAudioFormat && losslessAudioFormat) {
-						// TODO: this check should be in preferences package
-						throw new AudioFormatsPreferencesException(extension);
-						// save audio format
-					} else if (lossyAudioFormat) {
-						previousAudioFormatString = extension;
-						audioFormatType = NodeStatus.LOSSY;
-					} else if (losslessAudioFormat) {
-						previousAudioFormatString = extension;
-						audioFormatType = NodeStatus.LOSSLESS;
-					} else if ((losslessAudioFormat || lossyAudioFormat) && previousAudioFormatString != null
-							&& !previousAudioFormatString.equals(extension)) {
-						getMediaIssuesCache().add(
-								new MediaIssue(getAbsolutePath(),
-										MediaIssueCode.GENERIC_VARIOUS_AUDIO_FORMAT_TYPES, this
-												.getRelativePath(), true));
-						break;
+		try {
+			if (getFile() != null) {
+				String previousAudioFormatString = null;
+				for (File subFile : getFile().listFiles()) {
+					if (subFile.isFile()) {
+						previousAudioFormatString = initFormatForFileName(previousAudioFormatString, subFile);
 					}
 				}
-			}
 
-			if (previousAudioFormatString == null) {
-				audioFormatType = NodeStatus.NONE;
-			} else {
-				audioFormatName = previousAudioFormatString;
-			}
+				if (previousAudioFormatString == null) {
+					audioFormatType = NodeStatus.NONE;
+				} else {
+					audioFormatName = previousAudioFormatString;
+				}
 
-			setNodeStatus(audioFormatType);
+				setNodeStatus(audioFormatType);
+			}
+		} catch (DiscOrgException exception) {
+			getMediaIssuesCache().add(
+					new MediaIssue(getAbsolutePath(), exception.getMediaIssueCode(), this.getRelativePath(),
+							true));
+
 		}
+	}
+
+	/**
+	 * Initializes audio format based on file extension.
+	 * 
+	 * @param previousAudioFormatString
+	 *            audio format of previous processed files (can be null)
+	 * @param file
+	 *            file for which we are initializing audio format
+	 * @return audio format string
+	 * @throws DiscOrgException
+	 *             if found audio format differs to previousAudioFormatString
+	 *             (Directory contains various audio formats)
+	 */
+	private String initFormatForFileName(String previousAudioFormatString, File file) throws DiscOrgException {
+		String audioFormatString = null;
+		String extension = FileDesignator.getExtension(file);
+
+		// get type of format
+		boolean lossyAudioFormat = getFileDesignator().isLossyMediaFile(file);
+		boolean losslessAudioFormat = getFileDesignator().isLossLessMediaFile(file);
+
+		// check for errors
+		if (lossyAudioFormat && losslessAudioFormat) {
+			// TODO: this check should be in preferences package
+			throw new AudioFormatsPreferencesException(extension);
+			// save audio format
+		} else if (lossyAudioFormat) {
+			audioFormatString = extension;
+			audioFormatType = NodeStatus.LOSSY;
+		} else if (losslessAudioFormat) {
+			audioFormatString = extension;
+			audioFormatType = NodeStatus.LOSSLESS;
+		} else if ((losslessAudioFormat || lossyAudioFormat) && previousAudioFormatString != null
+				&& !previousAudioFormatString.equals(extension)) {
+			throw new DiscOrgException(getAbsolutePath(), MediaIssueCode.GENERIC_VARIOUS_AUDIO_FORMAT_TYPES);
+		}
+		return audioFormatString;
 	}
 
 	/**
