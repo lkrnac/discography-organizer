@@ -12,7 +12,7 @@ import sk.lkrnac.discorg.general.DiscOrgException;
  * 
  */
 public class DirectoryIoFacade {
-	private File selectionDir;
+	private final File selectionDir;
 	private DirectoryComparator directoryComparator;
 	private HardLinksHandler hardLinksHandler;
 
@@ -44,7 +44,7 @@ public class DirectoryIoFacade {
 	 * @throws IOException
 	 *             if some I/O error occurs
 	 */
-	public final boolean compareDirectories(File fullDir, File selectionDir) throws IOException {
+	public boolean compareDirectories(File fullDir, File selectionDir) throws IOException {
 		return getDirectoryComparator().compareDirectories(fullDir, selectionDir);
 	}
 

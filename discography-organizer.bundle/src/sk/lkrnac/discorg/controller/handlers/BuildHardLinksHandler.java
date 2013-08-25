@@ -10,7 +10,7 @@ import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
 
 /**
  * Handler for replacing media files in selection mirror directories by hard
- * links media files from full album mirrors
+ * links media files from full album mirrors.
  * 
  * @author sitko
  * 

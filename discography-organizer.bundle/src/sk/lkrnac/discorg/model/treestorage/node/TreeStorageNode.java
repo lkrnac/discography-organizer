@@ -24,7 +24,7 @@ public class TreeStorageNode implements ITreeStorageNode {
 	/**
 	 * File object belonging to this tree node.
 	 */
-	private File file;
+	private final File file;
 
 	private INodeStatus nodeStatus;
 
@@ -39,19 +39,29 @@ public class TreeStorageNode implements ITreeStorageNode {
 	public TreeStorageNode(TreeStorageBranchNode parent, File file) {
 		this.file = file;
 		if (file != null) {
-			this.setNodeStatus(NodeStatus.NONE);
-			if (file.isFile()) {
-				if (getFileDesignator().isLossLessMediaFile(file)) {
-					this.setNodeStatus(NodeStatus.LOSSLESS);
-				} else if (getFileDesignator().isLossyMediaFile(file)) {
-					this.setNodeStatus(NodeStatus.LOSSY);
-				}
-			}
+			initStatus(file);
 		}
 		if (parent != null) {
 			parent.children.add(this);
 			parent.iterator = parent.children.iterator();
 			this.parent = parent;
+		}
+	}
+
+	/**
+	 * Initializes status of media node base on file instance.
+	 * 
+	 * @param file
+	 *            file object belonging to media node
+	 */
+	private void initStatus(File file) {
+		this.setNodeStatus(NodeStatus.NONE);
+		if (file.isFile()) {
+			if (getFileDesignator().isLossLessMediaFile(file)) {
+				this.setNodeStatus(NodeStatus.LOSSLESS);
+			} else if (getFileDesignator().isLossyMediaFile(file)) {
+				this.setNodeStatus(NodeStatus.LOSSY);
+			}
 		}
 	}
 
@@ -83,7 +93,7 @@ public class TreeStorageNode implements ITreeStorageNode {
 	 */
 	@Override
 	public final String getName() {
-		return (getFile() != null) ? getFile().getName() : null;
+		return getFile() == null ? null : getFile().getName();
 	}
 
 	/**
@@ -133,7 +143,7 @@ public class TreeStorageNode implements ITreeStorageNode {
 	 */
 	@Override
 	public final String getAbsolutePath() {
-		return (getFile() != null) ? getFile().getAbsolutePath() : null;
+		return getFile() == null ? null : getFile().getAbsolutePath();
 	}
 
 	/**

@@ -15,8 +15,7 @@ public final class ErrorMessages extends NLS {
 	 * parameter.
 	 */
 	// SUPPRESS CHECKSTYLE VisibilityModifier 10 lines: NLS functionality
-	// requires public fields
-	// to assign translations
+	// requires public fields to assign translations
 	public static String errorMessage;
 
 	/**
@@ -34,6 +33,7 @@ public final class ErrorMessages extends NLS {
 	 * Avoid instantiation.
 	 */
 	private ErrorMessages() {
+		super();
 	}
 
 	/**
@@ -46,7 +46,7 @@ public final class ErrorMessages extends NLS {
 	 * @return message to show on GUI
 	 */
 	public static String getErrorMessage(boolean expected, String resourcePath) {
-		String message = (expected) ? errorMessage : unexpectedErrorMessage;
+		String message = expected ? errorMessage : unexpectedErrorMessage;
 		return String.format(message, resourcePath);
 	}
 }

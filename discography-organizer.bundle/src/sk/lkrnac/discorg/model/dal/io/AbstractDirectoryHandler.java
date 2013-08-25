@@ -11,7 +11,7 @@ import java.util.Collection;
  * @author sitko
  * 
  */
-public abstract class DirectoryHandler {
+public abstract class AbstractDirectoryHandler {
 	/**
 	 * Factory method that runs through selection array. For each selection item
 	 * finds belonging full mirror and performs action. This action is

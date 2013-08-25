@@ -16,15 +16,15 @@ import sk.lkrnac.discorg.Activator;
 public class StoragesPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	/** Lossy output storage preference ID. */
-	public static final String OUTPUT_STORAGE_LOSSY = "outputStorageLossy";
+	public static final String OUTPUT_STORAGE_LOSSY = "outputStorageLossy"; //$NON-NLS-1$
 	/** Loss-less output storage preference ID. */
-	public static final String OUTPUT_STORAGE_LOSSLESS = "outputStorageLossless";
+	public static final String OUTPUT_STORAGE_LOSSLESS = "outputStorageLossless"; //$NON-NLS-1$
 	/** Input storage preference ID. */
-	public static final String INPUT_STORAGE = "inputStorage";
+	public static final String INPUT_STORAGE = "inputStorage"; //$NON-NLS-1$
 	/** Reference storage preference ID. */
-	public static final String REFERENCE_STORAGE = "referenceStorage";
+	public static final String REFERENCE_STORAGE = "referenceStorage"; //$NON-NLS-1$
 	/** Full sub-directory name preference ID. */
-	public static final String FULL_SUB_STORAGE = "fullSubDirectory";
+	public static final String FULL_SUB_STORAGE = "fullSubDirectory"; //$NON-NLS-1$
 
 	/**
 	 * Create the preference page.

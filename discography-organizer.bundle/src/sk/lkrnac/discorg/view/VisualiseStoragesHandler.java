@@ -2,6 +2,7 @@ package sk.lkrnac.discorg.view;
 
 import java.util.Iterator;
 
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 import org.springframework.stereotype.Controller;
@@ -25,15 +26,15 @@ public class VisualiseStoragesHandler implements IVisualizeStoragesListener {
 	public final void visualizeStorages(ITreeStorageNode referenceRootNode, ITreeStorageNode inputRootNode,
 			Iterator<IMediaIssue> issuesIterator) {
 		// visualize reference storage view
-		TreeStorageView referenceStorageView = getTreeView(ReferenceStorageView.ID);
+		AbstractTreeStorageView referenceStorageView = getTreeView(ReferenceStorageView.VIEW_ID);
 		referenceStorageView.visualizeStorageNode(referenceRootNode);
 
 		// visualize input storage view
-		TreeStorageView inputStorageView = getTreeView(InputStorageView.ID);
+		AbstractTreeStorageView inputStorageView = getTreeView(InputStorageView.VIEW_ID);
 		inputStorageView.visualizeStorageNode(inputRootNode);
 
 		// visualize media issues view
-		MediaIssuesView issuesView = getTreeView(MediaIssuesView.ID);
+		MediaIssuesView issuesView = getTreeView(MediaIssuesView.VIEW_ID);
 		issuesView.visualiseIssues(issuesIterator);
 	}
 
@@ -43,12 +44,18 @@ public class VisualiseStoragesHandler implements IVisualizeStoragesListener {
 	 * @param viewId
 	 *            ID of the view
 	 * @return view instance
+	 * @param <T>
+	 *            type of the view the method is looking for
 	 */
-	static <T> T getTreeView(String viewId) {
+	@SuppressWarnings("unchecked")
+	public static <T> T getTreeView(String viewId) {
+		T referenceStorageView = null;
 		IViewReference referenceStorageViewRef = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.getActivePage().findViewReference(viewId);
-		@SuppressWarnings("unchecked")
-		T referenceStorageView = (T) referenceStorageViewRef.getView(true);
+		if (referenceStorageViewRef != null) {
+			IViewPart view = referenceStorageViewRef.getView(true);
+			referenceStorageView = (T) view;
+		}
 		return referenceStorageView;
 	}
 }

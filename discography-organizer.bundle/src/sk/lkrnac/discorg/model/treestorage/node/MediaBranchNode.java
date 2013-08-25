@@ -73,14 +73,14 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	/**
 	 * @return List where media issues are stored
 	 */
-	public final MediaIssuesCache getMediaIssuesCache() {
+	public MediaIssuesCache getMediaIssuesCache() {
 		return DiscOrgContextHolder.getInstance().getContext().getBean(MediaIssuesCache.class);
 	}
 
 	/**
 	 * @return Meta-data holder object
 	 */
-	public final ReferenceStorageCache getReferenceStorageCache() {
+	public ReferenceStorageCache getReferenceStorageCache() {
 		return DiscOrgContextHolder.getInstance().getContext().getBean(ReferenceStorageCache.class);
 	}
 

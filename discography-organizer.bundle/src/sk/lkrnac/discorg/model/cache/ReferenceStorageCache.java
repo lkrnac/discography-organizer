@@ -29,7 +29,7 @@ public class ReferenceStorageCache {
 	private Map<String, ReferenceMediaNode> absolutePathReferenceItems;
 
 	/** This map holds media items that should be updated on reference storage. */
-	private Map<String, MediaBranchNode> itemsForUpdate;
+	private final Map<String, MediaBranchNode> itemsForUpdate;
 
 	/**
 	 * Creates instance of storage meta-data holder.
@@ -114,7 +114,7 @@ public class ReferenceStorageCache {
 	 * @return collection of reference media nodes belonging to the relative
 	 *         path
 	 */
-	public final Collection<ReferenceMediaNode> getReferenceItems(String relativePath) {
+	public Collection<ReferenceMediaNode> getReferenceItems(String relativePath) {
 		String changedPath = fileNamesPreferences.getPathWithoutIgnoredParts(relativePath);
 		ArrayList<ReferenceMediaNode> retVal = new ArrayList<ReferenceMediaNode>();
 		if (normalizedReferenceLosslessItems.get(changedPath) != null) {
@@ -144,7 +144,7 @@ public class ReferenceStorageCache {
 	 */
 	public final MediaBranchNode getAndRemoveNextItemForUpdate() {
 		MediaBranchNode item = null;
-		if (itemsForUpdate.size() != 0) {
+		if (!itemsForUpdate.isEmpty()) {
 			String itemKey = itemsForUpdate.keySet().iterator().next();
 			item = itemsForUpdate.get(itemKey);
 			itemsForUpdate.remove(itemKey);

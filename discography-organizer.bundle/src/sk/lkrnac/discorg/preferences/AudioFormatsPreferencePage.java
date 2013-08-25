@@ -16,13 +16,13 @@ import sk.lkrnac.discorg.Activator;
 public class AudioFormatsPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	/** Lossy audio formats preference ID. */
-	public static final String LOSSY_FORMATS = "lossyFormats";
+	public static final String LOSSY_FORMATS = "lossyFormats"; //$NON-NLS-1$
 	/** Loss-less audio formats preference ID. */
-	public static final String LOSSLESS_FORMATS = "losslessFormats";
+	public static final String LOSSLESS_FORMATS = "losslessFormats"; //$NON-NLS-1$
 	/** Warning audio formats preference ID. */
-	public static final String WARNING_FORMATS = "warningFormats";
+	public static final String WARNING_FORMATS = "warningFormats"; //$NON-NLS-1$
 	/** Empty directory flag preference ID. */
-	public static final String WARNING_EMPTY_FLAG = "warningEmptyFlag";
+	public static final String WARNING_EMPTY_FLAG = "warningEmptyFlag"; //$NON-NLS-1$
 
 	/**
 	 * Create the preference page.

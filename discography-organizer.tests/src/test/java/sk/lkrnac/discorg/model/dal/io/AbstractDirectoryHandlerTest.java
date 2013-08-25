@@ -5,22 +5,23 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * Unit tests for {@link DirectoryHandler}
+ * Unit tests for {@link AbstractDirectoryHandler}
  * 
  * @author sitko
  * 
  */
-public class DirectoryHandlerTest {
+public class AbstractDirectoryHandlerTest {
 	private static final String TEST_FILE_NAME = "test-file";
 
 	/**
 	 * Builds testing data for test
-	 * {@link DirectoryHandler#fileFacingLoop(java.util.Collection, java.util.Collection)}
+	 * {@link AbstractDirectoryHandler#fileFacingLoop(java.util.Collection, java.util.Collection)}
 	 * <p>
 	 * Generates arrays of files to perform file mirrors facing and also
 	 * expected matches
@@ -29,37 +30,37 @@ public class DirectoryHandlerTest {
 	 */
 	@DataProvider
 	public Object[][] testFileFacingLoop() {
-		int i = 0;
+		int idx = 0;
 		return new Object[][] {
-				new Object[] { i++, generateFiles(0, 3, 1), generateFiles(0, 3, 1),
+				new Object[] { idx++, generateFiles(0, 3, 1), generateFiles(0, 3, 1),
 						new Integer[] { 0, 1, 2, 3 }, new Integer[] {} },
-				new Object[] { i++, generateFiles(1, 3, 1), generateFiles(0, 3, 1),
+				new Object[] { idx++, generateFiles(1, 3, 1), generateFiles(0, 3, 1),
 						new Integer[] { 1, 2, 3 }, new Integer[] {} },
-				new Object[] { i++, generateFiles(0, 3, 1), generateFiles(0, 4, 1),
+				new Object[] { idx++, generateFiles(0, 3, 1), generateFiles(0, 4, 1),
 						new Integer[] { 0, 1, 2, 3 }, new Integer[] {} },
-				new Object[] { i++, generateFiles(0, 4, 1), generateFiles(0, 3, 1),
+				new Object[] { idx++, generateFiles(0, 4, 1), generateFiles(0, 3, 1),
 						new Integer[] { 0, 1, 2, 3 }, new Integer[] { 4 } },
-				new Object[] { i++, generateFiles(0, 3, 1), generateFiles(1, 3, 1),
+				new Object[] { idx++, generateFiles(0, 3, 1), generateFiles(1, 3, 1),
 						new Integer[] { 1, 2, 3 }, new Integer[] { 0 } },
-				new Object[] { i++, generateFiles(0, 4, 1), generateFiles(1, 3, 1),
+				new Object[] { idx++, generateFiles(0, 4, 1), generateFiles(1, 3, 1),
 						new Integer[] { 1, 2, 3 }, new Integer[] { 0, 4 } },
-				new Object[] { i++, generateFiles(1, 3, 1), generateFiles(0, 4, 1),
+				new Object[] { idx++, generateFiles(1, 3, 1), generateFiles(0, 4, 1),
 						new Integer[] { 1, 2, 3 }, new Integer[] {} },
-				new Object[] { i++, generateFiles(0, 3, 1), generateFiles(1, 4, 1),
+				new Object[] { idx++, generateFiles(0, 3, 1), generateFiles(1, 4, 1),
 						new Integer[] { 1, 2, 3 }, new Integer[] { 0 } },
-				new Object[] { i++, generateFiles(1, 4, 1), generateFiles(0, 3, 1),
+				new Object[] { idx++, generateFiles(1, 4, 1), generateFiles(0, 3, 1),
 						new Integer[] { 1, 2, 3 }, new Integer[] { 4 } },
-				new Object[] { i++, generateFiles(0, 2, 1), generateFiles(3, 4, 1),
-						new Integer[] {}, new Integer[] { 0, 2 } },
-				new Object[] { i++, generateFiles(3, 4, 1), generateFiles(0, 2, 1),
-						new Integer[] {}, new Integer[] { 3, 4 } },
-				new Object[] { i++, generateFiles(0, 3, 1), generateFiles(0, 3, 2),
-						new Integer[] {}, new Integer[] { 0, 1, 2, 3 } }, };
+				new Object[] { idx++, generateFiles(0, 2, 1), generateFiles(3, 4, 1), new Integer[] {},
+						new Integer[] { 0, 2 } },
+				new Object[] { idx++, generateFiles(3, 4, 1), generateFiles(0, 2, 1), new Integer[] {},
+						new Integer[] { 3, 4 } },
+				new Object[] { idx++, generateFiles(0, 3, 1), generateFiles(0, 3, 2), new Integer[] {},
+						new Integer[] { 0, 1, 2, 3 } }, };
 	}
 
 	/**
 	 * Tests
-	 * {@link DirectoryHandler#fileFacingLoop(java.util.Collection, java.util.Collection)}
+	 * {@link AbstractDirectoryHandler#fileFacingLoop(java.util.Collection, java.util.Collection)}
 	 * 
 	 * @param testCaseId
 	 *            test case id - is not used in test
@@ -74,12 +75,13 @@ public class DirectoryHandlerTest {
 	 * @throws IOException
 	 *             if I/O error occurs
 	 */
+	@SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
 	@Test(dataProvider = "testFileFacingLoop")
 	public void testFileFacingLoop(int testCaseId, Map<Integer, File> selectionMap,
 			Map<Integer, File> fullMap, Integer[] expectedMatches, Integer[] expectedFullMissings)
 			throws IOException {
-		DirectoryHandler dirHandler = new TestingDirectoryHandler();
-		DirectoryHandler dirHandlerSpy = Mockito.spy(dirHandler);
+		AbstractDirectoryHandler dirHandler = new TestingAbstractDirectoryHandler();
+		AbstractDirectoryHandler dirHandlerSpy = Mockito.spy(dirHandler);
 
 		// call testing method
 		dirHandlerSpy.fileFacingLoop(selectionMap.values(), fullMap.values());
@@ -108,7 +110,7 @@ public class DirectoryHandlerTest {
 	 */
 	private Map<Integer, File> generateFiles(int startIdx, int endIdx, long fileSize) {
 		Map<Integer, File> generatedMap = new HashMap<Integer, File>();
-		if (startIdx >= 0) {
+		if (startIdx >= NumberUtils.INTEGER_ZERO) {
 			for (int i = startIdx; i <= endIdx; i++) {
 				File file = new File(TEST_FILE_NAME + i);
 				File fileSpy = Mockito.spy(file);
@@ -126,7 +128,7 @@ public class DirectoryHandlerTest {
 	 * 
 	 * @author sitko
 	 */
-	private class TestingDirectoryHandler extends DirectoryHandler {
+	private class TestingAbstractDirectoryHandler extends AbstractDirectoryHandler {
 		@Override
 		protected void performActionFace(File fileInSelection, File fileInFull) {
 			// do nothing, will be stubbed

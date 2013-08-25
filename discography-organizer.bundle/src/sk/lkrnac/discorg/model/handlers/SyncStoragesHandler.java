@@ -15,7 +15,7 @@ public class SyncStoragesHandler implements ISyncStoragesListener {
 	@Override
 	public final void syncStorages() {
 		// TODO implement
-		throw new UnsupportedOperationException("not implemented");
+		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
 	}
 
 }

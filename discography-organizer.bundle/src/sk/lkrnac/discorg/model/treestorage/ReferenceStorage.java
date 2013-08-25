@@ -20,7 +20,7 @@ import sk.lkrnac.discorg.preferences.StoragesPreferences;
  * @author sitko
  */
 @Service
-public class ReferenceStorage extends TreeStorage {
+public class ReferenceStorage extends AbstractTreeStorage {
 	@Autowired
 	private ReferenceStorageCache referenceStorageCache;
 

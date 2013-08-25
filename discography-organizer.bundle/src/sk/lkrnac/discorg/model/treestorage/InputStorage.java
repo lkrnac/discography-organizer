@@ -21,7 +21,7 @@ import sk.lkrnac.discorg.preferences.StoragesPreferences;
  * @author sitko
  */
 @Service
-public class InputStorage extends TreeStorage {
+public class InputStorage extends AbstractTreeStorage {
 	@Autowired
 	private ReferenceStorageCache referenceStorageCache;
 
@@ -41,13 +41,13 @@ public class InputStorage extends TreeStorage {
 	 */
 	@Override
 	protected final void loadNode(ITreeStorageNode node) {
-		if (node != null && node instanceof InputMediaNode) {
+		if (node instanceof InputMediaNode) {
 			InputMediaNode mediaNode = (InputMediaNode) node;
 			// find pairs
 			Collection<ReferenceMediaNode> referenceMirrors = referenceStorageCache
 					.getReferenceItems(mediaNode.getRelativePath());
 
-			if (referenceMirrors == null || referenceMirrors.size() == 0) {
+			if (referenceMirrors == null || referenceMirrors.isEmpty()) {
 				mediaNode.setNodeStatus(BranchNodeStatus.UPLOAD);
 			} else {
 				for (ReferenceMediaNode mirror : referenceMirrors) {

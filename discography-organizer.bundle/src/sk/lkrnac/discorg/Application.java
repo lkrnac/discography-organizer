@@ -21,22 +21,27 @@ public class Application implements IApplication {
 	 * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.
 	 * IApplicationContext)
 	 */
+	/**
+	 * {@inheritDoc}
+	 */
+	// NOPMD: Signature of this method is declared in Eclipse libraries
+	@SuppressWarnings("PMD.SignatureDeclareThrowsException")
 	public final Object start(IApplicationContext context) throws Exception {
 		Display display = PlatformUI.createDisplay();
 
 		registerListeners();
-
+		Object result = null;
 		try {
 			int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
 			if (returnCode == PlatformUI.RETURN_RESTART) {
-				return IApplication.EXIT_RESTART;
+				result = IApplication.EXIT_RESTART;
 			} else {
-				return IApplication.EXIT_OK;
+				result = IApplication.EXIT_OK;
 			}
 		} finally {
 			display.dispose();
 		}
-
+		return result;
 	}
 
 	/**
@@ -55,6 +60,10 @@ public class Application implements IApplication {
 	 * 
 	 * @see org.eclipse.equinox.app.IApplication#stop()
 	 */
+	/**
+	 * {@inheritDoc}
+	 */
+	@SuppressWarnings("PMD.DoNotUseThreads")
 	public final void stop() {
 		if (!PlatformUI.isWorkbenchRunning()) {
 			return;

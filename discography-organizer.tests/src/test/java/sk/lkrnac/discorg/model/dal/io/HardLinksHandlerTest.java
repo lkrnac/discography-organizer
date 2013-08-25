@@ -29,7 +29,6 @@ public class HardLinksHandlerTest {
 	private String resourcesPath;
 	private HardLinksHandler testingObj;
 	private File fullDir;
-	private DirectoryComparator dirComparator;
 
 	/**
 	 * Indicates type copy of testing data into testing temporary directory
@@ -81,8 +80,7 @@ public class HardLinksHandlerTest {
 	 *             if some I/O error occurs
 	 */
 	@Test(dataProvider = "testVerifyHardLinks")
-	public void testVerifyHardLinks(ECopyIntoTempType copyType, boolean expectedStatus)
-			throws IOException {
+	public void testVerifyHardLinks(ECopyIntoTempType copyType, boolean expectedStatus) throws IOException {
 		resourcesPath = TestUtils.getResourcesPathMethod();
 		File selectionDir = getTestingDir(TEST_ALBUM, false, false);
 		HardLinksHandler testingObj = new HardLinksHandler(selectionDir);
@@ -112,13 +110,11 @@ public class HardLinksHandlerTest {
 	 * @throws IOException
 	 *             if I/O error occurs during copying into temporary directory
 	 */
-	private File getTestingDir(String testingDirName, boolean isFull, boolean copyToTemp)
-			throws IOException {
-		String albumRelativePath = ((isFull) ? File.separator + DIR_NAME_FULL_ALBUM : "")
-				+ File.separator + testingDirName;
+	private File getTestingDir(String testingDirName, boolean isFull, boolean copyToTemp) throws IOException {
+		String albumRelativePath = (isFull ? File.separator + DIR_NAME_FULL_ALBUM : "") + File.separator
+				+ testingDirName;
 		File testDir = new File(resourcesPath + albumRelativePath);
-		File tmpTestDir = new File(resourcesPath + File.separator + DIR_NAME_TEMP
-				+ albumRelativePath);
+		File tmpTestDir = new File(resourcesPath + File.separator + DIR_NAME_TEMP + albumRelativePath);
 
 		if (copyToTemp) {
 			if (!testDir.exists()) {
@@ -151,11 +147,11 @@ public class HardLinksHandlerTest {
 		if (ECopyIntoTempType.COPY_NORMAL.equals(copyType)) {
 			FileUtils.copyDirectory(sourceDir, destinationDir);
 		} else {
-			int i = 0;
+			int idx = 0;
 			for (File file : sourceDir.listFiles()) {
 				Path destinationPath = Paths.get(destinationDir.getAbsolutePath() + File.separator
 						+ file.getName());
-				if (ECopyIntoTempType.COPY_SOME_HARD_LINKS.equals(copyType) && i++ % 2 == 0) {
+				if (ECopyIntoTempType.COPY_SOME_HARD_LINKS.equals(copyType) && idx++ % 2 == 0) {
 					Files.copy(file.toPath(), destinationPath);
 				} else {
 					Files.createLink(destinationPath, file.toPath());
@@ -173,8 +169,7 @@ public class HardLinksHandlerTest {
 	@DataProvider
 	public Object[][] testBuildHardLinksSuccess() {
 		return new Object[][] { new Object[] { "test - album - success1" },
-				new Object[] { "test - album - success2" },
-				new Object[] { "test - album - success3" },
+				new Object[] { "test - album - success2" }, new Object[] { "test - album - success3" },
 				new Object[] { "test - album - success4" }, };
 	}
 
@@ -193,12 +188,10 @@ public class HardLinksHandlerTest {
 	 *             if directory comparison fails
 	 */
 	@Test(dataProvider = "testBuildHardLinksSuccess")
-	public void testBuildHardLinksSuccess(String testingAlbumName) throws IOException,
-			DiscOrgException {
+	public void testBuildHardLinksSuccess(String testingAlbumName) throws IOException, DiscOrgException {
 		testBuildHardLinks(testingAlbumName);
 
-		Assert.assertEquals(testingObj.verifyHardLinks(fullDir), true,
-				"Hard links verification failed: ");
+		Assert.assertEquals(testingObj.verifyHardLinks(fullDir), true, "Hard links verification failed: ");
 	}
 
 	/**
@@ -228,9 +221,10 @@ public class HardLinksHandlerTest {
 	 * @throws IOException
 	 *             if I/O error occurs during test or
 	 */
+	// Verification phase is in nested method
+	@SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
 	@Test(dataProvider = "testBuildHardLinksFail", expectedExceptions = DiscOrgException.class)
-	public void testBuildHardLinksFail(String testingAlbumName) throws DiscOrgException,
-			IOException {
+	public void testBuildHardLinksFail(String testingAlbumName) throws DiscOrgException, IOException {
 		testBuildHardLinks(testingAlbumName);
 	}
 
@@ -246,13 +240,12 @@ public class HardLinksHandlerTest {
 	 * @throws DiscOrgException
 	 *             directory comparison fails
 	 */
-	private void testBuildHardLinks(String testingAlbumName) throws IOException,
-			DiscOrgException {
+	private void testBuildHardLinks(String testingAlbumName) throws IOException, DiscOrgException {
 		resourcesPath = TestUtils.getResourcesPathMethod();
 		File selectionDir = getTestingDir(testingAlbumName, false, true);
 		testingObj = new HardLinksHandler(selectionDir);
 		fullDir = getTestingDir(testingAlbumName, true, true);
-		dirComparator = new DirectoryComparator();
+		DirectoryComparator dirComparator = new DirectoryComparator();
 
 		// call testing method
 		testingObj.buildHardLinks(fullDir, dirComparator);

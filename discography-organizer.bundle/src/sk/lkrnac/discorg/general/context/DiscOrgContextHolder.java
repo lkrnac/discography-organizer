@@ -9,7 +9,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  * @author sitko
  */
 public final class DiscOrgContextHolder {
-	private ApplicationContext context;
+	private final ApplicationContext context;
 
 	/** Private constructor of singleton class. */
 	private DiscOrgContextHolder() {
@@ -21,6 +21,9 @@ public final class DiscOrgContextHolder {
 	 * 
 	 * @author sitko
 	 */
+	// NOPMD:
+	// http://en.wikipedia.org/wiki/Singleton_pattern#The_solution_of_Bill_Pugh
+	@SuppressWarnings("PMD.AccessorClassGeneration")
 	private static class SingletonHolder {
 		public static final DiscOrgContextHolder SINGLETON_HOLDER = new DiscOrgContextHolder();
 	}

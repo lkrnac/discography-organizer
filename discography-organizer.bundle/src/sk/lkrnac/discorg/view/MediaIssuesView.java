@@ -29,11 +29,14 @@ import sk.lkrnac.discorg.view.messages.MediaIssueMessages;
  * 
  */
 public class MediaIssuesView extends ViewPart {
+	private static final int COLUMN_MEDIA_DIRECTORY_NAME_WIDTH = 400;
+	private static final int COLUMN_TEXT_WIDTH = 400;
+	private static final int COLUMN_TYPE_WIDTH = 100;
 	private static final String COLUMN_MEDIA_DIRECTORY_NAME = "Media directory name";
 	private static final String COLUMN_TEXT = "Text";
 	private static final String COLUMN_TYPE = "Type";
 	/** View ID. */
-	public static final String ID = "discographyorganizer.views.MediaIssuesView"; //$NON-NLS-1$
+	public static final String VIEW_ID = "discographyorganizer.views.MediaIssuesView"; //$NON-NLS-1$
 
 	private TableViewer viewer;
 	private MediaIssueComparator comparator;
@@ -58,7 +61,7 @@ public class MediaIssuesView extends ViewPart {
 	private void createTableViewer(Composite parent) {
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
 				| SWT.BORDER);
-		createColumns(viewer);
+		createColumns();
 		final Table table = viewer.getTable();
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
@@ -83,21 +86,18 @@ public class MediaIssuesView extends ViewPart {
 
 	/**
 	 * This will create columns for the table.
-	 * 
-	 * @param viewer
-	 *            table viewer object
 	 */
-	private void createColumns(final TableViewer viewer) {
+	private void createColumns() {
 		String[] titles = { COLUMN_TYPE, COLUMN_TEXT, COLUMN_MEDIA_DIRECTORY_NAME };
-		int[] bounds = { 100, 400, 400 };
+		int[] bounds = { COLUMN_TYPE_WIDTH, COLUMN_TEXT_WIDTH, COLUMN_MEDIA_DIRECTORY_NAME_WIDTH };
 
 		// First column is for the first name
 		TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], 0);
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				IMediaIssue i = (IMediaIssue) element;
-				return (i.isError()) ? "ERROR" : "WARNING";
+				IMediaIssue issue = (IMediaIssue) element;
+				return issue.isError() ? "ERROR" : "WARNING";
 			}
 		});
 
@@ -106,9 +106,10 @@ public class MediaIssuesView extends ViewPart {
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				IMediaIssue i = (IMediaIssue) element;
-				String errorMessage = (i.getErrorMessage() == null) ? "" : ": " + i.getErrorMessage();
-				return MediaIssueMessages.getMessageForMessageCode(i.getIssueCode()) + errorMessage;
+				IMediaIssue issue = (IMediaIssue) element;
+				String errorMessage = (issue.getErrorMessage() == null) ? "" : ": " + //$NON-NLS-1$ //$NON-NLS-2$ 
+						issue.getErrorMessage();
+				return MediaIssueMessages.getMessageForMessageCode(issue.getIssueCode()) + errorMessage;
 			}
 		});
 
@@ -117,8 +118,8 @@ public class MediaIssuesView extends ViewPart {
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				IMediaIssue i = (IMediaIssue) element;
-				return i.getRelativePath();
+				IMediaIssue issue = (IMediaIssue) element;
+				return issue.getRelativePath();
 			}
 		});
 	}
@@ -158,7 +159,7 @@ public class MediaIssuesView extends ViewPart {
 	private SelectionAdapter getSelectionAdapter(final TableColumn column, final int index) {
 		SelectionAdapter selectionAdapter = new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent event) {
 				comparator.setColumn(index);
 				int dir = comparator.getDirection();
 				viewer.getTable().setSortDirection(dir);
@@ -185,7 +186,7 @@ public class MediaIssuesView extends ViewPart {
 	 */
 	public final void visualiseIssues(Iterator<IMediaIssue> issuesIterator) {
 		List<IMediaIssue> mediaIssues = new ArrayList<IMediaIssue>();
-		for (; issuesIterator.hasNext();) {
+		while (issuesIterator.hasNext()) {
 			mediaIssues.add(issuesIterator.next());
 		}
 		viewer.setInput(mediaIssues);
@@ -199,24 +200,26 @@ public class MediaIssuesView extends ViewPart {
 		this.viewer.getTable().addSelectionListener(new SelectionListener() {
 
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				if (e.item instanceof TableItem) {
-					IMediaIssue issue = (IMediaIssue) e.item.getData();
+			public void widgetSelected(SelectionEvent event) {
+				if (event.item instanceof TableItem) {
+					IMediaIssue issue = (IMediaIssue) event.item.getData();
 
 					// select issue source in Input storage
 					InputStorageView inputStorageView = VisualiseStoragesHandler
-							.getTreeView(InputStorageView.ID);
-					inputStorageView.selectAllMirrors(issue.getSourceAbsolutePath(), ReferenceStorageView.ID);
+							.getTreeView(InputStorageView.VIEW_ID);
+					inputStorageView.selectAllMirrors(issue.getSourceAbsolutePath(), ReferenceStorageView.VIEW_ID);
 
 					// select issue source in Reference storage
 					ReferenceStorageView referenceStorageView = VisualiseStoragesHandler
-							.getTreeView(ReferenceStorageView.ID);
-					referenceStorageView.selectAllMirrors(issue.getSourceAbsolutePath(), InputStorageView.ID);
+							.getTreeView(ReferenceStorageView.VIEW_ID);
+					referenceStorageView.selectAllMirrors(issue.getSourceAbsolutePath(),
+							InputStorageView.VIEW_ID);
 				}
 			}
 
 			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
+			public void widgetDefaultSelected(SelectionEvent event) {
+				//no action needed
 			}
 		});
 	}

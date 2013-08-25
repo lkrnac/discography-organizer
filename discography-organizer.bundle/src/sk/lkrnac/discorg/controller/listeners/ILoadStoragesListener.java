@@ -7,7 +7,7 @@ package sk.lkrnac.discorg.controller.listeners;
  */
 public interface ILoadStoragesListener {
 	/**
-	 * Load storages from disk command
+	 * Load storages from disk command.
 	 */
 	void loadStorages();
 }

@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 import sk.lkrnac.discorg.Activator;
 
 /**
- * // * Component that holds file names preferences.
+ * Component that holds file names preferences.
  * 
  * @author sitko
  */
 @Service
-public class FileNamesPreferences extends PreferencesHolder {
+public class FileNamesPreferences extends AbstractPreferences {
 	/** Delimiters used for preference value parsing. */
-	static final String FILE_NAMES_DELIMITER = "\\?";
+	public static final String FILE_NAMES_DELIMITER = "\\?"; //$NON-NLS-1$
 
 	private String ignoreCharacters;
 	private List<String> ignoreRegexes;
@@ -23,13 +23,14 @@ public class FileNamesPreferences extends PreferencesHolder {
 	 * Creates instance of file names preferences holder.
 	 */
 	public FileNamesPreferences() {
+		super();
 		readFileNamesPreferences();
 	}
 
 	/**
 	 * Reads file name preferences from preference page.
 	 */
-	final void readFileNamesPreferences() {
+	public final void readFileNamesPreferences() {
 		ignoreRegexes = parsePreferenceString(FileNamesPreferencePage.REGEX_IGNORE_PATTERN);
 		ignoreCharacters = Activator.getDefault().getPreferenceStore()
 				.getString(FileNamesPreferencePage.CHARS_IGNORE_PATTERN);
@@ -69,14 +70,14 @@ public class FileNamesPreferences extends PreferencesHolder {
 
 		// delete ignoring regular expressions from name
 		for (String regex : this.getIgnoreRegexes()) {
-			changedPath = changedPath.replaceAll(regex, "");
+			changedPath = changedPath.replaceAll(regex, ""); //$NON-NLS-1$
 		}
 
-		changedPath = changedPath.replaceAll(" ", "");
+		changedPath = changedPath.replaceAll("\\s", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		// delete ignoring regular characters from name
 		String ignoreChars = this.getIgnoreChars();
 		for (int i = 0; i < ignoreChars.length(); i++) {
-			changedPath = changedPath.replace("" + ignoreChars.charAt(i), "");
+			changedPath = changedPath.replaceAll(String.valueOf(ignoreChars.charAt(i)), ""); //$NON-NLS-1$
 		}
 
 		return changedPath;

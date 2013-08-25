@@ -12,9 +12,9 @@ import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
  * @author sitko
  * 
  */
-public class InputStorageView extends TreeStorageView {
+public class InputStorageView extends AbstractTreeStorageView {
 	/** View ID. */
-	public static final String ID = "discographyorganizer.views.InputStorageView"; //$NON-NLS-1$
+	public static final String VIEW_ID = "discographyorganizer.views.InputStorageView"; //$NON-NLS-1$
 
 	/**
 	 * {@inheritDoc}
@@ -33,16 +33,33 @@ public class InputStorageView extends TreeStorageView {
 		this.getTree().addSelectionListener(new SelectionListener() {
 
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				if (e.item instanceof TreeItem) {
-					selectAllMirrors(((ITreeStorageNode) e.item.getData()).getAbsolutePath(),
-							ReferenceStorageView.ID);
+			public void widgetSelected(SelectionEvent event) {
+				if (event.item instanceof TreeItem) {
+					selectAllMirrors(((ITreeStorageNode) event.item.getData()).getAbsolutePath(),
+							ReferenceStorageView.VIEW_ID);
 				}
 			}
 
 			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
+			public void widgetDefaultSelected(SelectionEvent event) {
+				// no action needed
 			}
 		});
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void createActions() {
+		// no actions needs to be created for this view
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setFocus() {
+		// no action needed
 	}
 }

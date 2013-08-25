@@ -8,7 +8,7 @@ package sk.lkrnac.discorg.preferences;
  */
 public class AudioFormatsPreferencesException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
-	private String format;
+	private final String format;
 
 	/**
 	 * Creates audio format exception instance.
@@ -17,6 +17,7 @@ public class AudioFormatsPreferencesException extends RuntimeException {
 	 *            audio format extension
 	 */
 	public AudioFormatsPreferencesException(String format) {
+		super();
 		this.format = format;
 	}
 

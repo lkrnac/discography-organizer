@@ -18,8 +18,8 @@ import sk.lkrnac.discorg.general.constants.MediaIssueCode;
  * @author sitko
  * 
  */
-public class HardLinksHandler extends DirectoryHandler {
-	private File selectionDir;
+public class HardLinksHandler extends AbstractDirectoryHandler {
+	private final File selectionDir;
 
 	/**
 	 * Creates instance of hard links generator for full directory.
@@ -29,6 +29,7 @@ public class HardLinksHandler extends DirectoryHandler {
 	 *            handler created in directories comparison
 	 */
 	public HardLinksHandler(File selectionDir) {
+		super();
 		if (selectionDir == null) {
 			throw new IllegalArgumentException("selectionDir can't be null"); //$NON-NLS-1$
 		}
@@ -52,6 +53,7 @@ public class HardLinksHandler extends DirectoryHandler {
 	 * @throws IOException
 	 *             if I/O error occurs
 	 */
+	@SuppressWarnings("PMD.ConfusingTernary")
 	public final boolean verifyHardLinks(File fullDir) throws IOException {
 		boolean result = false;
 		for (File selectionFile : selectionDir.listFiles()) {

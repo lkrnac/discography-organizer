@@ -15,15 +15,16 @@ import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
  * @author sitko
  * 
  */
-public class ReferenceStorageView extends TreeStorageView {
+public class ReferenceStorageView extends AbstractTreeStorageView {
 	/** View ID. */
-	public static final String ID = "discographyorganizer.views.ReferenceStorageView";
+	public static final String VIEW_ID = "discographyorganizer.views.ReferenceStorageView"; //$NON-NLS-1$
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void processNode(ITreeStorageNode childNode) {
+		//no action needed here
 	}
 
 	/**
@@ -34,23 +35,41 @@ public class ReferenceStorageView extends TreeStorageView {
 		this.getTree().addSelectionListener(new SelectionListener() {
 
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(SelectionEvent event) {
 				// select mirror items on reference view
-				if (e.item instanceof TreeItem) {
-					ITreeStorageNode selectedNode = (ITreeStorageNode) e.item.getData();
+				if (event.item instanceof TreeItem) {
+					ITreeStorageNode selectedNode = (ITreeStorageNode) event.item.getData();
 					List<String> selectionIds = new ArrayList<String>(selectedNode.getMirrorsAbsolutePaths());
 					selectionIds.add(selectedNode.getAbsolutePath());
 					selectItems(selectionIds);
 
-					InputStorageView inputStorage = VisualiseStoragesHandler.getTreeView(InputStorageView.ID);
+					InputStorageView inputStorage = VisualiseStoragesHandler
+							.getTreeView(InputStorageView.VIEW_ID);
 					inputStorage.selectItems(selectionIds);
 				}
 			}
 
 			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
+			public void widgetDefaultSelected(SelectionEvent event) {
+				//no action needed
 			}
 		});
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void createActions() {
+		// no actions needs to be created for this view
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setFocus() {
+		// no action needed
 	}
 
 }

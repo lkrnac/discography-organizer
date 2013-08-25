@@ -31,7 +31,7 @@ import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
  * @author sitko
  * 
  */
-public abstract class TreeStorageView extends ViewPart {
+public abstract class AbstractTreeStorageView extends ViewPart {
 	private static final String ICONS_DIR = "icons" + File.separator + //$NON-NLS-1$ 
 			"status-small" + File.separator; //$NON-NLS-1$
 	private static Map<String, Image> icons = new HashMap<String, Image>();
@@ -72,9 +72,7 @@ public abstract class TreeStorageView extends ViewPart {
 	/**
 	 * Create the actions.
 	 */
-	private void createActions() {
-		// Create the actions
-	}
+	protected abstract void createActions();
 
 	/**
 	 * Initialize the toolbar.
@@ -96,9 +94,7 @@ public abstract class TreeStorageView extends ViewPart {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setFocus() {
-		// Set the focus
-	}
+	public abstract void setFocus();
 
 	/**
 	 * Is used for creation of FocusListener.
@@ -123,7 +119,7 @@ public abstract class TreeStorageView extends ViewPart {
 	 * @param rootNode
 	 *            - root storage node
 	 */
-	final void visualizeStorageNode(ITreeStorageNode rootNode) {
+	public final void visualizeStorageNode(ITreeStorageNode rootNode) {
 		treeItemsMap.clear();
 		getTree().removeAll();
 		visualizeStorageNode(getTree(), rootNode);
@@ -138,19 +134,19 @@ public abstract class TreeStorageView extends ViewPart {
 	 * @return image object for the icon
 	 */
 	private Image getIcon(String iconName) {
+		Image icon = null;
 		Image oldIcon = icons.get(iconName);
 		if (oldIcon != null) {
-			return oldIcon;
+			icon = oldIcon;
 		}
 
-		ImageDescriptor d = Activator.getImageDescriptor(File.separator + ICONS_DIR + File.separator
-				+ iconName);
-		Image icon = null;
-		if (d != null) {
-			icon = d.createImage();
-		} else {
+		ImageDescriptor imageDescriptor = Activator.getImageDescriptor(File.separator + ICONS_DIR
+				+ File.separator + iconName);
+		if (imageDescriptor == null) {
 			// TODO: handle error
 			icon = new Image(getDisplay(), 1, 1);
+		} else {
+			icon = imageDescriptor.createImage();
 		}
 		icons.put(iconName, icon);
 		return icon;
@@ -167,7 +163,7 @@ public abstract class TreeStorageView extends ViewPart {
 	private void visualizeStorageNode(Widget parentWidget, ITreeStorageNode parentNode) {
 		while (parentNode.hasNextChild()) {
 			ITreeStorageNode childNode = parentNode.getNextChild();
-			TreeItem childTreeItem = (parentWidget instanceof Tree) ? new TreeItem((Tree) parentWidget,
+			TreeItem childTreeItem = parentWidget instanceof Tree ? new TreeItem((Tree) parentWidget,
 					SWT.NULL) : new TreeItem((TreeItem) parentWidget, SWT.NULL);
 			childTreeItem.setText(childNode.getName());
 			childTreeItem.setImage(getIcon(childNode.getNodeStatus().getIconName()));
@@ -218,7 +214,7 @@ public abstract class TreeStorageView extends ViewPart {
 				}
 			}
 		}
-		tree.setSelection(itemsForSelection.toArray(new TreeItem[0]));
+		tree.setSelection(itemsForSelection.toArray(new TreeItem[itemsForSelection.size()]));
 		return itemsForSelection.size();
 	}
 
@@ -255,7 +251,7 @@ public abstract class TreeStorageView extends ViewPart {
 			selectItems(mirrorIds);
 
 			// find reference view instance
-			TreeStorageView mirrorStorageView = VisualiseStoragesHandler.getTreeView(mirrorViewId);
+			AbstractTreeStorageView mirrorStorageView = VisualiseStoragesHandler.getTreeView(mirrorViewId);
 
 			// select mirror items on reference view
 			mirrorStorageView.selectItems(mirrorIds);

@@ -35,6 +35,8 @@ public class BuildHardLinksHandler implements IBuildHardLinksListener {
 	/**
 	 * {@inheritDoc}
 	 */
+	// NOPMD: This handler needs to inform invoker about any type of error
+	@SuppressWarnings("PMD.SignatureDeclareThrowsException")
 	@Override
 	public final void onBuildHardLinks() throws Exception {
 		Collection<String> selectionPaths = mediaIssuesCache
@@ -45,7 +47,7 @@ public class BuildHardLinksHandler implements IBuildHardLinksListener {
 			// selectionNode.getDirectoryIoFacade().buildHardLinks(fullNode.getFile());
 		}
 		// loadStoragesHandler.loadStorages();
-		throw new UnsupportedOperationException("tu sme");
+		throw new UnsupportedOperationException("tu sme"); //$NON-NLS-1$
 	}
 
 }

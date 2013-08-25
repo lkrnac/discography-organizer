@@ -12,8 +12,8 @@ import sk.lkrnac.discorg.Activator;
  * @author sitko
  */
 @Service
-public class AudioFormatsPreferences extends PreferencesHolder {
-	private final static String AUDIO_FORMATS_DELIMITERS = ",|\\.|;";
+public class AudioFormatsPreferences extends AbstractPreferences {
+	private static final String AUDIO_FORMATS_DELIMITERS = ",|\\.|;"; //$NON-NLS-1$
 	private List<String> lossy;
 	private List<String> lossless;
 	private List<String> warning;
@@ -23,6 +23,7 @@ public class AudioFormatsPreferences extends PreferencesHolder {
 	 * Creates instance of the audio format preferences holder.
 	 */
 	public AudioFormatsPreferences() {
+		super();
 		readAudioFormats();
 	}
 
@@ -37,7 +38,7 @@ public class AudioFormatsPreferences extends PreferencesHolder {
 	/**
 	 * Reads audio formats from preference page.
 	 */
-	final void readAudioFormats() {
+	public final void readAudioFormats() {
 		lossy = parsePreferenceString(AudioFormatsPreferencePage.LOSSY_FORMATS);
 		lossless = parsePreferenceString(AudioFormatsPreferencePage.LOSSLESS_FORMATS);
 		warning = parsePreferenceString(AudioFormatsPreferencePage.WARNING_FORMATS);

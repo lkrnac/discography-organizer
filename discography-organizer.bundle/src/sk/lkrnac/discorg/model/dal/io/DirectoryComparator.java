@@ -11,8 +11,8 @@ import java.util.List;
  * 
  * @author sitko
  */
-public class DirectoryComparator extends DirectoryHandler {
-	private List<File> unmatchedList = null;
+public class DirectoryComparator extends AbstractDirectoryHandler {
+	private List<File> unmatchedList;
 
 	/**
 	 * Compares directories based on file names and file sizes. If media files
@@ -47,7 +47,7 @@ public class DirectoryComparator extends DirectoryHandler {
 			// do the comparison
 			super.fileFacingLoop(Arrays.asList(selectionArray), Arrays.asList(fullArray));
 			if (found) {
-				result = unmatchedList.size() == 0;
+				result = unmatchedList.isEmpty();
 			}
 		}
 		return result;

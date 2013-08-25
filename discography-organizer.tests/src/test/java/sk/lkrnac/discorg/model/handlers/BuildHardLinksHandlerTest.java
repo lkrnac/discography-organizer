@@ -2,6 +2,7 @@ package sk.lkrnac.discorg.model.handlers;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -32,7 +33,7 @@ public class BuildHardLinksHandlerTest {
 	private static final int TESTING_COUNT = 10;
 
 	@InjectMocks
-	private BuildHardLinksHandler buildHardLinksHandler = new BuildHardLinksHandler();
+	private final BuildHardLinksHandler buildHardLinksHandler = new BuildHardLinksHandler();
 
 	@Mock
 	private ReferenceStorageCache referenceStorageCacheMock;
@@ -53,7 +54,7 @@ public class BuildHardLinksHandlerTest {
 
 	/**
 	 * Data provider for test
-	 * {@link BuildHardLinksHandlerTest#testOnBuildHardLinks(ArrayList, ArrayList, ArrayList)}
+	 * {@link BuildHardLinksHandlerTest#testOnBuildHardLinks(List, List, List)}
 	 * 
 	 * @return test cases
 	 */
@@ -102,8 +103,8 @@ public class BuildHardLinksHandlerTest {
 	 *             if error occurs
 	 */
 	// @Test(dataProvider = "testOnBuildHardLinks")
-	public void testOnBuildHardLinks(ArrayList<String> selectionPaths, ArrayList<String> fullPaths,
-			ArrayList<DirectoryIoFacade> directoryIoFacadeMocks) throws Exception {
+	public void testOnBuildHardLinks(List<String> selectionPaths, List<String> fullPaths,
+			List<DirectoryIoFacade> directoryIoFacadeMocks) throws Exception {
 		Mockito.when(
 				mediaIssuesCacheMock
 						.getSourceAbsolutePaths(MediaIssueCode.REFERENCE_NO_HARD_LINK_IN_SELECTION))

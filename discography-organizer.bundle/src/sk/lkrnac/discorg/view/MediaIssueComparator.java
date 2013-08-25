@@ -21,6 +21,7 @@ public class MediaIssueComparator extends ViewerComparator {
 	 * Creates media issue comparator object.
 	 */
 	public MediaIssueComparator() {
+		super();
 		this.propertyIndex = 0;
 		direction = DESCENDING;
 	}
@@ -50,31 +51,31 @@ public class MediaIssueComparator extends ViewerComparator {
 	}
 
 	@Override
-	public final int compare(Viewer viewer, Object e1, Object e2) {
-		IMediaIssue p1 = (IMediaIssue) e1;
-		IMediaIssue p2 = (IMediaIssue) e2;
-		int rc = 0;
+	public final int compare(Viewer viewer, Object issueObject1, Object issueObject2) {
+		IMediaIssue issue1 = (IMediaIssue) issueObject1;
+		IMediaIssue issue2 = (IMediaIssue) issueObject2;
+		int result = 0;
 		switch (propertyIndex) {
 		case 0:
-			if (p1.isError() == p2.isError()) {
-				rc = 0;
+			if (issue1.isError() == issue2.isError()) {
+				result = 0;
 			} else {
-				rc = (p1.isError() ? 1 : -1);
+				result = (issue1.isError() ? 1 : -1);
 			}
 			break;
 		case 1:
-			rc = p1.getIssueCode().compareTo(p2.getIssueCode());
+			result = issue1.getIssueCode().compareTo(issue2.getIssueCode());
 			break;
 		case 2:
-			rc = p1.getRelativePath().compareTo(p2.getRelativePath());
+			result = issue1.getRelativePath().compareTo(issue2.getRelativePath());
 			break;
 		default:
-			rc = 0;
+			result = 0;
 		}
 		// If descending order, flip the direction
 		if (direction == DESCENDING) {
-			rc = -rc;
+			result = -result;
 		}
-		return rc;
+		return result;
 	}
 }

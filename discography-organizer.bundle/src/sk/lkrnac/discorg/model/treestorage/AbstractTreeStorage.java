@@ -21,7 +21,7 @@ import sk.lkrnac.discorg.model.treestorage.node.TreeStorageNode;
  * 
  * @author sitko
  */
-public abstract class TreeStorage {
+public abstract class AbstractTreeStorage {
 	private TreeStorageBranchNode rootNode;
 
 	@Autowired
@@ -53,7 +53,7 @@ public abstract class TreeStorage {
 
 		// clear previous load and load again
 		getRootNode().clearAllChildren();
-		if (!"".equals(getStoragePath())) {
+		if (getStoragePath().isEmpty()) {
 			loadTreeFromHdd(getStoragePath(), getRootNode());
 		}
 
@@ -66,7 +66,7 @@ public abstract class TreeStorage {
 	/**
 	 * Perform recursive post load processing for tree storage.<br>
 	 * For each node call
-	 * {@link TreeStorage#processNodePostLoad(ITreeStorageNode)}
+	 * {@link AbstractTreeStorage#processNodePostLoad(ITreeStorageNode)}
 	 * 
 	 * @param parent
 	 *            parent node in composite structure
@@ -91,7 +91,7 @@ public abstract class TreeStorage {
 	 */
 	private void loadTreeFromHdd(String path, TreeStorageBranchNode rootNode) {
 		File rootDir = new File(path);
-		loadSubNode(rootDir, rootNode, "");
+		loadSubNode(rootDir, rootNode, ""); //$NON-NLS-1$
 	}
 
 	/**
@@ -148,8 +148,8 @@ public abstract class TreeStorage {
 		List<File> subFiles = Arrays.asList(parent.listFiles());
 		Collections.sort(subFiles, new Comparator<File>() {
 			@Override
-			public int compare(File o1, File o2) {
-				return o1.getName().compareTo(o2.getName());
+			public int compare(File file1, File file2) {
+				return file1.getName().compareTo(file2.getName());
 			}
 		});
 		return subFiles;

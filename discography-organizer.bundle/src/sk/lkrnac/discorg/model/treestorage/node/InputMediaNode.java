@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
 
@@ -20,7 +22,7 @@ import sk.lkrnac.discorg.model.cache.MediaIssue;
  * 
  */
 public class InputMediaNode extends MediaBranchNode {
-	private Collection<ReferenceMediaNode> referenceMirrors;
+	private final Collection<ReferenceMediaNode> referenceMirrors;
 
 	/**
 	 * Creates instance of media node in input storage.
@@ -80,13 +82,13 @@ public class InputMediaNode extends MediaBranchNode {
 			List<String> mediaFilesNames = mirror.getMediaFilesNames();
 			int difference = mediaFilesNames.size() - this.getMediaFilesNames().size();
 
-			if (difference < 0) {
+			if (difference < NumberUtils.INTEGER_ZERO) {
 				MediaIssue mediaIssue = new MediaIssue(getAbsolutePath(),
 						MediaIssueCode.INPUT_MISSING_MEDIA_FILES, this.getRelativePath(), true);
 				getMediaIssuesCache().add(mediaIssue);
 				this.setNodeStatus(BranchNodeStatus.ERROR);
 			} else {
-				if (difference > 0) {
+				if (difference > NumberUtils.INTEGER_ZERO) {
 					this.setNodeStatus(BranchNodeStatus.UPDATE);
 					getReferenceStorageCache().putItemForUpdate(this);
 				}

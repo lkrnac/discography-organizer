@@ -14,5 +14,7 @@ public interface IBuildHardLinksListener {
 	 * @throws Exception
 	 *             if some error occurs
 	 */
+	// NOPMD: This handler needs to inform invoker about any type of error
+	@SuppressWarnings("PMD.SignatureDeclareThrowsException")
 	void onBuildHardLinks() throws Exception;
 }

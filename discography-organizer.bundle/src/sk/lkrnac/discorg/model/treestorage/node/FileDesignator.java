@@ -1,7 +1,9 @@
 package sk.lkrnac.discorg.model.treestorage.node;
 
 import java.io.File;
+import java.util.Locale;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,12 +29,14 @@ public class FileDesignator {
 	 *         is not a directory at all
 	 */
 	public final boolean isMediaDir(File file) {
+		boolean result = false;
 		for (File subFile : file.listFiles()) {
 			if (isMediaFile(subFile)) {
-				return true;
+				result = true;
+				break;
 			}
 		}
-		return false;
+		return result;
 	}
 
 	/**
@@ -44,10 +48,11 @@ public class FileDesignator {
 	 */
 	public final boolean isLossLessMediaFile(File file) {
 		String extension = getExtension(file);
+		boolean result = false;
 		if (audioFormatPreferences.isLosslessAudioFormat(extension)) {
-			return true;
+			result = true;
 		}
-		return false;
+		return result;
 	}
 
 	/**
@@ -59,10 +64,12 @@ public class FileDesignator {
 	 *         empty string if the file does not have extension
 	 */
 	public static String getExtension(File file) {
-		String extension = "";
-		if (file.getName().lastIndexOf('.') > 0) {
+		String extension = ""; //$NON-NLS-1$
+		if (file.getName().lastIndexOf('.') > NumberUtils.INTEGER_ZERO) {
 			extension = file.getName().substring(file.getName().lastIndexOf('.') + 1);
-			extension = extension.toLowerCase();
+
+			String languageCode = System.getProperty("osgi.nl"); //$NON-NLS-1$
+			extension = extension.toLowerCase(new Locale(languageCode));
 		}
 		return extension;
 	}
@@ -75,11 +82,12 @@ public class FileDesignator {
 	 * @return true if given file is lossy audio file
 	 */
 	public final boolean isLossyMediaFile(File file) {
+		boolean result = false;
 		String extension = getExtension(file);
 		if (audioFormatPreferences.isLossyAudioFormat(extension)) {
-			return true;
+			result = true;
 		}
-		return false;
+		return result;
 	}
 
 	/**
