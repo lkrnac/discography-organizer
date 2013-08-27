@@ -68,14 +68,11 @@ public class DirectoryIoFacade {
 	 * 
 	 * @param fullDir
 	 *            full album from which to create hard links
-	 * @throws IOException
-	 *             if there are more media files in selection mirror than in
-	 *             full album or if I/O error occurs
 	 * @throws DiscOrgException
 	 *             if full media directory contains less files than selection
-	 *             mirror
+	 *             mirror or if I/O error occurs
 	 */
-	public final void buildHardLinks(File fullDir) throws IOException, DiscOrgException {
+	public final void buildHardLinks(File fullDir) throws DiscOrgException {
 		this.getHardLinksHandler().buildHardLinks(fullDir, getDirectoryComparator());
 	}
 

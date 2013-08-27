@@ -97,22 +97,22 @@ public class HardLinksHandler extends AbstractDirectoryHandler {
 	 *            full album from which to create hard links
 	 * @param dirComparator
 	 *            comparator of media directories
-	 * @throws IOException
-	 *             if there are more media files in selection mirror than in
-	 *             full album or if I/O error occurs
 	 * @throws DiscOrgException
 	 *             if full media directory contains less files than selection
-	 *             mirror
+	 *             mirror or if I/O error occurs
 	 */
-	public final void buildHardLinks(File fullDir, DirectoryComparator dirComparator) throws IOException,
-			DiscOrgException {
-		if (dirComparator.compareDirectories(fullDir, this.getSelectionDir())) {
-			File[] fullArray = fullDir.listFiles();
-			File[] selectionArray = selectionDir.listFiles();
-			fileFacingLoop(Arrays.asList(selectionArray), Arrays.asList(fullArray));
-		} else {
-			throw new DiscOrgException(selectionDir.getAbsolutePath(),
-					MediaIssueCode.GENERIC_MORE_FILES_IN_SELECTION);
+	public final void buildHardLinks(File fullDir, DirectoryComparator dirComparator) throws DiscOrgException {
+		try {
+			if (dirComparator.compareDirectories(fullDir, this.getSelectionDir())) {
+				File[] fullArray = fullDir.listFiles();
+				File[] selectionArray = selectionDir.listFiles();
+				fileFacingLoop(Arrays.asList(selectionArray), Arrays.asList(fullArray));
+			} else {
+				throw new DiscOrgException(selectionDir.getAbsolutePath(),
+						MediaIssueCode.GENERIC_MORE_FILES_IN_SELECTION);
+			}
+		} catch (IOException ioException) {
+			throw new DiscOrgException(this.getSelectionDir().getAbsolutePath(), ioException);
 		}
 	}
 

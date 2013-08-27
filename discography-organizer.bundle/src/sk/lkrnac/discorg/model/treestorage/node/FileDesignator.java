@@ -1,12 +1,12 @@
 package sk.lkrnac.discorg.model.treestorage.node;
 
 import java.io.File;
-import java.util.Locale;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sk.lkrnac.discorg.general.context.WorkbenchEnvironmentFacade;
 import sk.lkrnac.discorg.model.preferences.AudioFormatsPreferences;
 
 /**
@@ -18,6 +18,9 @@ import sk.lkrnac.discorg.model.preferences.AudioFormatsPreferences;
 public class FileDesignator {
 	@Autowired
 	private AudioFormatsPreferences audioFormatPreferences;
+
+	@Autowired
+	private WorkbenchEnvironmentFacade workbenchEnvironment;
 
 	/**
 	 * Indicates if file is directory containing audio files.
@@ -63,13 +66,12 @@ public class FileDesignator {
 	 * @return extension of the given file<br>
 	 *         empty string if the file does not have extension
 	 */
-	public static String getExtension(File file) {
+	public String getExtension(File file) {
 		String extension = ""; //$NON-NLS-1$
 		if (file.getName().lastIndexOf('.') > NumberUtils.INTEGER_ZERO) {
 			extension = file.getName().substring(file.getName().lastIndexOf('.') + 1);
 
-			String languageCode = System.getProperty("osgi.nl"); //$NON-NLS-1$
-			extension = extension.toLowerCase(new Locale(languageCode));
+			extension = extension.toLowerCase(workbenchEnvironment.getCurrentLocale());
 		}
 		return extension;
 	}

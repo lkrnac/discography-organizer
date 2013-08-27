@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import sk.lkrnac.discorg.controller.listeners.IBuildHardLinksListener;
+import sk.lkrnac.discorg.general.DiscOrgException;
 import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
@@ -35,10 +36,8 @@ public class BuildHardLinksHandler implements IBuildHardLinksListener {
 	/**
 	 * {@inheritDoc}
 	 */
-	// NOPMD: This handler needs to inform invoker about any type of error
-	@SuppressWarnings("PMD.SignatureDeclareThrowsException")
 	@Override
-	public final void onBuildHardLinks() throws Exception {
+	public final void onBuildHardLinks() throws DiscOrgException {
 		Collection<String> selectionPaths = mediaIssuesCache
 				.getSourceAbsolutePaths(MediaIssueCode.REFERENCE_NO_HARD_LINK_IN_SELECTION);
 		for (String selectionPath : selectionPaths) {

@@ -1,5 +1,7 @@
 package sk.lkrnac.discorg.controller.listeners;
 
+import sk.lkrnac.discorg.general.DiscOrgException;
+
 /**
  * Interface for visualizing error catch by controller.
  * 
@@ -9,8 +11,8 @@ public interface IErrorVisualizer {
 	/**
 	 * Visualize given error.
 	 * 
-	 * @param thtowable
+	 * @param error
 	 *            error to visualize
 	 */
-	void visualizeError(Throwable thtowable);
+	void visualizeError(DiscOrgException error);
 }

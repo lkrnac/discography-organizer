@@ -14,15 +14,12 @@ public final class ErrorMessages extends NLS {
 	 * Prefix of the error message with specified resource path as string
 	 * parameter.
 	 */
-	// SUPPRESS CHECKSTYLE VisibilityModifier 10 lines: NLS functionality
+	// SUPPRESS CHECKSTYLE VisibilityModifier 15 lines: NLS functionality
 	// requires public fields to assign translations
-	public static String errorMessage;
+	public static String errorDialogPrefix;
 
-	/**
-	 * Prefix of unexpected error message with specified resource path as string
-	 * parameter.
-	 */
-	public static String unexpectedErrorMessage;
+	/** Title of error message dialog. */
+	public static String errorDialogTitle;
 
 	static {
 		// initialize resource bundle
@@ -39,14 +36,11 @@ public final class ErrorMessages extends NLS {
 	/**
 	 * Finds message for message code.
 	 * 
-	 * @param expected
-	 *            flag if the error is unexpected
 	 * @param resourcePath
 	 *            path of the resource on which error occurred
 	 * @return message to show on GUI
 	 */
-	public static String getErrorMessage(boolean expected, String resourcePath) {
-		String message = expected ? errorMessage : unexpectedErrorMessage;
-		return String.format(message, resourcePath);
+	public static String getErrorDialogPrefix(String resourcePath) {
+		return String.format(errorDialogPrefix, resourcePath);
 	}
 }

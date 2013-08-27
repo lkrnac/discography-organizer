@@ -1,5 +1,7 @@
 package sk.lkrnac.discorg.controller.listeners;
 
+import sk.lkrnac.discorg.general.DiscOrgException;
+
 /**
  * Command from user, which is replacing media files in selection mirror
  * directories by hard links of media files from full album mirrors.
@@ -11,10 +13,8 @@ public interface IBuildHardLinksListener {
 	/**
 	 * Build hard links command.
 	 * 
-	 * @throws Exception
-	 *             if some error occurs
+	 * @throws DiscOrgException
+	 *             if some application specific error occurs
 	 */
-	// NOPMD: This handler needs to inform invoker about any type of error
-	@SuppressWarnings("PMD.SignatureDeclareThrowsException")
-	void onBuildHardLinks() throws Exception;
+	void onBuildHardLinks() throws DiscOrgException;
 }

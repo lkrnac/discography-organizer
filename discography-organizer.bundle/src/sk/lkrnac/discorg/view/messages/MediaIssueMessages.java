@@ -117,9 +117,9 @@ public final class MediaIssueMessages extends NLS {
 	 */
 	// NOPMD: PMD doesn't like assertion of the message
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-	public static String getMessageForMessageCode(MediaIssueCode messageCode, Object... messageParameters) {
+	public static String getMessageForMessageCode(MediaIssueCode messageCode, String... messageParameters) {
 		String message = MESSAGES_MAP.get(messageCode);
 		assert message != null : "Can't find message for message code: " + messageCode; //$NON-NLS-1$
-		return String.format(message, messageParameters);
+		return String.format(message, (Object []) messageParameters);
 	}
 }

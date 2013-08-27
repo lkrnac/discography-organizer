@@ -4,6 +4,13 @@
 	<artifactId>discography-organizer.tests</artifactId>
 	<packaging>jar</packaging>
 
+	<parent>
+		<groupId>sk.lkrnac.discorg</groupId>
+		<artifactId>discography-organizer.dependencies.parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../discography-organizer.dependencies.parent</relativePath>
+	</parent>
+
 	<properties>
 		<powermock.version>1.5.1</powermock.version>
 	</properties>
@@ -14,18 +21,12 @@
 			<url>http://maven.eclipse.org/nexus/content/repositories/testing</url>
 		</repository>
 	</repositories>
-	<parent>
-		<groupId>sk.lkrnac.discorg</groupId>
-		<artifactId>discography-organizer.dependencies.parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../discography-organizer.dependencies.parent</relativePath>
-	</parent>
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>1.8.4</version>
+			<version>1.9.5</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -34,32 +35,12 @@
 			<version>6.8</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-module-testng</artifactId>
-			<version>${powermock.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.powermock</groupId>
-			<artifactId>powermock-api-mockito</artifactId>
-			<version>${powermock.version}</version>
-			<scope>test</scope>
-		</dependency>
 
 		<!-- Provides dependency for OSGi resource bundler loader (NLS) -->
 		<dependency>
 			<groupId>org.eclipse.tycho</groupId>
 			<artifactId>org.eclipse.osgi</artifactId>
 			<version>3.8.1.v20120830-144521</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- Provides dependency for Eclipse UI classes. It doesn't have to be 
-			exact same version as in application because these classes are mocked anyway -->
-		<dependency>
-			<groupId>org.eclipse.ui</groupId>
-			<artifactId>org.eclipse.ui</artifactId>
-			<version>3.6.2</version>
 			<scope>test</scope>
 		</dependency>
 		

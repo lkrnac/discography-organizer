@@ -12,8 +12,8 @@ import sk.lkrnac.discorg.general.constants.MediaIssueCode;
  */
 public class DiscOrgException extends Exception {
 	private static final long serialVersionUID = 1L;
-	private final MediaIssueCode mediaIssueCode;
-	private String[] messageParameters;
+	private MediaIssueCode mediaIssueCode;
+	private String[] messageParameters = new String[] {};
 	private final String resourcePath;
 
 	/**
@@ -35,14 +35,11 @@ public class DiscOrgException extends Exception {
 	 * 
 	 * @param resourcePath
 	 *            path of the resource on which error occurred
-	 * @param mediaIssueCode
-	 *            media issue code belonging to this error
 	 * @param cause
 	 *            nested source problem
 	 */
-	public DiscOrgException(String resourcePath, MediaIssueCode mediaIssueCode, Throwable cause) {
-		super(cause.getLocalizedMessage());
-		this.mediaIssueCode = mediaIssueCode;
+	public DiscOrgException(String resourcePath, Throwable cause) {
+		super(cause.getLocalizedMessage(), cause);
 		this.resourcePath = resourcePath;
 	}
 
@@ -58,7 +55,11 @@ public class DiscOrgException extends Exception {
 	 *            Parameters to be inserted into error message
 	 */
 	public final void setMessageParameters(String[] messageParameters) {
-		this.messageParameters = Arrays.copyOf(messageParameters, messageParameters.length);
+		String[] messageParametersNullSafe = new String[] {};
+		if (messageParameters != null) {
+			messageParametersNullSafe = messageParameters;
+		}
+		this.messageParameters = Arrays.copyOf(messageParametersNullSafe, messageParametersNullSafe.length);
 	}
 
 	/**

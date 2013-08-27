@@ -128,7 +128,7 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	 */
 	private String initFormatForFileName(String previousAudioFormatString, File file) throws DiscOrgException {
 		String audioFormatString = null;
-		String extension = FileDesignator.getExtension(file);
+		String extension = getFileDesignator().getExtension(file);
 
 		// get type of format
 		boolean lossyAudioFormat = getFileDesignator().isLossyMediaFile(file);
