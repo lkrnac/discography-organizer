@@ -36,9 +36,7 @@
     <module name="RedundantImport"/>
     <module name="UnusedImports"/>
     <module name="LineLength">
-      <property name="severity" value="ignore"/>
-      <property name="max" value="110"/>
-      <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+      <property name="max" value="115"/>
     </module>
     <module name="MethodLength"/>
     <module name="ParameterNumber"/>
