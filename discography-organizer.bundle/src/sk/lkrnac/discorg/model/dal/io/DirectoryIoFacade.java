@@ -58,7 +58,7 @@ public class DirectoryIoFacade {
 	 * @throws IOException
 	 *             if I/O error occurs
 	 */
-	public final boolean verifyHardLinks(File fullDir) throws IOException {
+	public boolean verifyHardLinks(File fullDir) throws IOException {
 		return getHardLinksHandler().verifyHardLinks(fullDir);
 	}
 
@@ -72,7 +72,7 @@ public class DirectoryIoFacade {
 	 *             if full media directory contains less files than selection
 	 *             mirror or if I/O error occurs
 	 */
-	public final void buildHardLinks(File fullDir) throws DiscOrgException {
+	public void buildHardLinks(File fullDir) throws DiscOrgException {
 		this.getHardLinksHandler().buildHardLinks(fullDir, getDirectoryComparator());
 	}
 

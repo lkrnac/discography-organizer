@@ -41,7 +41,7 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	/**
 	 * @return audio format type
 	 */
-	public final NodeStatus getAudioFormatType() {
+	public NodeStatus getAudioFormatType() {
 		if (audioFormatType == null) {
 			initializeAudioFormat();
 		}
@@ -51,7 +51,7 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	/**
 	 * @return get audio format name
 	 */
-	public final String getAudioFormatName() {
+	public String getAudioFormatName() {
 		if (audioFormatName == null) {
 			initializeAudioFormat();
 		}
@@ -61,7 +61,7 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	/**
 	 * @return list of the media files in this directory
 	 */
-	public final List<String> getMediaFilesNames() {
+	public List<String> getMediaFilesNames() {
 		ArrayList<String> retVal = new ArrayList<String>();
 		for (File subFile : getFile().listFiles()) {
 			if (getFileDesignator().isMediaFile(subFile)) {
@@ -156,7 +156,7 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	 * Checks if media directory does not contain other media directory. If yes
 	 * creates media issue.
 	 */
-	public final void checkMediaSubDir() {
+	public void checkMediaSubDir() {
 		if (this.getFile() != null && this.getFile().isDirectory()) {
 			// check if directory is that contains only files
 			boolean isLeaf = this.getFile().listFiles(new FileFilter() {

@@ -54,6 +54,7 @@ public class NodeStatus implements INodeStatus {
 	 */
 	@Override
 	public final String toString() {
-		return "NodeStatus [iconName=" + iconName + ", severity=" + severity + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return "NodeStatus [iconName=" + iconName + //$NON-NLS-1$
+				", severity=" + severity + "]"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

@@ -53,7 +53,7 @@ public abstract class AbstractTreeStorage {
 
 		// clear previous load and load again
 		getRootNode().clearAllChildren();
-		if (getStoragePath().isEmpty()) {
+		if (!getStoragePath().isEmpty()) {
 			loadTreeFromHdd(getStoragePath(), getRootNode());
 		}
 

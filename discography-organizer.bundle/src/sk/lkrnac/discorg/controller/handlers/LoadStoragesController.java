@@ -12,7 +12,7 @@ import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
  * 
  * @author sitko
  */
-public class LoadHandler extends AbstractHandler {
+public class LoadStoragesController extends AbstractHandler {
 	/**
 	 * Handles load storages controller command.
 	 * <p>
@@ -22,7 +22,7 @@ public class LoadHandler extends AbstractHandler {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object execute(ExecutionEvent event) throws ExecutionException {
 		ILoadStoragesListener listener = DiscOrgContextHolder.getInstance().getContext()
 				.getBean(ILoadStoragesListener.class);
 

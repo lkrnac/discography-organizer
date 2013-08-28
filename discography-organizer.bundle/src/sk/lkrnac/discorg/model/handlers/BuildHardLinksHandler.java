@@ -10,7 +10,6 @@ import sk.lkrnac.discorg.general.DiscOrgException;
 import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
-import sk.lkrnac.discorg.model.preferences.StoragesPreferences;
 import sk.lkrnac.discorg.model.treestorage.node.ReferenceMediaNode;
 
 /**
@@ -28,9 +27,6 @@ public class BuildHardLinksHandler implements IBuildHardLinksListener {
 	private ReferenceStorageCache referenceStorageCache;
 
 	@Autowired
-	private StoragesPreferences storagesPreferences;
-
-	@Autowired
 	private LoadStoragesHandler loadStoragesHandler;
 
 	/**
@@ -43,10 +39,9 @@ public class BuildHardLinksHandler implements IBuildHardLinksListener {
 		for (String selectionPath : selectionPaths) {
 			ReferenceMediaNode selectionNode = referenceStorageCache.getReferenceMediaNode(selectionPath);
 			ReferenceMediaNode fullNode = selectionNode.getFullMirror();
-			// selectionNode.getDirectoryIoFacade().buildHardLinks(fullNode.getFile());
+			selectionNode.getDirectoryIoFacade().buildHardLinks(fullNode.getFile());
 		}
-		// loadStoragesHandler.loadStorages();
-		throw new UnsupportedOperationException("tu sme"); //$NON-NLS-1$
+		loadStoragesHandler.loadStorages();
 	}
 
 }

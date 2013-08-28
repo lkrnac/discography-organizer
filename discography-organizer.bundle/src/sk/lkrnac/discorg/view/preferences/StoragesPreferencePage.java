@@ -29,12 +29,12 @@ public class StoragesPreferencePage extends FieldEditorPreferencePage implements
 	@Override
 	protected final void createFieldEditors() {
 		// Create the field editors
-		addField(new DirectoryFieldEditor(StoragesPreferenceIds.REFERENCE_STORAGE, SrotagesPreferenceMessages.referenceStorage,
-				getFieldEditorParent()));
-		addField(new DirectoryFieldEditor(StoragesPreferenceIds.INPUT_STORAGE, SrotagesPreferenceMessages.inputStorage,
-				getFieldEditorParent()));
-		addField(new DirectoryFieldEditor(StoragesPreferenceIds.OUTPUT_STORAGE_LOSSY, SrotagesPreferenceMessages.outputStorageLossy,
-				getFieldEditorParent()));
+		addField(new DirectoryFieldEditor(StoragesPreferenceIds.REFERENCE_STORAGE,
+				SrotagesPreferenceMessages.referenceStorage, getFieldEditorParent()));
+		addField(new DirectoryFieldEditor(StoragesPreferenceIds.INPUT_STORAGE,
+				SrotagesPreferenceMessages.inputStorage, getFieldEditorParent()));
+		addField(new DirectoryFieldEditor(StoragesPreferenceIds.OUTPUT_STORAGE_LOSSY,
+				SrotagesPreferenceMessages.outputStorageLossy, getFieldEditorParent()));
 		addField(new DirectoryFieldEditor(StoragesPreferenceIds.OUTPUT_STORAGE_LOSSLESS,
 				SrotagesPreferenceMessages.outputStorageLossless, getFieldEditorParent()));
 		addField(new StringFieldEditor(StoragesPreferenceIds.FULL_SUB_STORAGE,

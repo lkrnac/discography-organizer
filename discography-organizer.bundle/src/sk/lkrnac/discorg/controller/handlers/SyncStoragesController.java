@@ -12,7 +12,7 @@ import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
  * 
  * @author sitko
  */
-public class SyncHandler extends AbstractHandler {
+public class SyncStoragesController extends AbstractHandler {
 	/**
 	 * Handles synchronize storages controller command.
 	 * <p>
@@ -22,7 +22,7 @@ public class SyncHandler extends AbstractHandler {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object execute(ExecutionEvent event) throws ExecutionException {
 		ISyncStoragesListener listener = DiscOrgContextHolder.getInstance().getContext()
 				.getBean(ISyncStoragesListener.class);
 

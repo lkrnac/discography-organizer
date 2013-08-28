@@ -46,7 +46,7 @@ public class ReferenceStorageCache {
 	 * @param referenceStorageNode
 	 *            - item to be stored for processing
 	 */
-	public final void putReferenceItem(ReferenceMediaNode referenceStorageNode) {
+	public void putReferenceItem(ReferenceMediaNode referenceStorageNode) {
 		String path = fileNamesPreferences.getPathWithoutIgnoredParts(referenceStorageNode.getRelativePath());
 		// put node into normalized maps
 		if (NodeStatus.LOSSY.equals(referenceStorageNode.getAudioFormatType())) {
@@ -88,7 +88,7 @@ public class ReferenceStorageCache {
 	 * @return collection of reference lossy media nodes belonging to the
 	 *         relative path
 	 */
-	public final Collection<ReferenceMediaNode> getReferenceLossyItems(String relativePath) {
+	public Collection<ReferenceMediaNode> getReferenceLossyItems(String relativePath) {
 		String changedPath = fileNamesPreferences.getPathWithoutIgnoredParts(relativePath);
 		return new ArrayList<ReferenceMediaNode>(normalizedReferenceLossyItems.get(changedPath));
 	}
@@ -101,7 +101,7 @@ public class ReferenceStorageCache {
 	 * @return collection of reference loss-less media nodes belonging to the
 	 *         relative path
 	 */
-	public final Collection<ReferenceMediaNode> getReferenceLosslessItems(String relativePath) {
+	public Collection<ReferenceMediaNode> getReferenceLosslessItems(String relativePath) {
 		String changedPath = fileNamesPreferences.getPathWithoutIgnoredParts(relativePath);
 		return new ArrayList<ReferenceMediaNode>(normalizedReferenceLosslessItems.get(changedPath));
 	}
@@ -132,7 +132,7 @@ public class ReferenceStorageCache {
 	 * @param mediaDir
 	 *            tree item for update
 	 */
-	public final void putItemForUpdate(MediaBranchNode mediaDir) {
+	public void putItemForUpdate(MediaBranchNode mediaDir) {
 		String path = fileNamesPreferences.getPathWithoutIgnoredParts(mediaDir.getRelativePath());
 		itemsForUpdate.put(path, mediaDir);
 	}
@@ -142,7 +142,7 @@ public class ReferenceStorageCache {
 	 * 
 	 * @return next item for update
 	 */
-	public final MediaBranchNode getAndRemoveNextItemForUpdate() {
+	public MediaBranchNode getAndRemoveNextItemForUpdate() {
 		MediaBranchNode item = null;
 		if (!itemsForUpdate.isEmpty()) {
 			String itemKey = itemsForUpdate.keySet().iterator().next();
@@ -159,14 +159,14 @@ public class ReferenceStorageCache {
 	 *            absolute path of of retrieving node
 	 * @return reference media node belonging to the path
 	 */
-	public final ReferenceMediaNode getReferenceMediaNode(String absolutePath) {
+	public ReferenceMediaNode getReferenceMediaNode(String absolutePath) {
 		return absolutePathReferenceItems.get(absolutePath);
 	}
 
 	/**
 	 * Remove all reference storage meta-data.
 	 */
-	public final void removeAll() {
+	public void removeAll() {
 		normalizedReferenceLossyItems = new HashMap<String, Collection<ReferenceMediaNode>>();
 		normalizedReferenceLosslessItems = new HashMap<String, Collection<ReferenceMediaNode>>();
 		absolutePathReferenceItems = new HashMap<String, ReferenceMediaNode>();

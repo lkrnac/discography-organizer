@@ -36,7 +36,7 @@ public class LoadStoragesHandler implements ILoadStoragesListener {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final void loadStorages() {
+	public void loadStorages() {
 		referenceStorageCache.removeAll();
 		referenceStorage.loadStorage();
 		inputStorage.loadStorage();

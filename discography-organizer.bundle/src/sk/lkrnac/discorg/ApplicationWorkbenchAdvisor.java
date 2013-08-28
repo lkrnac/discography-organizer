@@ -12,7 +12,8 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
  */
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
-	private static final String PERSPECTIVE_ID = "discographyorganizer.perspectives.TreePairPerspective"; //$NON-NLS-1$
+	private static final String PERSPECTIVE_ID = "discographyorganizer" //$NON-NLS-1$
+			+ ".perspectives.TreePairPerspective"; //$NON-NLS-1$
 
 	/**
 	 * Creates workbench advisor.

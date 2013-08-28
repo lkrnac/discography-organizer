@@ -32,7 +32,7 @@ public class MediaIssuesCache {
 	/**
 	 * @return iterator for media issues
 	 */
-	public final Iterator<IMediaIssue> getIterator() {
+	public Iterator<IMediaIssue> getIterator() {
 		return mediaIssues.iterator();
 	}
 
@@ -42,14 +42,14 @@ public class MediaIssuesCache {
 	 * @param mediaIssue
 	 *            - new media issue
 	 */
-	public final void add(IMediaIssue mediaIssue) {
+	public void add(IMediaIssue mediaIssue) {
 		mediaIssues.add(mediaIssue);
 	}
 
 	/**
 	 * Clear all media issues.
 	 */
-	public final void clear() {
+	public void clear() {
 		mediaIssues = new HashSet<IMediaIssue>();
 	}
 
@@ -60,7 +60,7 @@ public class MediaIssuesCache {
 	 *            code of media issues
 	 * @return media issues collection
 	 */
-	public final Collection<String> getSourceAbsolutePaths(MediaIssueCode issueCode) {
+	public Collection<String> getSourceAbsolutePaths(MediaIssueCode issueCode) {
 		Collection<String> sourceAbsolutePaths = new HashSet<String>();
 		for (Iterator<IMediaIssue> i = this.getIterator(); i.hasNext();) {
 			IMediaIssue mediaIssue = i.next();

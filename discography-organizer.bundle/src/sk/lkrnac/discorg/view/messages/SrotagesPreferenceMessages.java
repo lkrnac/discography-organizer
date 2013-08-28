@@ -9,7 +9,8 @@ import org.eclipse.osgi.util.NLS;
  * 
  */
 public final class SrotagesPreferenceMessages extends NLS {
-	private static final String BUNDLE_NAME = "sk.lkrnac.discorg.view.messages.storages-preference-messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "sk.lkrnac.discorg.view.messages" //$NON-NLS-1$
+			+ ".storages-preference-messages"; //$NON-NLS-1$
 
 	// SUPPRESS CHECKSTYLE VisibilityModifier 20 NLS implementation needs public
 	// message fields

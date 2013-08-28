@@ -9,7 +9,8 @@ import org.eclipse.osgi.util.NLS;
  * 
  */
 public final class AudiFormatsPreferenceMessages extends NLS {
-	private static final String BUNDLE_NAME = "sk.lkrnac.discorg.view.preferences.audio-formats-prefenrece-messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "sk.lkrnac.discorg.view.messages" //$NON-NLS-1$
+			+ ".audio-formats-preference-messages"; //$NON-NLS-1$
 
 	// SUPPRESS CHECKSTYLE VisibilityModifier 15 NLS implementation needs public
 	// message fields

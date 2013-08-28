@@ -189,7 +189,8 @@ public class ReferenceMediaNode extends MediaBranchNode {
 		ReferenceMediaNode selectionMirror = null;
 		try {
 			if (getSelectionMirror() == null) {
-				String selectionPath = this.getRelativePath().replace(fullSubDirectory + File.separator, ""); //$NON-NLS-1$
+				String selectionPath = this.getRelativePath()
+						.replace(fullSubDirectory + File.separator, ""); //$NON-NLS-1$
 
 				// get selection mirror for full album
 				Collection<ReferenceMediaNode> selectionMirrors = getReferenceStorageCache()
@@ -244,7 +245,8 @@ public class ReferenceMediaNode extends MediaBranchNode {
 	public void checkFullAlbumForSelection(String fullSubDirectory) {
 		if (this.isFullAlbum()) {
 			throw new IllegalArgumentException(this.getClass().getSimpleName()
-					+ ".checkFullAlbumForSelection(String) should be called only for selection album."); //$NON-NLS-1$
+					+ ".checkFullAlbumForSelection(String) " //$NON-NLS-1$
+					+ "should be called only for selection album."); //$NON-NLS-1$
 		}
 		if (!this.isFullAlbum()) {
 			int pathEndIndex = StringUtils.lastIndexOf(this.getRelativePath(), File.separator) + 1;

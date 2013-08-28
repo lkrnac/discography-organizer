@@ -98,7 +98,8 @@ public class MediaIssuesView extends ViewPart {
 			@Override
 			public String getText(Object element) {
 				IMediaIssue issue = (IMediaIssue) element;
-				return issue.isError() ? MediaIssuesViewMessages.errorTranslation : MediaIssuesViewMessages.warningTranslation;
+				return issue.isError() ? MediaIssuesViewMessages.errorTranslation
+						: MediaIssuesViewMessages.warningTranslation;
 			}
 		});
 
@@ -208,7 +209,8 @@ public class MediaIssuesView extends ViewPart {
 					// select issue source in Input storage
 					InputStorageView inputStorageView = VisualiseStoragesHandler
 							.getTreeView(InputStorageView.VIEW_ID);
-					inputStorageView.selectAllMirrors(issue.getSourceAbsolutePath(), ReferenceStorageView.VIEW_ID);
+					inputStorageView.selectAllMirrors(issue.getSourceAbsolutePath(),
+							ReferenceStorageView.VIEW_ID);
 
 					// select issue source in Reference storage
 					ReferenceStorageView referenceStorageView = VisualiseStoragesHandler

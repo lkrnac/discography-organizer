@@ -43,7 +43,7 @@ public class MediaIssue implements IMediaIssue {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final String getSourceAbsolutePath() {
+	public String getSourceAbsolutePath() {
 		return sourceAbsolutePath;
 	}
 
@@ -51,7 +51,7 @@ public class MediaIssue implements IMediaIssue {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final MediaIssueCode getIssueCode() {
+	public MediaIssueCode getIssueCode() {
 		return issueCode;
 	}
 
@@ -59,7 +59,7 @@ public class MediaIssue implements IMediaIssue {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final boolean isError() {
+	public boolean isError() {
 		return error;
 	}
 
@@ -67,7 +67,7 @@ public class MediaIssue implements IMediaIssue {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final String getRelativePath() {
+	public String getRelativePath() {
 		return relativePath;
 	}
 
@@ -75,7 +75,7 @@ public class MediaIssue implements IMediaIssue {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final String getErrorMessage() {
+	public String getErrorMessage() {
 		return errorMessage;
 	}
 
@@ -83,7 +83,7 @@ public class MediaIssue implements IMediaIssue {
 	 * @param errorMessage
 	 *            optional error message belonging to the issue
 	 */
-	public final void setErrorMessage(String errorMessage) {
+	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
 	}
 
@@ -93,9 +93,9 @@ public class MediaIssue implements IMediaIssue {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final String toString() {
-		return "MediaIssue [relativePath=" + relativePath + ", issueCode=" + issueCode + //$NON-NLS-1$ //$NON-NLS-2$ 
-				", error=" + error //$NON-NLS-1$ 
+	public String toString() {
+		return "MediaIssue [relativePath=" + relativePath + ", issueCode=" //$NON-NLS-1$ //$NON-NLS-2$ 
+				+ issueCode + ", error=" + error //$NON-NLS-1$ 
 				+ ", sourceAbsolutePath=" + sourceAbsolutePath + "]"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
@@ -106,7 +106,7 @@ public class MediaIssue implements IMediaIssue {
 	 */
 	@Override
 	@SuppressWarnings("PMD")
-	public final int hashCode() {
+	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (error ? HASH_CODE_HELPER_1 : HASH_CODE_HELPER_2);
@@ -125,7 +125,7 @@ public class MediaIssue implements IMediaIssue {
 	// CHECKSTYLE:OFF
 	@SuppressWarnings("PMD")
 	@Override
-	public final boolean equals(Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)

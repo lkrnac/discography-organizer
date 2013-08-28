@@ -45,7 +45,7 @@ public class InputMediaNode extends MediaBranchNode {
 	 * @param referenceMirror
 	 *            mirror node to be added
 	 */
-	public final void addReferenceMirror(ReferenceMediaNode referenceMirror) {
+	public void addReferenceMirror(ReferenceMediaNode referenceMirror) {
 		referenceMirrors.add(referenceMirror);
 		referenceMirror.setInputMirror(this);
 	}
@@ -53,12 +53,12 @@ public class InputMediaNode extends MediaBranchNode {
 	/**
 	 * @return iterator of reference mirrors
 	 */
-	public final Iterator<ReferenceMediaNode> getReferenceMirrorsIterator() {
+	public Iterator<ReferenceMediaNode> getReferenceMirrorsIterator() {
 		return referenceMirrors.iterator();
 	}
 
 	@Override
-	public final Collection<String> getMirrorsAbsolutePaths() {
+	public Collection<String> getMirrorsAbsolutePaths() {
 		Set<String> retVal = new HashSet<String>();
 		for (Iterator<ReferenceMediaNode> i = getReferenceMirrorsIterator(); i.hasNext();) {
 			ReferenceMediaNode next = i.next();
@@ -77,7 +77,7 @@ public class InputMediaNode extends MediaBranchNode {
 	 * @param mirror
 	 *            reference mirror node to compare
 	 */
-	public final void compareMediaFilesWithMirror(ReferenceMediaNode mirror) {
+	public void compareMediaFilesWithMirror(ReferenceMediaNode mirror) {
 		if (mirror != null) {
 			List<String> mediaFilesNames = mirror.getMediaFilesNames();
 			int difference = mediaFilesNames.size() - this.getMediaFilesNames().size();
@@ -107,7 +107,7 @@ public class InputMediaNode extends MediaBranchNode {
 	/**
 	 * Raises media issue of media node on input storage is loss-less.
 	 */
-	public final void checkLossless() {
+	public void checkLossless() {
 		if (NodeStatus.LOSSLESS.equals(this.getAudioFormatType())) {
 			this.setNodeStatus(BranchNodeStatus.WARNING);
 

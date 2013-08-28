@@ -68,7 +68,6 @@ public class TreeStorageNode implements ITreeStorageNode {
 	/**
 	 * {@inheritDoc}
 	 */
-	// SUPPRESS CHECKSTYLE DesignForExtension 4 this meant to be overriden
 	@Override
 	public boolean isFullAlbum() {
 		return false;
@@ -77,14 +76,14 @@ public class TreeStorageNode implements ITreeStorageNode {
 	/**
 	 * @return parent node in composite structure
 	 */
-	public final ITreeStorageNode getParent() {
+	public ITreeStorageNode getParent() {
 		return parent;
 	}
 
 	/**
 	 * @return file designator retrieved from Spring context
 	 */
-	protected final FileDesignator getFileDesignator() {
+	protected FileDesignator getFileDesignator() {
 		return DiscOrgContextHolder.getInstance().getContext().getBean(FileDesignator.class);
 	}
 
@@ -102,7 +101,6 @@ public class TreeStorageNode implements ITreeStorageNode {
 	 * This implementation returns false, because {@link TreeStorageNode}
 	 * suppose to be leaf node (doesn't have children)
 	 */
-	// SUPPRESS CHECKSTYLE DesignForExtension 3 this means to be overriden
 	@Override
 	public boolean hasNextChild() {
 		return false;
@@ -114,7 +112,6 @@ public class TreeStorageNode implements ITreeStorageNode {
 	 * This implementation throws {@link NoSuchElementException}, because
 	 * {@link TreeStorageNode} suppose to be leaf node (doesn't have children)
 	 */
-	// SUPPRESS CHECKSTYLE DesignForExtension 4 this means to be overriden
 	@Override
 	public ITreeStorageNode getNextChild() {
 		throw new NoSuchElementException();
@@ -134,7 +131,7 @@ public class TreeStorageNode implements ITreeStorageNode {
 	/**
 	 * @return file object belonging to this node
 	 */
-	public final File getFile() {
+	public File getFile() {
 		return file;
 	}
 
@@ -142,7 +139,7 @@ public class TreeStorageNode implements ITreeStorageNode {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final String getAbsolutePath() {
+	public String getAbsolutePath() {
 		return getFile() == null ? null : getFile().getAbsolutePath();
 	}
 

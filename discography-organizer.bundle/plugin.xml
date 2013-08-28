@@ -101,17 +101,17 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="sk.lkrnac.discorg.controller.handlers.SyncHandler"
+            defaultHandler="sk.lkrnac.discorg.controller.handlers.SyncStoragesController"
             id="DiscographyOrganizer.syncStorages"
             name="%command.name">
       </command>
       <command
-            defaultHandler="sk.lkrnac.discorg.controller.handlers.LoadHandler"
+            defaultHandler="sk.lkrnac.discorg.controller.handlers.LoadStoragesController"
             id="DiscographyOrganizer.loadStorages"
             name="%command.name.0">
       </command>
       <command
-            defaultHandler="sk.lkrnac.discorg.controller.handlers.BuildHardLinksHandler"
+            defaultHandler="sk.lkrnac.discorg.controller.handlers.BuildHardLinksController"
             id="DiscographyOrganizer.buildHardLinks"
             name="%command.name.1">
       </command>

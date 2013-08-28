@@ -2,6 +2,7 @@ package sk.lkrnac.discorg.model.preferences;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import sk.lkrnac.discorg.Activator;
@@ -74,11 +75,13 @@ public class FileNamesPreferences extends AbstractPreferences {
 			changedPath = changedPath.replaceAll(regex, ""); //$NON-NLS-1$
 		}
 
-		changedPath = changedPath.replaceAll("\\s", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		//changedPath = changedPath.replaceAll("\\s", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		changedPath = changedPath.replaceAll(" ", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		// delete ignoring regular characters from name
 		String ignoreChars = this.getIgnoreChars();
 		for (int i = 0; i < ignoreChars.length(); i++) {
-			changedPath = changedPath.replaceAll(String.valueOf(ignoreChars.charAt(i)), ""); //$NON-NLS-1$
+			String idnoreCharString = String.valueOf(ignoreChars.charAt(i));
+			changedPath = StringUtils.replaceChars(changedPath, idnoreCharString, ""); //$NON-NLS-1$
 		}
 
 		return changedPath;

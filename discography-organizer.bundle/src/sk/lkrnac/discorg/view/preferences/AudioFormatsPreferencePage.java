@@ -29,12 +29,12 @@ public class AudioFormatsPreferencePage extends FieldEditorPreferencePage implem
 	@Override
 	protected final void createFieldEditors() {
 		// Create the field editors
-		addField(new StringFieldEditor(AudioFormatsPreferenceIds.LOSSY_FORMATS, AudiFormatsPreferenceMessages.lossyFormats,
-				getFieldEditorParent()));
-		addField(new StringFieldEditor(AudioFormatsPreferenceIds.LOSSLESS_FORMATS, AudiFormatsPreferenceMessages.losslessFormats,
-				getFieldEditorParent()));
-		addField(new StringFieldEditor(AudioFormatsPreferenceIds.WARNING_FORMATS, AudiFormatsPreferenceMessages.warningFormats,
-				getFieldEditorParent()));
+		addField(new StringFieldEditor(AudioFormatsPreferenceIds.LOSSY_FORMATS,
+				AudiFormatsPreferenceMessages.lossyFormats, getFieldEditorParent()));
+		addField(new StringFieldEditor(AudioFormatsPreferenceIds.LOSSLESS_FORMATS,
+				AudiFormatsPreferenceMessages.losslessFormats, getFieldEditorParent()));
+		addField(new StringFieldEditor(AudioFormatsPreferenceIds.WARNING_FORMATS,
+				AudiFormatsPreferenceMessages.warningFormats, getFieldEditorParent()));
 		addField(new BooleanFieldEditor(AudioFormatsPreferenceIds.WARNING_EMPTY_FLAG,
 				AudiFormatsPreferenceMessages.warningEmptyFlag, getFieldEditorParent()));
 	}

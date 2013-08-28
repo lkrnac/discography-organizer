@@ -16,7 +16,7 @@ public class StoragesPreferences {
 	/**
 	 * @return Application preference - path for output lossy storage
 	 */
-	public final String getOutputStorageLossy() {
+	public String getOutputStorageLossy() {
 		return Activator.getDefault().getPreferenceStore()
 				.getString(StoragesPreferenceIds.OUTPUT_STORAGE_LOSSY);
 	}
@@ -24,7 +24,7 @@ public class StoragesPreferences {
 	/**
 	 * @return Application preference - path for output loss-less storage
 	 */
-	public final String getOutputStorageLossless() {
+	public String getOutputStorageLossless() {
 		return Activator.getDefault().getPreferenceStore()
 				.getString(StoragesPreferenceIds.OUTPUT_STORAGE_LOSSLESS);
 	}
@@ -32,21 +32,21 @@ public class StoragesPreferences {
 	/**
 	 * @return Application preference - path for input storage
 	 */
-	public final String getInputStorage() {
+	public String getInputStorage() {
 		return Activator.getDefault().getPreferenceStore().getString(StoragesPreferenceIds.INPUT_STORAGE);
 	}
 
 	/**
 	 * @return Application preference - path for reference storage
 	 */
-	public final String getReferenceStorage() {
+	public String getReferenceStorage() {
 		return Activator.getDefault().getPreferenceStore().getString(StoragesPreferenceIds.REFERENCE_STORAGE);
 	}
 
 	/**
 	 * @return Application preference - name of full album (media sub-directory)
 	 */
-	public final String getFullSubDirectory() {
+	public String getFullSubDirectory() {
 		return Activator.getDefault().getPreferenceStore().getString(StoragesPreferenceIds.FULL_SUB_STORAGE);
 	}
 }
