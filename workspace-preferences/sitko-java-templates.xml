@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="false" context="java-members" deleted="false" description="SITKO - TestNG data provider template" enabled="true" name="DataProvider">	/**
+	 * Data provider for test
+	 * {@link ${enclosing_type}#NAME}.
+	 * 
+	 * @return test cases
+	 */
+	@DataProvider
+	public final Object[][] ${newName}() {
+		//@formatter:off
+		return new Object [][]{
+			new Object [] {  },
+		};
+		//@formatter:on
+	}</template><template autoinsert="false" context="java-members" deleted="false" description="SITKO - Mockito mock annotations initialize method" enabled="true" name="InitMocks">	/**
+	 * Injects mocks into testing object
+	 */
+	@BeforeClass(alwaysRun=true)
+	public void initMocks(){
+		MockitoAnnotations.initMocks(this);
+	}
+</template></templates>
