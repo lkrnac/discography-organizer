@@ -75,14 +75,14 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	 * @return List where media issues are stored
 	 */
 	public MediaIssuesCache getMediaIssuesCache() {
-		return DiscOrgContextHolder.getInstance().getContext().getBean(MediaIssuesCache.class);
+		return DiscOrgContextHolder.getBean(MediaIssuesCache.class);
 	}
 
 	/**
 	 * @return Meta-data holder object
 	 */
 	public ReferenceStorageCache getReferenceStorageCache() {
-		return DiscOrgContextHolder.getInstance().getContext().getBean(ReferenceStorageCache.class);
+		return DiscOrgContextHolder.getBean(ReferenceStorageCache.class);
 	}
 
 	/**
@@ -134,11 +134,10 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 		boolean lossyAudioFormat = getFileDesignator().isLossyMediaFile(file);
 		boolean losslessAudioFormat = getFileDesignator().isLossLessMediaFile(file);
 
-		// check for errors
+		// check for errors / save audio format
 		if (lossyAudioFormat && losslessAudioFormat) {
 			// TODO: this check should be in preferences package
 			throw new AudioFormatsPreferencesException(extension);
-			// save audio format
 		} else if (lossyAudioFormat) {
 			audioFormatString = extension;
 			audioFormatType = NodeStatus.LOSSY;

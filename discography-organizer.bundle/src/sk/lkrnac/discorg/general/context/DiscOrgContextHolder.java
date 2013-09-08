@@ -42,4 +42,17 @@ public final class DiscOrgContextHolder {
 		return context;
 	}
 
+	/**
+	 * Finds bean in Spring context with given type.
+	 * 
+	 * @param beanClass
+	 *            bean type class
+	 * @param <T>
+	 *            bean type
+	 * @return bean instance
+	 */
+	public static <T> T getBean(Class<T> beanClass) {
+		return getInstance().getContext().getBean(beanClass);
+	}
+
 }

@@ -38,6 +38,7 @@ public class LoadStoragesHandler implements ILoadStoragesListener {
 	@Override
 	public void loadStorages() {
 		referenceStorageCache.removeAll();
+		mediaIssuesCache.clear();
 		referenceStorage.loadStorage();
 		inputStorage.loadStorage();
 

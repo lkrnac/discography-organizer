@@ -15,35 +15,58 @@
 		<powermock.version>1.5.1</powermock.version>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>eclipse-repo</id>
-			<url>http://maven.eclipse.org/nexus/content/repositories/testing</url>
-		</repository>
-	</repositories>
-	
+	<!-- <repositories> -->
+	<!-- <repository> -->
+	<!-- <id>eclipse-repo</id> -->
+	<!-- <url>http://maven.eclipse.org/nexus/content/repositories/testing</url> -->
+	<!-- </repository> -->
+	<!-- </repositories> -->
+
 	<dependencies>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>1.9.5</version>
+			<version>1.9.5-rc1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-testng</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>${powermock.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>6.8</version>
+			<version>6.8.5</version>
 			<scope>test</scope>
 		</dependency>
 
 		<!-- Provides dependency for OSGi resource bundler loader (NLS) -->
 		<dependency>
-			<groupId>org.eclipse.tycho</groupId>
+			<groupId>p2.osgi.bundle</groupId>
+			<artifactId>org.eclipse.equinox.common</artifactId>
+			<version>3.6.200.v20130402-1505</version>
+		</dependency>
+		<dependency>
+			<groupId>p2.osgi.bundle</groupId>
 			<artifactId>org.eclipse.osgi</artifactId>
-			<version>3.8.1.v20120830-144521</version>
+			<version>3.9.0.v20130529-1710</version>
 			<scope>test</scope>
 		</dependency>
-		
+		<dependency>
+			<groupId>p2.osgi.bundle</groupId>
+			<artifactId>org.eclipse.core.commands</artifactId>
+			<version>3.6.100.v20130515-1857</version>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>sk.lkrnac.discorg</groupId>
 			<artifactId>${bundle.name}</artifactId>

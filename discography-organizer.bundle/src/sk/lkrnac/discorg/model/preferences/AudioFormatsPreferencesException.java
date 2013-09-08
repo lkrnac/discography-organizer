@@ -26,7 +26,8 @@ public class AudioFormatsPreferencesException extends RuntimeException {
 	 */
 	@Override
 	public final String getMessage() {
-		return "ERROR: Audio format " + format + " is marked as lossy and also lossless";
+		//this message is only for logging and shouldn't be shown to user
+		return "Audio format " + format + " is marked as lossy and also lossless"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }
