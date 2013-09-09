@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
+
+import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * Class for comparing directories.
@@ -12,7 +14,8 @@ import java.util.List;
  * @author sitko
  */
 public class DirectoryComparator extends AbstractDirectoryHandler {
-	private List<File> unmatchedList;
+	private Collection<File> missingInSelectionList = null;
+	private Collection<File> missingInFullList = null;
 
 	/**
 	 * Compares directories based on file names and file sizes. If media files
@@ -31,23 +34,30 @@ public class DirectoryComparator extends AbstractDirectoryHandler {
 	 * @throws IOException
 	 *             if some I/O error occurs
 	 */
-	public final boolean compareDirectories(File fullDir, File selectionDir) throws IOException {
-		boolean result = false;
+	public final EDirectoryComparisonResult compareDirectories(File fullDir, File selectionDir)
+			throws IOException {
+		EDirectoryComparisonResult result = null;
 
 		if (fullDir != null && selectionDir != null) {
 			File[] fullArray = fullDir.listFiles();
 			File[] selectionArray = selectionDir.listFiles();
-			unmatchedList = new ArrayList<File>(selectionArray.length);
-			boolean found = false;
-			for (File fileInSelection : selectionArray) {
-				unmatchedList.add(fileInSelection);
-				found = true;
+			if (fullArray.length == NumberUtils.INTEGER_ZERO
+					|| selectionArray.length == NumberUtils.INTEGER_ZERO) {
+				return EDirectoryComparisonResult.DIFFERENT_FILES;
 			}
+			missingInSelectionList = new ArrayList<>(Arrays.asList(fullArray));
+			missingInFullList = new ArrayList<>();
 
 			// do the comparison
 			super.fileFacingLoop(Arrays.asList(selectionArray), Arrays.asList(fullArray));
-			if (found) {
-				result = unmatchedList.isEmpty();
+			if (missingInSelectionList.isEmpty() && missingInFullList.isEmpty()) {
+				result = EDirectoryComparisonResult.EQUAL;
+			} else if (!missingInSelectionList.isEmpty() && !missingInFullList.isEmpty()) {
+				result = EDirectoryComparisonResult.DIFFERENT_FILES;
+			} else if (!missingInSelectionList.isEmpty()) {
+				result = EDirectoryComparisonResult.MISSING_MEDIA_FILES_IN_SELECTION;
+			} else if (!missingInFullList.isEmpty()) {
+				result = EDirectoryComparisonResult.MISSING_MEDIA_FILES_IN_FULL;
 			}
 		}
 		return result;
@@ -61,17 +71,17 @@ public class DirectoryComparator extends AbstractDirectoryHandler {
 	 */
 	@Override
 	protected final void performActionFace(File fileInSelection, File fileInFull) throws IOException {
-		unmatchedList.remove(fileInSelection);
+		missingInSelectionList.remove(fileInFull);
 	}
 
 	/**
-	 * Ignores selection files missing in full directory.
+	 * Saves missing file in selection into private cache.
 	 * <p>
 	 * <b> Javadoc from parent class:<br>
 	 * </b> {@inheritDoc}
 	 */
 	@Override
 	protected void performActionMissingInFull(File fileInSelection) {
-		// ignore
+		missingInFullList.add(fileInSelection);
 	}
 }

@@ -43,10 +43,9 @@ public enum MediaIssueCode {
 	/** More files are in selection than in full album. */
 	GENERIC_MORE_FILES_IN_SELECTION,
 
-	/*----------------------------------------------------------------------*/
 	/** Message when reference mirror has different file names as input mirror. */
-	INPUT_DIFFERENT_NAMES,
-
+	GENERIC_DIFFERENT_NAMES,
+	/*----------------------------------------------------------------------*/
 	/**
 	 * Message when media files are missing in reference mirror in comparison to
 	 * input mirror.
@@ -55,5 +54,4 @@ public enum MediaIssueCode {
 
 	/** Message when loss-less media directory found on input storage. */
 	INPUT_LOSSLESS_AUDIO_FORMAT,
-
 }

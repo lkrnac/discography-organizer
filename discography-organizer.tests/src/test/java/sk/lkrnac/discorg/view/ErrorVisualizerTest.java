@@ -21,7 +21,7 @@ import sk.lkrnac.discorg.view.messages.MediaIssueMessages;
  * 
  */
 public class ErrorVisualizerTest {
-	private static final MediaIssueCode TEST_ISSUE_CODE = MediaIssueCode.INPUT_DIFFERENT_NAMES;
+	private static final MediaIssueCode TEST_ISSUE_CODE = MediaIssueCode.GENERIC_DIFFERENT_NAMES;
 	private static final String TEST_RESOURCE_PATH = "Test Path";
 	private static final String ERROR_MESSAGE = "Test error message";
 

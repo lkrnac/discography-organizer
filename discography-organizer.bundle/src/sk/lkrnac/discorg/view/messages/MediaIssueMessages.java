@@ -58,10 +58,10 @@ public final class MediaIssueMessages extends NLS {
 	/** More files are in selection than in full album. */
 	public static String genericMoreFilesInSelection;
 
-	/*----------------------------------------------------------------------*/
 	/** Message when reference mirror has different file names as input mirror. */
-	public static String inputDifferentNames;
+	public static String genericDifferentNames;
 
+	/*----------------------------------------------------------------------*/
 	/**
 	 * Message when media files are missing in reference mirror in comparison to
 	 * input mirror.
@@ -92,7 +92,7 @@ public final class MediaIssueMessages extends NLS {
 				referenceVariousFullMirrorsFound);
 		tmpMessagesMap.put(MediaIssueCode.REFERENCE_VARIOUS_SELECTION_MIRRORS_FOUND,
 				referenceVariousSelectionMirrorsFound);
-		tmpMessagesMap.put(MediaIssueCode.INPUT_DIFFERENT_NAMES, inputDifferentNames);
+		tmpMessagesMap.put(MediaIssueCode.GENERIC_DIFFERENT_NAMES, genericDifferentNames);
 		tmpMessagesMap.put(MediaIssueCode.INPUT_LOSSLESS_AUDIO_FORMAT, inputLosslessAudioFormat);
 		tmpMessagesMap.put(MediaIssueCode.INPUT_MISSING_MEDIA_FILES, inputMissingMediaFiles);
 
@@ -120,6 +120,6 @@ public final class MediaIssueMessages extends NLS {
 	public static String getMessageForMessageCode(MediaIssueCode messageCode, String... messageParameters) {
 		String message = MESSAGES_MAP.get(messageCode);
 		assert message != null : "Can't find message for message code: " + messageCode; //$NON-NLS-1$
-		return String.format(message, (Object []) messageParameters);
+		return String.format(message, (Object[]) messageParameters);
 	}
 }

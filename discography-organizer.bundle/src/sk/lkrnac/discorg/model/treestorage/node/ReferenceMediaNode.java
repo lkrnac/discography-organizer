@@ -13,6 +13,7 @@ import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
+import sk.lkrnac.discorg.model.dal.io.EDirectoryComparisonResult;
 
 //CHECKSTYLE:ON
 
@@ -197,7 +198,9 @@ public class ReferenceMediaNode extends MediaBranchNode {
 						.getReferenceItems(selectionPath);
 
 				for (ReferenceMediaNode mirror : selectionMirrors) {
-					if (this.getDirectoryIoFacade().compareDirectories(this.getFile(), mirror.getFile())) {
+					EDirectoryComparisonResult result =
+							this.getDirectoryIoFacade().compareDirectories(this.getFile(), mirror.getFile());
+					if (result.areMirrors()) {
 						if (selectionMirror == null) {
 							selectionMirror = mirror;
 						} else {
@@ -211,8 +214,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 					}
 				}
 				if (selectionMirror == null && !BranchNodeStatus.ERROR.equals(this.getNodeStatus())) {
-					// if selection mirror wasn't found for full album ->
-					// ignored status
+					// if selection mirror wasn't found for full album -> ignored status
 					this.setNodeStatus(BranchNodeStatus.IGNORED);
 					MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
 							MediaIssueCode.REFERENCE_MISSING_SELECTION_MIRROR, this.getRelativePath(), false);
@@ -302,7 +304,9 @@ public class ReferenceMediaNode extends MediaBranchNode {
 		try {
 			for (ReferenceMediaNode tmpMirror : getReferenceStorageCache().getReferenceItems(
 					fullAlbumMirrorPath)) {
-				if (this.getDirectoryIoFacade().compareDirectories(tmpMirror.getFile(), this.getFile())) {
+				EDirectoryComparisonResult result =
+						this.getDirectoryIoFacade().compareDirectories(tmpMirror.getFile(), this.getFile());
+				if (result.areMirrors()) {
 					if (fullMirror == null) {
 						fullMirror = tmpMirror;
 					} else {

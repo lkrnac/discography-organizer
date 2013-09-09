@@ -26,21 +26,21 @@ public abstract class AbstractDirectoryHandler {
 	 */
 	protected final void fileFacingLoop(Collection<File> selectionDirFiles, Collection<File> fullDirFiles)
 			throws IOException {
-		// shallow copy of selection files collection
-		Collection<File> selectionsMissingInFull = new ArrayList<File>(selectionDirFiles);
+		Collection<File> missingInFullCollection = new ArrayList<>(selectionDirFiles);
+
 		// do the comparison
 		for (File fileInSelection : selectionDirFiles) {
 			for (File fileInFull : fullDirFiles) {
 				if (fileInSelection.getName().equals(fileInFull.getName())
 						&& fileInSelection.length() == fileInFull.length()) {
 					performActionFace(fileInSelection, fileInFull);
-					selectionsMissingInFull.remove(fileInSelection);
+					missingInFullCollection.remove(fileInSelection);
 					break;
 				}
 			}
 		}
-		for (File selectionMissingInFull : selectionsMissingInFull) {
-			performActionMissingInFull(selectionMissingInFull);
+		for (File missingInFull : missingInFullCollection) {
+			performActionMissingInFull(missingInFull);
 		}
 	}
 

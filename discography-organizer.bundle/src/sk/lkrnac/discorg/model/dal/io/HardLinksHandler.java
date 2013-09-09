@@ -103,13 +103,20 @@ public class HardLinksHandler extends AbstractDirectoryHandler {
 	 */
 	public final void buildHardLinks(File fullDir, DirectoryComparator dirComparator) throws DiscOrgException {
 		try {
-			if (dirComparator.compareDirectories(fullDir, this.getSelectionDir())) {
+			EDirectoryComparisonResult result =
+					dirComparator.compareDirectories(fullDir, this.getSelectionDir());
+			if (result.areMirrors()) {
 				File[] fullArray = fullDir.listFiles();
 				File[] selectionArray = selectionDir.listFiles();
 				fileFacingLoop(Arrays.asList(selectionArray), Arrays.asList(fullArray));
 			} else {
-				throw new DiscOrgException(selectionDir.getAbsolutePath(),
-						MediaIssueCode.GENERIC_MORE_FILES_IN_SELECTION);
+				MediaIssueCode issue = null;
+				if (EDirectoryComparisonResult.MISSING_MEDIA_FILES_IN_FULL.equals(result)) {
+					issue = MediaIssueCode.GENERIC_MORE_FILES_IN_SELECTION;
+				} else if (EDirectoryComparisonResult.DIFFERENT_FILES.equals(result)) {
+					issue = MediaIssueCode.GENERIC_DIFFERENT_NAMES;
+				}
+				throw new DiscOrgException(selectionDir.getAbsolutePath(), issue);
 			}
 		} catch (IOException ioException) {
 			throw new DiscOrgException(this.getSelectionDir().getAbsolutePath(), ioException);
@@ -124,7 +131,8 @@ public class HardLinksHandler extends AbstractDirectoryHandler {
 	 * </b> {@inheritDoc}
 	 */
 	@Override
-	protected final void performActionFace(File fileInSelection, File fileInFull) throws IOException {
+	protected final void performActionFace(File fileInSelection, File fileInFull)
+			throws IOException {
 		if (!getFileKey(fileInSelection).equals(getFileKey(fileInFull))) {
 			fileInSelection.delete();
 			Files.createLink(Paths.get(fileInSelection.getAbsolutePath()),

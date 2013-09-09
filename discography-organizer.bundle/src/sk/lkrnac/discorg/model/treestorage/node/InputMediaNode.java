@@ -79,8 +79,8 @@ public class InputMediaNode extends MediaBranchNode {
 	 */
 	public void compareMediaFilesWithMirror(ReferenceMediaNode mirror) {
 		if (mirror != null) {
-			List<String> mediaFilesNames = mirror.getMediaFilesNames();
-			int difference = mediaFilesNames.size() - this.getMediaFilesNames().size();
+			List<String> mirrorFilesNames = mirror.getMediaFilesNames();
+			int difference = mirrorFilesNames.size() - this.getMediaFilesNames().size();
 
 			if (difference < NumberUtils.INTEGER_ZERO) {
 				MediaIssue mediaIssue = new MediaIssue(getAbsolutePath(),
@@ -93,11 +93,11 @@ public class InputMediaNode extends MediaBranchNode {
 					getReferenceStorageCache().putItemForUpdate(this);
 				}
 				for (String mediaFile : this.getMediaFilesNames()) {
-					mediaFilesNames.remove(mediaFile);
+					mirrorFilesNames.remove(mediaFile);
 				}
-				if (mediaFilesNames.size() != difference) {
+				if (mirrorFilesNames.size() != difference) {
 					MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
-							MediaIssueCode.INPUT_DIFFERENT_NAMES, this.getRelativePath(), false);
+							MediaIssueCode.GENERIC_DIFFERENT_NAMES, this.getRelativePath(), false);
 					getMediaIssuesCache().add(mediaIssue);
 				}
 			}

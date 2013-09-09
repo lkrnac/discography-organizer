@@ -39,12 +39,11 @@ public class DirectoryIoFacade {
 	 * @param selectionDir
 	 *            all files in this directory should match files from fullDir If
 	 *            the extension is <code>null</code>, all the files are compared
-	 * @return <code>true</code> if all files from selectionDir match files in
-	 *         fullDir (based on file size and file name)
+	 * @return result of comparison
 	 * @throws IOException
 	 *             if some I/O error occurs
 	 */
-	public boolean compareDirectories(File fullDir, File selectionDir) throws IOException {
+	public EDirectoryComparisonResult compareDirectories(File fullDir, File selectionDir) throws IOException {
 		return getDirectoryComparator().compareDirectories(fullDir, selectionDir);
 	}
 

@@ -22,6 +22,7 @@ import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
+import sk.lkrnac.discorg.model.dal.io.EDirectoryComparisonResult;
 import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
 
 /**
@@ -479,8 +480,10 @@ public class ReferenceMediaNodeTest extends PowerMockTestCase {
 			Mockito.when(dirIoFacadeMock.compareDirectories(Mockito.any(File.class), Mockito.any(File.class)))
 					.thenThrow(new IOException());
 		} else {
+			EDirectoryComparisonResult comparisonResult = dirComparisonSucceed ? EDirectoryComparisonResult.EQUAL
+					: EDirectoryComparisonResult.DIFFERENT_FILES;
 			Mockito.when(dirIoFacadeMock.compareDirectories(Mockito.any(File.class), Mockito.any(File.class)))
-					.thenReturn(dirComparisonSucceed);
+					.thenReturn(comparisonResult);
 		}
 
 		if (throwIoErrorDuringHardLinksCheck != null && throwIoErrorDuringHardLinksCheck) {
