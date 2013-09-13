@@ -12,7 +12,6 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import sk.lkrnac.discorg.general.DiscOrgException;
 import sk.lkrnac.discorg.test.utils.TestUtils;
 
 /**
@@ -162,15 +161,22 @@ public class HardLinksHandlerTest {
 
 	/**
 	 * Prepares testing data for test
-	 * {@link HardLinksHandlerTest# testBuildHardLinksSuccess(String)}
+	 * {@link HardLinksHandlerTest# testBuildHardLinks(String, boolean)}
 	 * 
 	 * @return parameters for test
 	 */
 	@DataProvider
-	public Object[][] testBuildHardLinksSuccess() {
-		return new Object[][] { new Object[] { "test - album - success1" },
-				new Object[] { "test - album - success2" }, new Object[] { "test - album - success3" },
-				new Object[] { "test - album - success4" }, };
+	public Object[][] testBuildHardLinks() {
+		// @formatter:off
+		return new Object[][] { 
+				new Object[] { "test - album - success1", true },
+				new Object[] { "test - album - success2", true }, 
+				new Object[] { "test - album - success3", true },
+				new Object[] { "test - album - success4", true },
+				new Object[] { "test - album - fail1", false },
+				new Object[] { "test - album - fail2", false },
+		};
+		// @formatter:on
 	}
 
 	/**
@@ -182,65 +188,13 @@ public class HardLinksHandlerTest {
 	 * 
 	 * @param testingAlbumName
 	 *            album name for testing
+	 * @param expectedResult
+	 *            expected result of testing method
 	 * @throws IOException
 	 *             if I/O error occurs during test
-	 * @throws DiscOrgException
-	 *             if directory comparison fails
 	 */
-	@Test(dataProvider = "testBuildHardLinksSuccess")
-	public void testBuildHardLinksSuccess(String testingAlbumName) throws IOException, DiscOrgException {
-		testBuildHardLinks(testingAlbumName);
-
-		Assert.assertEquals(testingObj.verifyHardLinks(fullDir), true, "Hard links verification failed: ");
-	}
-
-	/**
-	 * Prepares testing data for test
-	 * {@link HardLinksHandlerTest# testBuildHardLinksSuccess(String)}
-	 * 
-	 * @return parameters for test
-	 */
-	@DataProvider
-	public Object[][] testBuildHardLinksFail() {
-		return new Object[][] { new Object[] { "test - album - fail1" },
-				new Object[] { "test - album - fail2" }, };
-	}
-
-	/**
-	 * Tests failure use case of
-	 * {@link HardLinksHandler#buildHardLinks(File, DirectoryComparator)}
-	 * <p>
-	 * This test expects specific testing directory and file structure on the
-	 * hard disk
-	 * 
-	 * @param testingAlbumName
-	 *            album name for testing
-	 * @throws DiscOrgException
-	 *             if directory comparison fails. It is expected for this test
-	 *             case.
-	 * @throws IOException
-	 *             if I/O error occurs during test or
-	 */
-	// Verification phase is in nested method
-	@SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
-	@Test(dataProvider = "testBuildHardLinksFail", expectedExceptions = DiscOrgException.class)
-	public void testBuildHardLinksFail(String testingAlbumName) throws DiscOrgException, IOException {
-		testBuildHardLinks(testingAlbumName);
-	}
-
-	/**
-	 * Prepares parameters and environment and runs the test for method
-	 * {@link HardLinksHandler#buildHardLinks(File, DirectoryComparator)}
-	 * 
-	 * @param testingAlbumName
-	 *            album name for testing
-	 * @throws IOException
-	 *             if I/O error occurs during test or if
-	 * 
-	 * @throws DiscOrgException
-	 *             directory comparison fails
-	 */
-	private void testBuildHardLinks(String testingAlbumName) throws IOException, DiscOrgException {
+	@Test(dataProvider = "testBuildHardLinks")
+	public void testBuildHardLinks(String testingAlbumName, boolean expectedResult) throws IOException {
 		resourcesPath = TestUtils.getResourcesPathMethod();
 		File selectionDir = getTestingDir(testingAlbumName, false, true);
 		testingObj = new HardLinksHandler(selectionDir);
@@ -248,6 +202,11 @@ public class HardLinksHandlerTest {
 		DirectoryComparator dirComparator = new DirectoryComparator();
 
 		// call testing method
-		testingObj.buildHardLinks(fullDir, dirComparator);
+		boolean actualReault = testingObj.buildHardLinks(fullDir, dirComparator);
+
+		Assert.assertEquals(actualReault, expectedResult);
+		Assert.assertEquals(testingObj.verifyHardLinks(fullDir), expectedResult,
+				"Hard links verification failed: ");
 	}
+
 }

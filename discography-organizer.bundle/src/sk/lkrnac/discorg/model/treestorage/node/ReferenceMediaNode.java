@@ -12,8 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
+import sk.lkrnac.discorg.model.dal.io.DirectoryComparisonResult;
 import sk.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
-import sk.lkrnac.discorg.model.dal.io.EDirectoryComparisonResult;
 
 //CHECKSTYLE:ON
 
@@ -198,7 +198,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 						.getReferenceItems(selectionPath);
 
 				for (ReferenceMediaNode mirror : selectionMirrors) {
-					EDirectoryComparisonResult result =
+					DirectoryComparisonResult result =
 							this.getDirectoryIoFacade().compareDirectories(this.getFile(), mirror.getFile());
 					if (result.areMirrors()) {
 						if (selectionMirror == null) {
@@ -224,7 +224,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 		} catch (IOException e) {
 			this.setNodeStatus(BranchNodeStatus.ERROR);
 			MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
-					MediaIssueCode.REFERENCE_HARD_LINK_IO_ERROR, this.getRelativePath(), true);
+					MediaIssueCode.GENERIC_IO_ERROR_DURING_COMPARISON, this.getRelativePath(), true);
 			mediaIssue.setErrorMessage(e.getLocalizedMessage());
 			getMediaIssuesCache().add(mediaIssue);
 
@@ -304,7 +304,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 		try {
 			for (ReferenceMediaNode tmpMirror : getReferenceStorageCache().getReferenceItems(
 					fullAlbumMirrorPath)) {
-				EDirectoryComparisonResult result =
+				DirectoryComparisonResult result =
 						this.getDirectoryIoFacade().compareDirectories(tmpMirror.getFile(), this.getFile());
 				if (result.areMirrors()) {
 					if (fullMirror == null) {

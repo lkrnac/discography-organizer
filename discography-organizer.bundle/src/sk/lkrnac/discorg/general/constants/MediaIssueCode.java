@@ -40,9 +40,6 @@ public enum MediaIssueCode {
 	/** Message when media directory contains various different media formats. */
 	GENERIC_VARIOUS_AUDIO_FORMAT_TYPES,
 
-	/** More files are in selection than in full album. */
-	GENERIC_MORE_FILES_IN_SELECTION,
-
 	/** Message when reference mirror has different file names as input mirror. */
 	GENERIC_DIFFERENT_NAMES,
 	/*----------------------------------------------------------------------*/

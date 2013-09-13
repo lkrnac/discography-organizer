@@ -3,8 +3,6 @@ package sk.lkrnac.discorg.model.dal.io;
 import java.io.File;
 import java.io.IOException;
 
-import sk.lkrnac.discorg.general.DiscOrgException;
-
 /**
  * Facade for directory I/O handlers. Lazy initialization of I/O handlers
  * 
@@ -43,7 +41,7 @@ public class DirectoryIoFacade {
 	 * @throws IOException
 	 *             if some I/O error occurs
 	 */
-	public EDirectoryComparisonResult compareDirectories(File fullDir, File selectionDir) throws IOException {
+	public DirectoryComparisonResult compareDirectories(File fullDir, File selectionDir) throws IOException {
 		return getDirectoryComparator().compareDirectories(fullDir, selectionDir);
 	}
 
@@ -67,11 +65,8 @@ public class DirectoryIoFacade {
 	 * 
 	 * @param fullDir
 	 *            full album from which to create hard links
-	 * @throws DiscOrgException
-	 *             if full media directory contains less files than selection
-	 *             mirror or if I/O error occurs
 	 */
-	public void buildHardLinks(File fullDir) throws DiscOrgException {
+	public void buildHardLinks(File fullDir) {
 		this.getHardLinksHandler().buildHardLinks(fullDir, getDirectoryComparator());
 	}
 

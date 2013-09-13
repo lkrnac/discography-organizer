@@ -1,7 +1,5 @@
 package sk.lkrnac.discorg.general;
 
-import java.util.Arrays;
-
 import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 
 /**
@@ -13,7 +11,6 @@ import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 public class DiscOrgException extends Exception {
 	private static final long serialVersionUID = 1L;
 	private MediaIssueCode mediaIssueCode;
-	private String[] messageParameters = new String[] {};
 	private final String resourcePath;
 
 	/**
@@ -41,25 +38,6 @@ public class DiscOrgException extends Exception {
 	public DiscOrgException(String resourcePath, Throwable cause) {
 		super(cause.getLocalizedMessage(), cause);
 		this.resourcePath = resourcePath;
-	}
-
-	/**
-	 * @return Parameters to be inserted into error message
-	 */
-	public final String[] getMessageParameters() {
-		return Arrays.copyOf(messageParameters, messageParameters.length);
-	}
-
-	/**
-	 * @param messageParameters
-	 *            Parameters to be inserted into error message
-	 */
-	public final void setMessageParameters(String[] messageParameters) {
-		String[] messageParametersNullSafe = new String[] {};
-		if (messageParameters != null) {
-			messageParametersNullSafe = messageParameters;
-		}
-		this.messageParameters = Arrays.copyOf(messageParametersNullSafe, messageParametersNullSafe.length);
 	}
 
 	/**

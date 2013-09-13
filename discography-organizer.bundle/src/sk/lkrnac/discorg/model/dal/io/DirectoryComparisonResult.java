@@ -6,7 +6,7 @@ package sk.lkrnac.discorg.model.dal.io;
  * @author sitko
  * 
  */
-public enum EDirectoryComparisonResult {
+public enum DirectoryComparisonResult {
 	/** Directories can be considered as identical mirrors. */
 	EQUAL,
 

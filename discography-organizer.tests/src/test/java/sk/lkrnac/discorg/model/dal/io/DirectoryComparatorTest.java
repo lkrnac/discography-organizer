@@ -21,7 +21,7 @@ public class DirectoryComparatorTest {
 
 	/**
 	 * Data provider for test
-	 * {@link DirectoryComparatorTest# testCompareDirectories(String, EDirectoryComparisonResult)}
+	 * {@link DirectoryComparatorTest# testCompareDirectories(String, DirectoryComparisonResult)}
 	 * 
 	 * @return parameters for various test runs
 	 */
@@ -29,15 +29,15 @@ public class DirectoryComparatorTest {
 	public Object[][] testCompareDirectories() {
 		//@formatter:off
 		return new Object[][] { 
-				new Object[] { "success1", EDirectoryComparisonResult.EQUAL },
-				new Object[] { "success2", EDirectoryComparisonResult.MISSING_MEDIA_FILES_IN_SELECTION }, 
-				new Object[] { "fail1", EDirectoryComparisonResult.MISSING_MEDIA_FILES_IN_FULL },
-				new Object[] { "fail2", EDirectoryComparisonResult.DIFFERENT_FILES }, 
-				new Object[] { "fail3", EDirectoryComparisonResult.DIFFERENT_FILES },
-				new Object[] { "fail4", EDirectoryComparisonResult.DIFFERENT_FILES }, 
-				new Object[] { "fail5", EDirectoryComparisonResult.DIFFERENT_FILES },
-				new Object[] { "fail6", EDirectoryComparisonResult.DIFFERENT_FILES }, 
-				new Object[] { "fail7", EDirectoryComparisonResult.DIFFERENT_FILES }, 
+				new Object[] { "success1", DirectoryComparisonResult.EQUAL },
+				new Object[] { "success2", DirectoryComparisonResult.MISSING_MEDIA_FILES_IN_SELECTION }, 
+				new Object[] { "fail1", DirectoryComparisonResult.MISSING_MEDIA_FILES_IN_FULL },
+				new Object[] { "fail2", DirectoryComparisonResult.DIFFERENT_FILES }, 
+				new Object[] { "fail3", DirectoryComparisonResult.DIFFERENT_FILES },
+				new Object[] { "fail4", DirectoryComparisonResult.DIFFERENT_FILES }, 
+				new Object[] { "fail5", DirectoryComparisonResult.DIFFERENT_FILES },
+				new Object[] { "fail6", DirectoryComparisonResult.DIFFERENT_FILES }, 
+				new Object[] { "fail7", DirectoryComparisonResult.DIFFERENT_FILES }, 
 		};
 		//@formatter:on
 	}
@@ -57,7 +57,7 @@ public class DirectoryComparatorTest {
 	 *             if I/O error occurs
 	 */
 	@Test(dataProvider = "testCompareDirectories")
-	public void testCompareDirectories(String testingDataLocation, EDirectoryComparisonResult expectedResult)
+	public void testCompareDirectories(String testingDataLocation, DirectoryComparisonResult expectedResult)
 			throws IOException {
 		String resourcesPath = TestUtils.getResourcesPathMethod() + File.separator
 				+ testingDataLocation + File.separator;
@@ -65,7 +65,7 @@ public class DirectoryComparatorTest {
 		File fullFile = getTestingDir(resourcesPath, DIR_FULL);
 		File selectionFile = getTestingDir(resourcesPath, DIR_SELECTION);
 
-		EDirectoryComparisonResult result = new DirectoryComparator().compareDirectories(fullFile,
+		DirectoryComparisonResult result = new DirectoryComparator().compareDirectories(fullFile,
 				selectionFile);
 
 		Assert.assertEquals(result, expectedResult);

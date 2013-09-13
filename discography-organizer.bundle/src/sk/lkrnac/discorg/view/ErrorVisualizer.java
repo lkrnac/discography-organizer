@@ -30,8 +30,7 @@ public class ErrorVisualizer implements IErrorVisualizer {
 		if (error.getMediaIssueCode() == null) {
 			message.append(error.getLocalizedMessage());
 		} else {
-			message.append(MediaIssueMessages.getMessageForMessageCode(error.getMediaIssueCode(),
-					error.getMessageParameters()));
+			message.append(MediaIssueMessages.getMessageForMessageCode(error.getMediaIssueCode()));
 		}
 		workbenchEnvironment.openErrorDialog(ErrorMessages.errorDialogTitle, message.toString());
 	}

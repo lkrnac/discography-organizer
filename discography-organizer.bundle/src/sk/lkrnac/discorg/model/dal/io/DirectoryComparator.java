@@ -34,16 +34,16 @@ public class DirectoryComparator extends AbstractDirectoryHandler {
 	 * @throws IOException
 	 *             if some I/O error occurs
 	 */
-	public final EDirectoryComparisonResult compareDirectories(File fullDir, File selectionDir)
+	public final DirectoryComparisonResult compareDirectories(File fullDir, File selectionDir)
 			throws IOException {
-		EDirectoryComparisonResult result = null;
+		DirectoryComparisonResult result = null;
 
 		if (fullDir != null && selectionDir != null) {
 			File[] fullArray = fullDir.listFiles();
 			File[] selectionArray = selectionDir.listFiles();
 			if (fullArray.length == NumberUtils.INTEGER_ZERO
 					|| selectionArray.length == NumberUtils.INTEGER_ZERO) {
-				return EDirectoryComparisonResult.DIFFERENT_FILES;
+				return DirectoryComparisonResult.DIFFERENT_FILES;
 			}
 			missingInSelectionList = new ArrayList<>(Arrays.asList(fullArray));
 			missingInFullList = new ArrayList<>();
@@ -51,13 +51,13 @@ public class DirectoryComparator extends AbstractDirectoryHandler {
 			// do the comparison
 			super.fileFacingLoop(Arrays.asList(selectionArray), Arrays.asList(fullArray));
 			if (missingInSelectionList.isEmpty() && missingInFullList.isEmpty()) {
-				result = EDirectoryComparisonResult.EQUAL;
+				result = DirectoryComparisonResult.EQUAL;
 			} else if (!missingInSelectionList.isEmpty() && !missingInFullList.isEmpty()) {
-				result = EDirectoryComparisonResult.DIFFERENT_FILES;
+				result = DirectoryComparisonResult.DIFFERENT_FILES;
 			} else if (!missingInSelectionList.isEmpty()) {
-				result = EDirectoryComparisonResult.MISSING_MEDIA_FILES_IN_SELECTION;
+				result = DirectoryComparisonResult.MISSING_MEDIA_FILES_IN_SELECTION;
 			} else if (!missingInFullList.isEmpty()) {
-				result = EDirectoryComparisonResult.MISSING_MEDIA_FILES_IN_FULL;
+				result = DirectoryComparisonResult.MISSING_MEDIA_FILES_IN_FULL;
 			}
 		}
 		return result;

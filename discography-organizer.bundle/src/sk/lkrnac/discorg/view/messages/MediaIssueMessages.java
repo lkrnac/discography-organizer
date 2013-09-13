@@ -55,9 +55,6 @@ public final class MediaIssueMessages extends NLS {
 	/** Message when media directory contains various different media formats. */
 	public static String genericVariousAudioFormatTypes;
 
-	/** More files are in selection than in full album. */
-	public static String genericMoreFilesInSelection;
-
 	/** Message when reference mirror has different file names as input mirror. */
 	public static String genericDifferentNames;
 
@@ -71,6 +68,10 @@ public final class MediaIssueMessages extends NLS {
 	/** Message when loss-less media directory found on input storage. */
 	public static String inputLosslessAudioFormat;
 
+	/*----------------------------------------------------------------------*/
+	/** Error message when there is missing translation for media issue code. */
+	public static String errorUnknownCode;
+
 	private static final Map<MediaIssueCode, String> MESSAGES_MAP;
 
 	static {
@@ -79,7 +80,6 @@ public final class MediaIssueMessages extends NLS {
 
 		Map<MediaIssueCode, String> tmpMessagesMap = new HashMap<MediaIssueCode, String>();
 		tmpMessagesMap.put(MediaIssueCode.GENERIC_MEDIA_FILES_AND_SUBDIRS, genericMediaFilesAndSubdirs);
-		tmpMessagesMap.put(MediaIssueCode.GENERIC_MORE_FILES_IN_SELECTION, genericMoreFilesInSelection);
 		tmpMessagesMap.put(MediaIssueCode.GENERIC_VARIOUS_AUDIO_FORMAT_TYPES, genericVariousAudioFormatTypes);
 		tmpMessagesMap.put(MediaIssueCode.GENERIC_IO_ERROR_DURING_COMPARISON, genericIoErrorDuringComparison);
 		tmpMessagesMap.put(MediaIssueCode.REFERENCE_FULL_MIRROR_MISSING, referenceFullMirrorMissing);
@@ -111,15 +111,13 @@ public final class MediaIssueMessages extends NLS {
 	 * 
 	 * @param messageCode
 	 *            message code
-	 * @param messageParameters
-	 *            parameters of the message
 	 * @return message to show on GUI
 	 */
 	// NOPMD: PMD doesn't like assertion of the message
 	@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-	public static String getMessageForMessageCode(MediaIssueCode messageCode, String... messageParameters) {
+	public static String getMessageForMessageCode(MediaIssueCode messageCode) {
 		String message = MESSAGES_MAP.get(messageCode);
-		assert message != null : "Can't find message for message code: " + messageCode; //$NON-NLS-1$
-		return String.format(message, (Object[]) messageParameters);
+		assert message != null : errorUnknownCode + messageCode;
+		return String.format(message);
 	}
 }

@@ -9,9 +9,6 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 
-import sk.lkrnac.discorg.general.DiscOrgException;
-import sk.lkrnac.discorg.general.constants.MediaIssueCode;
-
 /**
  * Generates hard links of full album media files.
  * 
@@ -97,30 +94,23 @@ public class HardLinksHandler extends AbstractDirectoryHandler {
 	 *            full album from which to create hard links
 	 * @param dirComparator
 	 *            comparator of media directories
-	 * @throws DiscOrgException
-	 *             if full media directory contains less files than selection
-	 *             mirror or if I/O error occurs
+	 * @return if hard link were created in selection directory
 	 */
-	public final void buildHardLinks(File fullDir, DirectoryComparator dirComparator) throws DiscOrgException {
+	public final boolean buildHardLinks(File fullDir, DirectoryComparator dirComparator) {
+		boolean hardLinksCreated = false;
 		try {
-			EDirectoryComparisonResult result =
+			DirectoryComparisonResult result =
 					dirComparator.compareDirectories(fullDir, this.getSelectionDir());
 			if (result.areMirrors()) {
 				File[] fullArray = fullDir.listFiles();
 				File[] selectionArray = selectionDir.listFiles();
 				fileFacingLoop(Arrays.asList(selectionArray), Arrays.asList(fullArray));
-			} else {
-				MediaIssueCode issue = null;
-				if (EDirectoryComparisonResult.MISSING_MEDIA_FILES_IN_FULL.equals(result)) {
-					issue = MediaIssueCode.GENERIC_MORE_FILES_IN_SELECTION;
-				} else if (EDirectoryComparisonResult.DIFFERENT_FILES.equals(result)) {
-					issue = MediaIssueCode.GENERIC_DIFFERENT_NAMES;
-				}
-				throw new DiscOrgException(selectionDir.getAbsolutePath(), issue);
+				hardLinksCreated = true;
 			}
 		} catch (IOException ioException) {
-			throw new DiscOrgException(this.getSelectionDir().getAbsolutePath(), ioException);
+			hardLinksCreated = false;
 		}
+		return hardLinksCreated;
 	}
 
 	/**

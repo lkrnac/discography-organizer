@@ -21,8 +21,8 @@ import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
+import sk.lkrnac.discorg.model.dal.io.DirectoryComparisonResult;
 import sk.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
-import sk.lkrnac.discorg.model.dal.io.EDirectoryComparisonResult;
 import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
 
 /**
@@ -351,7 +351,7 @@ public class ReferenceMediaNodeTest extends PowerMockTestCase {
 		MediaIssue mediaIssueVarious = new MediaIssue(FULL_PARENT_ABSOLUTE_PATH,
 				MediaIssueCode.REFERENCE_VARIOUS_SELECTION_MIRRORS_FOUND, relativePath, true);
 		MediaIssue mediaIssueIoError = new MediaIssue(FULL_PARENT_ABSOLUTE_PATH,
-				MediaIssueCode.REFERENCE_HARD_LINK_IO_ERROR, relativePath, true);
+				MediaIssueCode.GENERIC_IO_ERROR_DURING_COMPARISON, relativePath, true);
 		int idx = 0;
 		return new Object[][] {
 				// create one selection album mirror in storages meta-data maps and expect no issue
@@ -480,8 +480,9 @@ public class ReferenceMediaNodeTest extends PowerMockTestCase {
 			Mockito.when(dirIoFacadeMock.compareDirectories(Mockito.any(File.class), Mockito.any(File.class)))
 					.thenThrow(new IOException());
 		} else {
-			EDirectoryComparisonResult comparisonResult = dirComparisonSucceed ? EDirectoryComparisonResult.EQUAL
-					: EDirectoryComparisonResult.DIFFERENT_FILES;
+			DirectoryComparisonResult comparisonResult =
+					dirComparisonSucceed ? DirectoryComparisonResult.EQUAL
+							: DirectoryComparisonResult.DIFFERENT_FILES;
 			Mockito.when(dirIoFacadeMock.compareDirectories(Mockito.any(File.class), Mockito.any(File.class)))
 					.thenReturn(comparisonResult);
 		}
