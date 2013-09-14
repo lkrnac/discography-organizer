@@ -8,16 +8,13 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.testng.PowerMockTestCase;
 import org.powermock.reflect.Whitebox;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import sk.lkrnac.discorg.general.constants.MediaIssueCode;
-import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
+import sk.lkrnac.discorg.general.context.DiscOrgContextAdapter;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
@@ -30,19 +27,13 @@ import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
  * 
  * @author sitko
  */
-@PrepareForTest(DiscOrgContextHolder.class)
-public class ReferenceMediaNodeTest extends PowerMockTestCase {
+public class ReferenceMediaNodeTest {
 	private static final String DP_TEST_CHECK_SELECTION_FOR_FULL_ALBUM = "testCheckSelectionForFullAlbum";
 	private static final String DP_TEST_CHECK_FULL_ALBUM_FOR_SELECTION = "testCheckFullAlbumForSelection";
 	private static final String TEST_PATH = "test-path";
 	private static final String DIR_NAME_TEST_ALBUM_1 = "test - album 1";
 	private static final String DIR_NAME_FULL_ALBUM = "=[full]";
 	private static final String FULL_PARENT_ABSOLUTE_PATH = TEST_PATH + File.separator + DIR_NAME_FULL_ALBUM;
-
-	//	@BeforeClass(alwaysRun = true)
-	//	public void initMocks() {
-	//		PowerMockito.mockStatic(DiscOrgContextHolder.class);
-	//	}
 
 	//@formatter:off
 	/**
@@ -59,16 +50,19 @@ public class ReferenceMediaNodeTest extends PowerMockTestCase {
 	public Object[][] testCheckFullAlbumForSelection() {
 		String pathToFullMirror = FULL_PARENT_ABSOLUTE_PATH + File.separator + DIR_NAME_TEST_ALBUM_1;
 		String relativePath = TEST_PATH + File.separator + DIR_NAME_TEST_ALBUM_1;
-		MediaIssue mediaIssueMissing = new MediaIssue(TEST_PATH,
-				MediaIssueCode.REFERENCE_FULL_MIRROR_MISSING, relativePath, false);
-		MediaIssue mediaIssueVarious = new MediaIssue(TEST_PATH,
-				MediaIssueCode.REFERENCE_VARIOUS_FULL_MIRRORS_FOUND, relativePath, true);
-		MediaIssue mediaIssueIoErrorDuringComparison = new MediaIssue(TEST_PATH,
-				MediaIssueCode.GENERIC_IO_ERROR_DURING_COMPARISON, relativePath, true);
-		MediaIssue mediaIssueNoHardLinks = new MediaIssue(TEST_PATH,
-				MediaIssueCode.REFERENCE_NO_HARD_LINK_IN_SELECTION, relativePath, true);
-		MediaIssue mediaIssueIoErrorDuringHardLinksCheck = new MediaIssue(TEST_PATH,
-				MediaIssueCode.REFERENCE_HARD_LINK_IO_ERROR, relativePath, true);
+		MediaIssue mediaIssueMissing =
+				new MediaIssue(TEST_PATH, MediaIssueCode.REFERENCE_FULL_MIRROR_MISSING, relativePath, false);
+		MediaIssue mediaIssueVarious =
+				new MediaIssue(TEST_PATH, MediaIssueCode.REFERENCE_VARIOUS_FULL_MIRRORS_FOUND, relativePath,
+						true);
+		MediaIssue mediaIssueIoErrorDuringComparison =
+				new MediaIssue(TEST_PATH, MediaIssueCode.GENERIC_IO_ERROR_DURING_COMPARISON, relativePath,
+						true);
+		MediaIssue mediaIssueNoHardLinks =
+				new MediaIssue(TEST_PATH, MediaIssueCode.REFERENCE_NO_HARD_LINK_IN_SELECTION, relativePath,
+						true);
+		MediaIssue mediaIssueIoErrorDuringHardLinksCheck =
+				new MediaIssue(TEST_PATH, MediaIssueCode.REFERENCE_HARD_LINK_IO_ERROR, relativePath, true);
 		int idx = 0;
 		return new Object[][] {
 				// create one full album mirror in storages meta-data maps and
@@ -298,16 +292,16 @@ public class ReferenceMediaNodeTest extends PowerMockTestCase {
 	 */
 	@Test(dataProvider = DP_TEST_CHECK_FULL_ALBUM_FOR_SELECTION)
 	public void testCheckFullAlbumForSelection(int testCaseId, String pathToFullMirror,
-			Object referenceStorageCacheObj, Object expectedStatusObj,
-			Object expectedIssueObj, boolean dirComparisonSucceed, boolean throwIoErrorDuringDirComparison,
-			boolean hardLinksCheckPassed, boolean throwIoErrorDuringHardLinksCheck
-			) throws IOException {
+			Object referenceStorageCacheObj, Object expectedStatusObj, Object expectedIssueObj,
+			boolean dirComparisonSucceed, boolean throwIoErrorDuringDirComparison,
+			boolean hardLinksCheckPassed, boolean throwIoErrorDuringHardLinksCheck) throws IOException {
 		ReferenceStorageCache referenceStorageCache = (ReferenceStorageCache) referenceStorageCacheObj;
 
-		ReferenceMediaNode testingObject = initializeMocks(TEST_PATH, referenceStorageCache,
-				dirComparisonSucceed, throwIoErrorDuringDirComparison, hardLinksCheckPassed,
-				throwIoErrorDuringHardLinksCheck);
-		MediaIssuesCache mediaIssuesCache = createMediaIssuesCacheMock();
+		ReferenceMediaNode testingObject =
+				initializeMocks(TEST_PATH, dirComparisonSucceed, throwIoErrorDuringDirComparison,
+						hardLinksCheckPassed, throwIoErrorDuringHardLinksCheck);
+		MediaIssuesCache mediaIssuesCache = new MediaIssuesCache();
+		initSpringContextMock(testingObject, mediaIssuesCache, referenceStorageCache);
 
 		// call testing method
 		testingObject.checkFullAlbumForSelection(DIR_NAME_FULL_ALBUM);
@@ -317,8 +311,8 @@ public class ReferenceMediaNodeTest extends PowerMockTestCase {
 		verifyMediaIssue(expectedIssueObj, mediaIssuesCache);
 
 		// if there is one one mirror and directories comparison was successful
-		Collection<ReferenceMediaNode> fullMirrorsList = referenceStorageCache
-				.getReferenceItems(pathToFullMirror);
+		Collection<ReferenceMediaNode> fullMirrorsList =
+				referenceStorageCache.getReferenceItems(pathToFullMirror);
 		if (dirComparisonSucceed && !throwIoErrorDuringDirComparison && fullMirrorsList.size() == 1) {
 			// retrieve full mirror mock and verify its fullMirror flag
 			ReferenceMediaNode fullMirror = fullMirrorsList.iterator().next();
@@ -346,12 +340,15 @@ public class ReferenceMediaNodeTest extends PowerMockTestCase {
 	public Object[][] testCheckSelectionForFullAlbum() {
 		String relativePath = FULL_PARENT_ABSOLUTE_PATH + File.separator + DIR_NAME_TEST_ALBUM_1;
 		String pathToSelectionMirror = TEST_PATH + File.separator + DIR_NAME_TEST_ALBUM_1;
-		MediaIssue mediaIssueMissing = new MediaIssue(FULL_PARENT_ABSOLUTE_PATH,
-				MediaIssueCode.REFERENCE_MISSING_SELECTION_MIRROR, relativePath, false);
-		MediaIssue mediaIssueVarious = new MediaIssue(FULL_PARENT_ABSOLUTE_PATH,
-				MediaIssueCode.REFERENCE_VARIOUS_SELECTION_MIRRORS_FOUND, relativePath, true);
-		MediaIssue mediaIssueIoError = new MediaIssue(FULL_PARENT_ABSOLUTE_PATH,
-				MediaIssueCode.GENERIC_IO_ERROR_DURING_COMPARISON, relativePath, true);
+		MediaIssue mediaIssueMissing =
+				new MediaIssue(FULL_PARENT_ABSOLUTE_PATH, MediaIssueCode.REFERENCE_MISSING_SELECTION_MIRROR,
+						relativePath, false);
+		MediaIssue mediaIssueVarious =
+				new MediaIssue(FULL_PARENT_ABSOLUTE_PATH,
+						MediaIssueCode.REFERENCE_VARIOUS_SELECTION_MIRRORS_FOUND, relativePath, true);
+		MediaIssue mediaIssueIoError =
+				new MediaIssue(FULL_PARENT_ABSOLUTE_PATH, MediaIssueCode.GENERIC_IO_ERROR_DURING_COMPARISON,
+						relativePath, true);
 		int idx = 0;
 		return new Object[][] {
 				// create one selection album mirror in storages meta-data maps and expect no issue
@@ -421,11 +418,12 @@ public class ReferenceMediaNodeTest extends PowerMockTestCase {
 			boolean expectedResult, boolean throwIoError) throws IOException {
 		ReferenceStorageCache referenceStorageCache = (ReferenceStorageCache) referenceStorageCacheObj;
 
-		ReferenceMediaNode testingObject = initializeMocks(FULL_PARENT_ABSOLUTE_PATH,
-				referenceStorageCache, dirComparisonSucceed, throwIoError, null, null);
+		ReferenceMediaNode testingObject =
+				initializeMocks(FULL_PARENT_ABSOLUTE_PATH, dirComparisonSucceed, throwIoError, null, null);
 		testingObject.setFullAlbum(true);
 
-		MediaIssuesCache mediaIssuesCache = createMediaIssuesCacheMock();
+		MediaIssuesCache mediaIssuesCache = new MediaIssuesCache();
+		initSpringContextMock(testingObject, mediaIssuesCache, referenceStorageCache);
 
 		// call testing method
 		boolean result = testingObject.checkSelectionForFullAlbum(DIR_NAME_FULL_ALBUM);
@@ -440,12 +438,22 @@ public class ReferenceMediaNodeTest extends PowerMockTestCase {
 	/**
 	 * Create media issues list and mock it to the testing spy object
 	 * 
+	 * @param testingObject
+	 *            testing object
+	 * @param mediaIssuesCache
+	 *            media issues cache to stub into Spring context mock
+	 * @param referenceStorageCache
+	 *            reference storage cache to stub into Spring context mock
+	 * 
 	 * @return created media issues list
 	 */
-	private MediaIssuesCache createMediaIssuesCacheMock() {
-		MediaIssuesCache mediaIssuesCache = new MediaIssuesCache();
-		Mockito.when(DiscOrgContextHolder.getBean(MediaIssuesCache.class))
-				.thenReturn(mediaIssuesCache);
+	private MediaIssuesCache initSpringContextMock(ReferenceMediaNode testingObject,
+			MediaIssuesCache mediaIssuesCache, ReferenceStorageCache referenceStorageCache) {
+		DiscOrgContextAdapter contextAdapterMock = Mockito.mock(DiscOrgContextAdapter.class);
+		Mockito.when(contextAdapterMock.getBean(MediaIssuesCache.class)).thenReturn(mediaIssuesCache);
+		Mockito.when(contextAdapterMock.getBean(ReferenceStorageCache.class)).thenReturn(
+				referenceStorageCache);
+		Whitebox.setInternalState(testingObject, DiscOrgContextAdapter.class, contextAdapterMock);
 		return mediaIssuesCache;
 	}
 
@@ -454,9 +462,6 @@ public class ReferenceMediaNodeTest extends PowerMockTestCase {
 	 * 
 	 * @param parentDirectoryPath
 	 *            parent directory path of testing object
-	 * @param referenceStorageCache
-	 *            Mock for storage meta-data maps (see
-	 *            {@link ReferenceStorageCache})
 	 * @param dirComparisonSucceed
 	 *            desired result of directories comparison
 	 * @param throwIoErrorDuringDirComparison
@@ -469,11 +474,9 @@ public class ReferenceMediaNodeTest extends PowerMockTestCase {
 	 * @throws IOException
 	 *             declared to avoid compiler error (method is stubbed)
 	 */
-	private ReferenceMediaNode initializeMocks(String parentDirectoryPath,
-			ReferenceStorageCache referenceStorageCache, boolean dirComparisonSucceed,
-			boolean throwIoErrorDuringDirComparison,
-			Boolean hardLinksCheckPassed, Boolean throwIoErrorDuringHardLinksCheck)
-			throws IOException {
+	private ReferenceMediaNode initializeMocks(String parentDirectoryPath, boolean dirComparisonSucceed,
+			boolean throwIoErrorDuringDirComparison, Boolean hardLinksCheckPassed,
+			Boolean throwIoErrorDuringHardLinksCheck) throws IOException {
 		DirectoryIoFacade dirIoFacadeMock = Mockito.mock(DirectoryIoFacade.class);
 
 		if (throwIoErrorDuringDirComparison) {
@@ -488,11 +491,11 @@ public class ReferenceMediaNodeTest extends PowerMockTestCase {
 		}
 
 		if (throwIoErrorDuringHardLinksCheck != null && throwIoErrorDuringHardLinksCheck) {
-			Mockito.when(dirIoFacadeMock.verifyHardLinks(Mockito.any(File.class)))
-					.thenThrow(new IOException());
+			Mockito.when(dirIoFacadeMock.verifyHardLinks(Mockito.any(File.class))).thenThrow(
+					new IOException());
 		} else if (hardLinksCheckPassed != null) {
-			Mockito.when(dirIoFacadeMock.verifyHardLinks(Mockito.any(File.class)))
-					.thenReturn(hardLinksCheckPassed);
+			Mockito.when(dirIoFacadeMock.verifyHardLinks(Mockito.any(File.class))).thenReturn(
+					hardLinksCheckPassed);
 		}
 
 		File dirMock = Mockito.mock(File.class);
@@ -503,10 +506,7 @@ public class ReferenceMediaNodeTest extends PowerMockTestCase {
 		// create testing object
 		ReferenceMediaNode testingObject = new ReferenceMediaNode(null, dirMock, parentDirectoryPath);
 
-		PowerMockito.mockStatic(DiscOrgContextHolder.class);
-		Mockito.when(DiscOrgContextHolder.getBean(ReferenceStorageCache.class))
-				.thenReturn(referenceStorageCache);
-		Whitebox.setInternalState(testingObject, "directoryIoFacade", dirIoFacadeMock);
+		Whitebox.setInternalState(testingObject, DirectoryIoFacade.class, dirIoFacadeMock);
 		return testingObject;
 	}
 

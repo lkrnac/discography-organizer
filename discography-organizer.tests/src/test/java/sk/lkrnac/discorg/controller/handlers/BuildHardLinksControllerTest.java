@@ -5,17 +5,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.testng.PowerMockTestCase;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import sk.lkrnac.discorg.controller.listeners.IBuildHardLinksListener;
-import sk.lkrnac.discorg.controller.listeners.IErrorVisualizer;
 import sk.lkrnac.discorg.general.DiscOrgException;
-import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
+import sk.lkrnac.discorg.general.context.DiscOrgContextAdapter;
 
 /**
  * Unit test for class {@link BuildHardLinksController}
@@ -23,21 +19,23 @@ import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
  * @author sitko
  * 
  */
-@PrepareForTest(DiscOrgContextHolder.class)
-public class BuildHardLinksControllerTest extends PowerMockTestCase {
+public class BuildHardLinksControllerTest {
 	@InjectMocks
 	private BuildHardLinksController testingObject;
 
-	@Mock
-	private IErrorVisualizer errorVisualizerMock;
+	//	@Mock
+	//	private IErrorVisualizer errorVisualizerMock;
 
 	@Mock
 	private IBuildHardLinksListener buildHardLinksListenerMock;
 
+	@Mock
+	private DiscOrgContextAdapter discOrgContextAdapterMock;
+
 	/**
 	 * Injects mocks into testing object
 	 */
-	@BeforeClass(alwaysRun = true)
+	@BeforeMethod(alwaysRun = true)
 	public void initMocks() {
 		MockitoAnnotations.initMocks(this);
 	}
@@ -72,11 +70,10 @@ public class BuildHardLinksControllerTest extends PowerMockTestCase {
 	 */
 	@Test(dataProvider = "testExecute")
 	public void testExecute(boolean throwError) throws ExecutionException, DiscOrgException {
-		PowerMockito.mockStatic(DiscOrgContextHolder.class);
-		Mockito.when(DiscOrgContextHolder.getBean(IBuildHardLinksListener.class))
-				.thenReturn(buildHardLinksListenerMock);
-		Mockito.when(DiscOrgContextHolder.getBean(IErrorVisualizer.class))
-				.thenReturn(errorVisualizerMock);
+		Mockito.when(discOrgContextAdapterMock.getBean(IBuildHardLinksListener.class)).thenReturn(
+				buildHardLinksListenerMock);
+		//		Mockito.when(discOrgContextAdapterMock.getBean(IErrorVisualizer.class)).thenReturn(
+		//				errorVisualizerMock);
 
 		//		DiscOrgException error = new DiscOrgException("", new Exception());
 		//		if (throwError) {

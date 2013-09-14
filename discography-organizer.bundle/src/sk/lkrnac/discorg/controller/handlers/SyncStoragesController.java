@@ -5,7 +5,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
 import sk.lkrnac.discorg.controller.listeners.ISyncStoragesListener;
-import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
+import sk.lkrnac.discorg.general.context.DiscOrgContextAdapter;
 
 /**
  * Handler for synchronize storages controller command.
@@ -23,8 +23,7 @@ public class SyncStoragesController extends AbstractHandler {
 	 */
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ISyncStoragesListener listener = DiscOrgContextHolder.getInstance().getContext()
-				.getBean(ISyncStoragesListener.class);
+		ISyncStoragesListener listener = new DiscOrgContextAdapter().getBean(ISyncStoragesListener.class);
 
 		listener.syncStorages();
 

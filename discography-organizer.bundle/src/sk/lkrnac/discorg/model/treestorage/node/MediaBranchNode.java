@@ -7,7 +7,6 @@ import java.util.List;
 
 import sk.lkrnac.discorg.general.DiscOrgException;
 import sk.lkrnac.discorg.general.constants.MediaIssueCode;
-import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
@@ -75,14 +74,14 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	 * @return List where media issues are stored
 	 */
 	public MediaIssuesCache getMediaIssuesCache() {
-		return DiscOrgContextHolder.getBean(MediaIssuesCache.class);
+		return getDiscOrgContextAdapter().getBean(MediaIssuesCache.class);
 	}
 
 	/**
 	 * @return Meta-data holder object
 	 */
 	public ReferenceStorageCache getReferenceStorageCache() {
-		return DiscOrgContextHolder.getBean(ReferenceStorageCache.class);
+		return getDiscOrgContextAdapter().getBean(ReferenceStorageCache.class);
 	}
 
 	/**

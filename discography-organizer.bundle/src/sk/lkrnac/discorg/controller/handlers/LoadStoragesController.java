@@ -5,7 +5,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
 import sk.lkrnac.discorg.controller.listeners.ILoadStoragesListener;
-import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
+import sk.lkrnac.discorg.general.context.DiscOrgContextAdapter;
 
 /**
  * Handler for load storages controller command.
@@ -23,8 +23,7 @@ public class LoadStoragesController extends AbstractHandler {
 	 */
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		ILoadStoragesListener listener = DiscOrgContextHolder.getInstance().getContext()
-				.getBean(ILoadStoragesListener.class);
+		ILoadStoragesListener listener = new DiscOrgContextAdapter().getBean(ILoadStoragesListener.class);
 
 		listener.loadStorages();
 

@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 
-import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
+import sk.lkrnac.discorg.general.context.DiscOrgContextAdapter;
 import sk.lkrnac.discorg.model.interfaces.INodeStatus;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
 
@@ -27,6 +27,8 @@ public class TreeStorageNode implements ITreeStorageNode {
 	private final File file;
 
 	private INodeStatus nodeStatus;
+
+	private DiscOrgContextAdapter discOrgContextAdapter;
 
 	/**
 	 * Creates instance of tree node.
@@ -66,6 +68,16 @@ public class TreeStorageNode implements ITreeStorageNode {
 	}
 
 	/**
+	 * @return Spring context adapter, create it if needed
+	 */
+	protected DiscOrgContextAdapter getDiscOrgContextAdapter() {
+		if (discOrgContextAdapter == null) {
+			discOrgContextAdapter = new DiscOrgContextAdapter();
+		}
+		return discOrgContextAdapter;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -84,7 +96,7 @@ public class TreeStorageNode implements ITreeStorageNode {
 	 * @return file designator retrieved from Spring context
 	 */
 	protected FileDesignator getFileDesignator() {
-		return DiscOrgContextHolder.getInstance().getContext().getBean(FileDesignator.class);
+		return getDiscOrgContextAdapter().getBean(FileDesignator.class);
 	}
 
 	/**

@@ -6,9 +6,8 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.springframework.context.ApplicationContext;
 
-import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
+import sk.lkrnac.discorg.general.context.DiscOrgContextAdapter;
 
 /**
  * This class controls all aspects of the application's execution.
@@ -48,10 +47,9 @@ public class Application implements IApplication {
 	 * Register listeners.
 	 */
 	private void registerListeners() {
-		ApplicationContext context = DiscOrgContextHolder.getInstance().getContext();
-
 		// listener for properties change
-		IPropertyChangeListener propertyChangeListener = context.getBean(IPropertyChangeListener.class);
+		IPropertyChangeListener propertyChangeListener =
+				new DiscOrgContextAdapter().getBean(IPropertyChangeListener.class);
 		Activator.getDefault().getPreferenceStore().addPropertyChangeListener(propertyChangeListener);
 	}
 

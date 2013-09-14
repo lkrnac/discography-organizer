@@ -7,6 +7,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
 import sk.lkrnac.discorg.model.treestorage.node.FileDesignator;
@@ -21,18 +23,27 @@ import sk.lkrnac.discorg.model.treestorage.node.TreeStorageNode;
  * 
  * @author sitko
  */
-public abstract class AbstractTreeStorage {
+public abstract class AbstractTreeStorage implements ApplicationContextAware {
 	private TreeStorageBranchNode rootNode;
 
 	@Autowired
 	private FileDesignator fileDesignator;
 
+	private ApplicationContext applicationContext;
+
 	/**
-	 * @return file designator object<br>
-	 *         it designates files and directories types based on file name
+	 * @return Spring application context that will be injected via child bean.
 	 */
-	public final FileDesignator getFileDesignator() {
-		return fileDesignator;
+	protected ApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
 	}
 
 	/**
@@ -116,7 +127,7 @@ public abstract class AbstractTreeStorage {
 			// if child is directory
 			TreeStorageNode childNode = null;
 			if (childFile.isDirectory()) {
-				if (getFileDesignator().isMediaDir(childFile)) {
+				if (fileDesignator.isMediaDir(childFile)) {
 					// create media directory
 					childNode = createMediaNode(parentNode, childFile, relativePath);
 

@@ -5,7 +5,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
 import sk.lkrnac.discorg.controller.listeners.IBuildHardLinksListener;
-import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
+import sk.lkrnac.discorg.general.context.DiscOrgContextAdapter;
 
 /**
  * Handler for replacing media files in selection mirror directories by hard
@@ -15,6 +15,8 @@ import sk.lkrnac.discorg.general.context.DiscOrgContextHolder;
  * 
  */
 public class BuildHardLinksController extends AbstractHandler {
+	private DiscOrgContextAdapter discOrgContextAdapter;
+
 	/**
 	 * Build hard links of media files from full album mirrors in selection
 	 * mirrors directories.
@@ -25,7 +27,7 @@ public class BuildHardLinksController extends AbstractHandler {
 	 */
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IBuildHardLinksListener listener = DiscOrgContextHolder.getBean(IBuildHardLinksListener.class);
+		IBuildHardLinksListener listener = getDiscOrgContextAdapter().getBean(IBuildHardLinksListener.class);
 		//		try {
 		listener.onBuildHardLinks();
 		//		} catch (DiscOrgException error) {
@@ -33,6 +35,16 @@ public class BuildHardLinksController extends AbstractHandler {
 		//			errorVisualizer.visualizeError(error);
 		//		}
 		return null;
+	}
+
+	/**
+	 * @return Context adapter, if it's null, create it
+	 */
+	private DiscOrgContextAdapter getDiscOrgContextAdapter() {
+		if (discOrgContextAdapter == null) {
+			discOrgContextAdapter = new DiscOrgContextAdapter();
+		}
+		return discOrgContextAdapter;
 	}
 
 }
