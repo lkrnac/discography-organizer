@@ -14,13 +14,13 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import sk.lkrnac.discorg.general.constants.MediaIssueCode;
-import sk.lkrnac.discorg.general.context.DiscOrgContextAdapter;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.dal.io.DirectoryComparisonResult;
 import sk.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
 import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
+import sk.lkrnac.discorg.test.utils.TestUtils;
 
 /**
  * Tests {@link ReferenceMediaNode}
@@ -301,7 +301,7 @@ public class ReferenceMediaNodeTest {
 				initializeMocks(TEST_PATH, dirComparisonSucceed, throwIoErrorDuringDirComparison,
 						hardLinksCheckPassed, throwIoErrorDuringHardLinksCheck);
 		MediaIssuesCache mediaIssuesCache = new MediaIssuesCache();
-		initSpringContextMock(testingObject, mediaIssuesCache, referenceStorageCache);
+		initSpringContextMocks(testingObject, mediaIssuesCache, referenceStorageCache);
 
 		// call testing method
 		testingObject.checkFullAlbumForSelection(DIR_NAME_FULL_ALBUM);
@@ -423,7 +423,7 @@ public class ReferenceMediaNodeTest {
 		testingObject.setFullAlbum(true);
 
 		MediaIssuesCache mediaIssuesCache = new MediaIssuesCache();
-		initSpringContextMock(testingObject, mediaIssuesCache, referenceStorageCache);
+		initSpringContextMocks(testingObject, mediaIssuesCache, referenceStorageCache);
 
 		// call testing method
 		boolean result = testingObject.checkSelectionForFullAlbum(DIR_NAME_FULL_ALBUM);
@@ -436,7 +436,7 @@ public class ReferenceMediaNodeTest {
 	}
 
 	/**
-	 * Create media issues list and mock it to the testing spy object
+	 * Initializes spring beans mocks into testing object
 	 * 
 	 * @param testingObject
 	 *            testing object
@@ -444,17 +444,12 @@ public class ReferenceMediaNodeTest {
 	 *            media issues cache to stub into Spring context mock
 	 * @param referenceStorageCache
 	 *            reference storage cache to stub into Spring context mock
-	 * 
-	 * @return created media issues list
 	 */
-	private MediaIssuesCache initSpringContextMock(ReferenceMediaNode testingObject,
-			MediaIssuesCache mediaIssuesCache, ReferenceStorageCache referenceStorageCache) {
-		DiscOrgContextAdapter contextAdapterMock = Mockito.mock(DiscOrgContextAdapter.class);
-		Mockito.when(contextAdapterMock.getBean(MediaIssuesCache.class)).thenReturn(mediaIssuesCache);
-		Mockito.when(contextAdapterMock.getBean(ReferenceStorageCache.class)).thenReturn(
+	private void initSpringContextMocks(ReferenceMediaNode testingObject, MediaIssuesCache mediaIssuesCache,
+			ReferenceStorageCache referenceStorageCache) {
+		TestUtils.stubBeanIntoSpringContextAdapter(testingObject, MediaIssuesCache.class, mediaIssuesCache);
+		TestUtils.stubBeanIntoSpringContextAdapter(testingObject, ReferenceStorageCache.class,
 				referenceStorageCache);
-		Whitebox.setInternalState(testingObject, DiscOrgContextAdapter.class, contextAdapterMock);
-		return mediaIssuesCache;
 	}
 
 	/**

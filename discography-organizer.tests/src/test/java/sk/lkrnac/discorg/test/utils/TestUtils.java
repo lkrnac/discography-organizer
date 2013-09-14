@@ -2,6 +2,11 @@ package sk.lkrnac.discorg.test.utils;
 
 import java.io.File;
 
+import org.mockito.Mockito;
+import org.powermock.reflect.Whitebox;
+
+import sk.lkrnac.discorg.general.context.DiscOrgContextAdapter;
+
 /**
  * Various test related utility methods
  * 
@@ -58,4 +63,29 @@ public final class TestUtils {
 		stringBuilder.append(File.separator);
 		return stringBuilder.toString();
 	}
+
+	/**
+	 * Verifies if testing object has initialized {@link DiscOrgContextAdapter}
+	 * mock.
+	 * If not initializes one and stubs given bean into it.
+	 * This way simulates Spring beans for classes that use
+	 * {@link DiscOrgContextAdapter}.
+	 * 
+	 * @param testingObject
+	 *            testing object
+	 * @param beanClass
+	 *            class of the bean
+	 * @param bean
+	 *            bean instance
+	 */
+	public static <T> void stubBeanIntoSpringContextAdapter(Object testingObject, Class<T> beanClass, T bean) {
+		DiscOrgContextAdapter contextAdapterMock =
+				Whitebox.getInternalState(testingObject, DiscOrgContextAdapter.class);
+		if (contextAdapterMock == null) {
+			contextAdapterMock = Mockito.mock(DiscOrgContextAdapter.class);
+			Whitebox.setInternalState(testingObject, DiscOrgContextAdapter.class, contextAdapterMock);
+		}
+		Mockito.when(contextAdapterMock.getBean(beanClass)).thenReturn(bean);
+	}
+
 }
