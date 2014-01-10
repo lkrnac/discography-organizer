@@ -1,8 +1,11 @@
 package sk.lkrnac.discorg.model.cache;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -18,7 +21,8 @@ import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
  */
 @Service
 public class MediaIssuesCache {
-	private Set<IMediaIssue> mediaIssues;
+	private Map<String, IMediaIssue> inputMediaIssues;
+	private Map<String, IMediaIssue> referenceMediaIssues;
 
 	/**
 	 * Creates instance of the media issues list.
@@ -26,31 +30,26 @@ public class MediaIssuesCache {
 	 * Initializes list where instances media issues will be stored
 	 */
 	public MediaIssuesCache() {
-		mediaIssues = new HashSet<IMediaIssue>();
+		inputMediaIssues = new HashMap<>();
+		referenceMediaIssues = new HashMap<>();
 	}
 
 	/**
 	 * @return iterator for media issues
 	 */
 	public Iterator<IMediaIssue> getIterator() {
-		return mediaIssues.iterator();
-	}
-
-	/**
-	 * Add media issue into issues holder.
-	 * 
-	 * @param mediaIssue
-	 *            - new media issue
-	 */
-	public void add(IMediaIssue mediaIssue) {
-		mediaIssues.add(mediaIssue);
+		Set<IMediaIssue> issues = new HashSet<>(inputMediaIssues.size() + referenceMediaIssues.size());
+		issues.addAll(referenceMediaIssues.values());
+		issues.addAll(inputMediaIssues.values());
+		return issues.iterator();
 	}
 
 	/**
 	 * Clear all media issues.
 	 */
 	public void clear() {
-		mediaIssues = new HashSet<IMediaIssue>();
+		inputMediaIssues = new HashMap<>();
+		referenceMediaIssues = new HashMap<>();
 	}
 
 	/**
@@ -69,5 +68,17 @@ public class MediaIssuesCache {
 			}
 		}
 		return sourceAbsolutePaths;
+	}
+
+	public Collection<IMediaIssue> getInputMediaIssues() {
+		return Collections.unmodifiableCollection(inputMediaIssues.values());
+	}
+
+	public void addInputMediaIssue(IMediaIssue mediaIssue) {
+		inputMediaIssues.put(mediaIssue.getSourceAbsolutePath(), mediaIssue);
+	}
+
+	public void addReferenceMediaIssue(IMediaIssue mediaIssue) {
+		referenceMediaIssues.put(mediaIssue.getSourceAbsolutePath(), mediaIssue);
 	}
 }
