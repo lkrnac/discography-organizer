@@ -447,8 +447,8 @@ public class ReferenceMediaNodeTest {
 	 */
 	private void initSpringContextMocks(ReferenceMediaNode testingObject, MediaIssuesCache mediaIssuesCache,
 			ReferenceStorageCache referenceStorageCache) {
-		TestUtils.stubBeanIntoSpringContextAdapter(testingObject, MediaIssuesCache.class, mediaIssuesCache);
-		TestUtils.stubBeanIntoSpringContextAdapter(testingObject, ReferenceStorageCache.class,
+		TestUtils.stubBeanIntoContextAdapter(testingObject, MediaIssuesCache.class, mediaIssuesCache);
+		TestUtils.stubBeanIntoContextAdapter(testingObject, ReferenceStorageCache.class,
 				referenceStorageCache);
 	}
 

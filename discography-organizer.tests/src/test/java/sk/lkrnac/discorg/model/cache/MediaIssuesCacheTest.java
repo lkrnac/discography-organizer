@@ -106,9 +106,9 @@ public class MediaIssuesCacheTest {
 		MediaIssuesCache testingObject = initTestingObject(inputMediaIssues, referenceMediaIssues);
 
 		//call testing method
-		Collection<IMediaIssue> actualMediaIssues = testingObject.getInputMediaIssues();
+		Collection<IMediaIssue> actualInputMediaIssues = testingObject.getInputMediaIssues();
 
-		Collection<IMediaIssue> expectedMediaIssues =
+		Collection<IMediaIssue> expectedInputMediaIssues =
 				inputMediaIssues == null ? new ArrayList<IMediaIssue>() : inputMediaIssues;
 
 		Comparator<IMediaIssue> mediaIssueComparator = new Comparator<IMediaIssue>() {
@@ -118,8 +118,8 @@ public class MediaIssuesCacheTest {
 		};
 
 		int compareResult =
-				CollectionsComparator.compare(actualMediaIssues, expectedMediaIssues, mediaIssueComparator,
-						true);
+				CollectionsComparator.compare(actualInputMediaIssues, expectedInputMediaIssues,
+						mediaIssueComparator, true);
 		Assert.assertEquals(compareResult, 0);
 	}
 

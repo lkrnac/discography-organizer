@@ -78,7 +78,7 @@ public final class TestUtils {
 	 * @param bean
 	 *            bean instance
 	 */
-	public static <T> void stubBeanIntoSpringContextAdapter(Object testingObject, Class<T> beanClass, T bean) {
+	public static <T> void stubBeanIntoContextAdapter(Object testingObject, Class<T> beanClass, T bean) {
 		DiscOrgContextAdapter contextAdapterMock =
 				Whitebox.getInternalState(testingObject, DiscOrgContextAdapter.class);
 		if (contextAdapterMock == null) {
