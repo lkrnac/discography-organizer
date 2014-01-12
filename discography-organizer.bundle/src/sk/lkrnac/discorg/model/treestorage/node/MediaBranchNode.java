@@ -11,7 +11,6 @@ import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
-import sk.lkrnac.discorg.model.preferences.AudioFormatsPreferencesException;
 
 /**
  * Represents branch node containing audio media files. <br>
@@ -21,7 +20,6 @@ import sk.lkrnac.discorg.model.preferences.AudioFormatsPreferencesException;
  */
 public class MediaBranchNode extends TreeStorageBranchNode {
 	private NodeStatus audioFormatType;
-	private String audioFormatName;
 
 	/**
 	 * Creates new instance of {@link MediaBranchNode}.
@@ -45,16 +43,6 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 			initializeAudioFormat();
 		}
 		return audioFormatType;
-	}
-
-	/**
-	 * @return get audio format name
-	 */
-	public String getAudioFormatName() {
-		if (audioFormatName == null) {
-			initializeAudioFormat();
-		}
-		return audioFormatName;
 	}
 
 	/**
@@ -89,6 +77,7 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	 */
 	private void initializeAudioFormat() {
 		try {
+			audioFormatType = NodeStatus.NONE;
 			if (getFile() != null) {
 				String previousAudioFormatString = null;
 				for (File subFile : getFile().listFiles()) {
@@ -96,21 +85,41 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 						previousAudioFormatString = initFormatForFileName(previousAudioFormatString, subFile);
 					}
 				}
-
-				if (previousAudioFormatString == null) {
-					audioFormatType = NodeStatus.NONE;
-				} else {
-					audioFormatName = previousAudioFormatString;
-				}
-
 				setNodeStatus(audioFormatType);
 			}
 		} catch (DiscOrgException exception) {
-			getMediaIssuesCache().add(
-					new MediaIssue(getAbsolutePath(), exception.getMediaIssueCode(), this.getRelativePath(),
-							true));
-
+			addMediaIssue(exception.getMediaIssueCode(), true, null);
 		}
+	}
+
+	/**
+	 * Creates media issue and stores it in media issues cache.
+	 * 
+	 * @param mediaIssueCode
+	 *            media issue code
+	 * @param isError
+	 *            flag if issue is error or warning
+	 * @param message
+	 *            message for media issue
+	 */
+	protected void addMediaIssue(MediaIssueCode mediaIssueCode, boolean isError, String message) {
+		MediaIssue mediaIssue =
+				new MediaIssue(this.getAbsolutePath(), mediaIssueCode, this.getRelativePath(), isError);
+		mediaIssue.setErrorMessage(message);
+		addMediaIssueChild(mediaIssue);
+	}
+
+	/**
+	 * Method for storing media issues into media issue cache.
+	 * <p>
+	 * It is expected to be overridden, because media issue can be added only
+	 * from within child of this class
+	 * 
+	 * @param mediaIssue
+	 *            media issue to store in cache
+	 */
+	protected void addMediaIssueChild(MediaIssue mediaIssue) {
+		throw new UnsupportedOperationException("This method must be overidden!"); //$NON-NLS-1$
 	}
 
 	/**
@@ -133,19 +142,16 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 		boolean lossyAudioFormat = getFileDesignator().isLossyMediaFile(file);
 		boolean losslessAudioFormat = getFileDesignator().isLossLessMediaFile(file);
 
-		// check for errors / save audio format
-		if (lossyAudioFormat && losslessAudioFormat) {
-			// TODO: this check should be in preferences package
-			throw new AudioFormatsPreferencesException(extension);
+		if ((losslessAudioFormat || lossyAudioFormat) && previousAudioFormatString != null
+				&& !previousAudioFormatString.equals(extension)) {
+			audioFormatType = NodeStatus.NONE;
+			throw new DiscOrgException(getAbsolutePath(), MediaIssueCode.GENERIC_VARIOUS_AUDIO_FORMAT_TYPES);
 		} else if (lossyAudioFormat) {
 			audioFormatString = extension;
 			audioFormatType = NodeStatus.LOSSY;
 		} else if (losslessAudioFormat) {
 			audioFormatString = extension;
 			audioFormatType = NodeStatus.LOSSLESS;
-		} else if ((losslessAudioFormat || lossyAudioFormat) && previousAudioFormatString != null
-				&& !previousAudioFormatString.equals(extension)) {
-			throw new DiscOrgException(getAbsolutePath(), MediaIssueCode.GENERIC_VARIOUS_AUDIO_FORMAT_TYPES);
 		}
 		return audioFormatString;
 	}
@@ -156,7 +162,7 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	 */
 	public void checkMediaSubDir() {
 		if (this.getFile() != null && this.getFile().isDirectory()) {
-			// check if directory is that contains only files
+			// check if directory contains only files
 			boolean isLeaf = this.getFile().listFiles(new FileFilter() {
 				@Override
 				public boolean accept(File pathName) {
@@ -172,10 +178,7 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 
 					if (childNode instanceof MediaBranchNode) {
 						this.setNodeStatus(BranchNodeStatus.ERROR);
-						getMediaIssuesCache().add(
-								new MediaIssue(this.getAbsolutePath(),
-										MediaIssueCode.GENERIC_MEDIA_FILES_AND_SUBDIRS, this
-												.getRelativePath(), true));
+						addMediaIssue(MediaIssueCode.GENERIC_MEDIA_FILES_AND_SUBDIRS, true, null);
 					}
 				}
 			}

@@ -70,14 +70,29 @@ public class MediaIssuesCache {
 		return sourceAbsolutePaths;
 	}
 
+	/**
+	 * @return Unmodifiable collection of input media storage issues
+	 */
 	public Collection<IMediaIssue> getInputMediaIssues() {
 		return Collections.unmodifiableCollection(inputMediaIssues.values());
 	}
 
+	/**
+	 * Stores input media storage issue into cache.
+	 * 
+	 * @param mediaIssue
+	 *            media issue instance
+	 */
 	public void addInputMediaIssue(IMediaIssue mediaIssue) {
 		inputMediaIssues.put(mediaIssue.getSourceAbsolutePath(), mediaIssue);
 	}
 
+	/**
+	 * Stores reference media storage issue into cache.
+	 * 
+	 * @param mediaIssue
+	 *            media issue instance
+	 */
 	public void addReferenceMediaIssue(IMediaIssue mediaIssue) {
 		referenceMediaIssues.put(mediaIssue.getSourceAbsolutePath(), mediaIssue);
 	}

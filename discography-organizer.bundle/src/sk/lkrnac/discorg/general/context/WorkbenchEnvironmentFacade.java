@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.PlatformUI;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component;
  * 
  */
 @Component
+@Lazy(value = false)
 public class WorkbenchEnvironmentFacade {
 	/**
 	 * @return Current application locale

@@ -21,6 +21,10 @@ import sk.lkrnac.discorg.model.cache.MediaIssue;
  * @author sitko
  * 
  */
+/**
+ * @author sitko
+ * 
+ */
 public class InputMediaNode extends MediaBranchNode {
 	private final Collection<ReferenceMediaNode> referenceMirrors;
 
@@ -83,9 +87,7 @@ public class InputMediaNode extends MediaBranchNode {
 			int difference = mirrorFilesNames.size() - this.getMediaFilesNames().size();
 
 			if (difference < NumberUtils.INTEGER_ZERO) {
-				MediaIssue mediaIssue = new MediaIssue(getAbsolutePath(),
-						MediaIssueCode.INPUT_MISSING_MEDIA_FILES, this.getRelativePath(), true);
-				getMediaIssuesCache().add(mediaIssue);
+				addMediaIssue(MediaIssueCode.INPUT_MISSING_MEDIA_FILES, true, null);
 				this.setNodeStatus(BranchNodeStatus.ERROR);
 			} else {
 				if (difference > NumberUtils.INTEGER_ZERO) {
@@ -96,9 +98,7 @@ public class InputMediaNode extends MediaBranchNode {
 					mirrorFilesNames.remove(mediaFile);
 				}
 				if (mirrorFilesNames.size() != difference) {
-					MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
-							MediaIssueCode.GENERIC_DIFFERENT_NAMES, this.getRelativePath(), false);
-					getMediaIssuesCache().add(mediaIssue);
+					addMediaIssue(MediaIssueCode.GENERIC_DIFFERENT_NAMES, false, null);
 				}
 			}
 		}
@@ -110,11 +110,18 @@ public class InputMediaNode extends MediaBranchNode {
 	public void checkLossless() {
 		if (NodeStatus.LOSSLESS.equals(this.getAudioFormatType())) {
 			this.setNodeStatus(BranchNodeStatus.WARNING);
-
-			MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
-					MediaIssueCode.INPUT_LOSSLESS_AUDIO_FORMAT, this.getRelativePath(), false);
-			getMediaIssuesCache().add(mediaIssue);
+			addMediaIssue(MediaIssueCode.INPUT_LOSSLESS_AUDIO_FORMAT, false, null);
 		}
 	}
 
+	/**
+	 * Stores media issue into media issues cache.
+	 * 
+	 * @param mediaIssue
+	 *            media issue to be added
+	 */
+	@Override
+	protected void addMediaIssueChild(MediaIssue mediaIssue) {
+		getMediaIssuesCache().addInputMediaIssue(mediaIssue);
+	}
 }

@@ -1,5 +1,7 @@
 package sk.lkrnac.discorg.model.preferences;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -32,19 +34,45 @@ public class AudioFormatsPreferences extends AbstractPreferences {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected final String getDelimiters() {
+	protected String getDelimiters() {
 		return AUDIO_FORMATS_DELIMITERS;
 	}
 
 	/**
 	 * Reads audio formats from preference page.
 	 */
-	public final void readAudioFormats() {
+	public void readAudioFormats() {
 		lossy = parsePreferenceString(AudioFormatsPreferenceIds.LOSSY_FORMATS);
 		lossless = parsePreferenceString(AudioFormatsPreferenceIds.LOSSLESS_FORMATS);
 		warning = parsePreferenceString(AudioFormatsPreferenceIds.WARNING_FORMATS);
-		warningIfEmpty = Activator.getDefault().getPreferenceStore()
-				.getBoolean(AudioFormatsPreferenceIds.WARNING_EMPTY_FLAG);
+		warningIfEmpty =
+				Activator.getDefault().getPreferenceStore()
+						.getBoolean(AudioFormatsPreferenceIds.WARNING_EMPTY_FLAG);
+
+		audioFormatIntersectionCheck(lossy, lossless);
+	}
+
+	/**
+	 * Performs intersection check for lossy and loss-less formats. Application
+	 * expects that lossy format can't be loss-less at the same time and vice
+	 * versa.
+	 * 
+	 * @param lossy
+	 *            collection of lossy formats
+	 * @param lossless
+	 *            collection of loss-less formats
+	 */
+	private void audioFormatIntersectionCheck(Collection<String> lossy, Collection<String> lossless) {
+		Collection<String> lossyDifference = new ArrayList<>(lossy);
+		int lossyCount = lossy.size();
+		lossyDifference.removeAll(lossless);
+		if (lossyCount != lossyDifference.size()) {
+			Collection<String> intersection = new ArrayList<>(lossy);
+			intersection.removeAll(lossyDifference);
+
+			//TODO: need to display some translated message to user
+			throw new AudioFormatsPreferencesException(intersection.toString());
+		}
 	}
 
 	/**
@@ -54,7 +82,7 @@ public class AudioFormatsPreferences extends AbstractPreferences {
 	 *            string extension to check
 	 * @return <code>true</code> if extension is lossy audio format
 	 */
-	public final boolean isLossyAudioFormat(String extension) {
+	public boolean isLossyAudioFormat(String extension) {
 		return lossy.contains(extension);
 	}
 
@@ -65,7 +93,7 @@ public class AudioFormatsPreferences extends AbstractPreferences {
 	 *            string extension to check
 	 * @return <code>true</code> when extension is loss-less audio format
 	 */
-	public final boolean isLosslessAudioFormat(String extension) {
+	public boolean isLosslessAudioFormat(String extension) {
 		return lossless.contains(extension);
 	}
 
@@ -76,7 +104,7 @@ public class AudioFormatsPreferences extends AbstractPreferences {
 	 *            - string extension to check
 	 * @return <code>true</code> audio format that should cause warning
 	 */
-	public final boolean isWarningAudioFotmat(String extension) {
+	public boolean isWarningAudioFotmat(String extension) {
 		return warning.contains(extension);
 	}
 
@@ -85,7 +113,7 @@ public class AudioFormatsPreferences extends AbstractPreferences {
 	 * 
 	 * @return preference flag
 	 */
-	public final boolean isWarningIfEmpty() {
+	public boolean isWarningIfEmpty() {
 		return warningIfEmpty;
 	}
 }

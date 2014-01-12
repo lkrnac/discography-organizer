@@ -154,16 +154,11 @@ public class ReferenceMediaNode extends MediaBranchNode {
 		if (getFullMirror() != null) {
 			try {
 				if (!this.getDirectoryIoFacade().verifyHardLinks(getFullMirror().getFile())) {
-					MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
-							MediaIssueCode.REFERENCE_NO_HARD_LINK_IN_SELECTION, this.getRelativePath(), true);
-					this.getMediaIssuesCache().add(mediaIssue);
+					addMediaIssue(MediaIssueCode.REFERENCE_NO_HARD_LINK_IN_SELECTION, true, null);
 					this.setNodeStatus(BranchNodeStatus.ERROR);
 				}
 			} catch (IOException e) {
-				MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
-						MediaIssueCode.REFERENCE_HARD_LINK_IO_ERROR, this.getRelativePath(), true);
-				mediaIssue.setErrorMessage(e.getLocalizedMessage());
-				this.getMediaIssuesCache().add(mediaIssue);
+				addMediaIssue(MediaIssueCode.REFERENCE_HARD_LINK_IO_ERROR, true, e.getLocalizedMessage());
 				this.setNodeStatus(BranchNodeStatus.ERROR);
 			}
 		}
@@ -190,12 +185,11 @@ public class ReferenceMediaNode extends MediaBranchNode {
 		ReferenceMediaNode selectionMirror = null;
 		try {
 			if (getSelectionMirror() == null) {
-				String selectionPath = this.getRelativePath()
-						.replace(fullSubDirectory + File.separator, ""); //$NON-NLS-1$
+				String selectionPath = this.getRelativePath().replace(fullSubDirectory + File.separator, ""); //$NON-NLS-1$
 
 				// get selection mirror for full album
-				Collection<ReferenceMediaNode> selectionMirrors = getReferenceStorageCache()
-						.getReferenceItems(selectionPath);
+				Collection<ReferenceMediaNode> selectionMirrors =
+						getReferenceStorageCache().getReferenceItems(selectionPath);
 
 				for (ReferenceMediaNode mirror : selectionMirrors) {
 					DirectoryComparisonResult result =
@@ -205,10 +199,8 @@ public class ReferenceMediaNode extends MediaBranchNode {
 							selectionMirror = mirror;
 						} else {
 							this.setNodeStatus(BranchNodeStatus.ERROR);
-							MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
-									MediaIssueCode.REFERENCE_VARIOUS_SELECTION_MIRRORS_FOUND,
-									this.getRelativePath(), true);
-							getMediaIssuesCache().add(mediaIssue);
+							addMediaIssue(MediaIssueCode.REFERENCE_VARIOUS_SELECTION_MIRRORS_FOUND, true,
+									null);
 							selectionMirror = null;
 						}
 					}
@@ -216,18 +208,12 @@ public class ReferenceMediaNode extends MediaBranchNode {
 				if (selectionMirror == null && !BranchNodeStatus.ERROR.equals(this.getNodeStatus())) {
 					// if selection mirror wasn't found for full album -> ignored status
 					this.setNodeStatus(BranchNodeStatus.IGNORED);
-					MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
-							MediaIssueCode.REFERENCE_MISSING_SELECTION_MIRROR, this.getRelativePath(), false);
-					getMediaIssuesCache().add(mediaIssue);
+					addMediaIssue(MediaIssueCode.REFERENCE_MISSING_SELECTION_MIRROR, false, null);
 				}
 			}
 		} catch (IOException e) {
 			this.setNodeStatus(BranchNodeStatus.ERROR);
-			MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
-					MediaIssueCode.GENERIC_IO_ERROR_DURING_COMPARISON, this.getRelativePath(), true);
-			mediaIssue.setErrorMessage(e.getLocalizedMessage());
-			getMediaIssuesCache().add(mediaIssue);
-
+			addMediaIssue(MediaIssueCode.GENERIC_IO_ERROR_DURING_COMPARISON, true, e.getLocalizedMessage());
 		}
 		return selectionMirror != null;
 	}
@@ -276,9 +262,7 @@ public class ReferenceMediaNode extends MediaBranchNode {
 		if (!BranchNodeStatus.ERROR.equals(this.getNodeStatus())) {
 			if (fullMirror == null) {
 				this.setNodeStatus(BranchNodeStatus.WARNING);
-				MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
-						MediaIssueCode.REFERENCE_FULL_MIRROR_MISSING, this.getRelativePath(), false);
-				getMediaIssuesCache().add(mediaIssue);
+				addMediaIssue(MediaIssueCode.REFERENCE_FULL_MIRROR_MISSING, false, null);
 			} else {
 				fullMirror.setFullAlbum(true);
 				if (fullMirror.checkSelectionForFullAlbum(fullSubDirectory)) {
@@ -312,20 +296,26 @@ public class ReferenceMediaNode extends MediaBranchNode {
 					} else {
 						fullMirror = null;
 						this.setNodeStatus(BranchNodeStatus.ERROR);
-						MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
-								MediaIssueCode.REFERENCE_VARIOUS_FULL_MIRRORS_FOUND, this.getRelativePath(),
-								true);
-						getMediaIssuesCache().add(mediaIssue);
+						addMediaIssue(MediaIssueCode.REFERENCE_VARIOUS_FULL_MIRRORS_FOUND, true, null);
 					}
 				}
 			}
 		} catch (IOException e) {
 			this.setNodeStatus(BranchNodeStatus.ERROR);
-			MediaIssue mediaIssue = new MediaIssue(this.getAbsolutePath(),
-					MediaIssueCode.GENERIC_IO_ERROR_DURING_COMPARISON, this.getRelativePath(), true);
-			mediaIssue.setErrorMessage(e.getLocalizedMessage());
-			getMediaIssuesCache().add(mediaIssue);
+			addMediaIssue(MediaIssueCode.GENERIC_IO_ERROR_DURING_COMPARISON, true, null);
 		}
 		return fullMirror;
 	}
+
+	/**
+	 * Stores media issue into media issues cache.
+	 * 
+	 * @param mediaIssue
+	 *            media issue to be added
+	 */
+	@Override
+	protected void addMediaIssueChild(MediaIssue mediaIssue) {
+		getMediaIssuesCache().addReferenceMediaIssue(mediaIssue);
+	}
+
 }

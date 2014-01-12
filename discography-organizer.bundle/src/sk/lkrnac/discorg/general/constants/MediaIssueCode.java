@@ -33,7 +33,7 @@ public enum MediaIssueCode {
 	GENERIC_IO_ERROR_DURING_COMPARISON,
 	/**
 	 * Message when media directory contains media files and also media
-	 * directories.
+	 * sub-directories.
 	 */
 	GENERIC_MEDIA_FILES_AND_SUBDIRS,
 

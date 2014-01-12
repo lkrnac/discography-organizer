@@ -12,9 +12,9 @@ public class NodeStatus implements INodeStatus {
 	/** Folder does not contain media files. */
 	public static final NodeStatus NONE = new NodeStatus(0, "status-file.png"); //$NON-NLS-1$
 	/** Folder contains lossy media files. */
-	public static final NodeStatus LOSSY = new NodeStatus(0, "status-lossy.png"); //$NON-NLS-1$
+	public static final NodeStatus LOSSY = new NodeStatus(5, "status-lossy.png"); //$NON-NLS-1$
 	/** Folder contains loss-less. */
-	public static final NodeStatus LOSSLESS = new NodeStatus(0, "status-lossless.png"); //$NON-NLS-1$
+	public static final NodeStatus LOSSLESS = new NodeStatus(5, "status-lossless.png"); //$NON-NLS-1$
 
 	private final String iconName;
 	private final int severity;
