@@ -13,7 +13,6 @@ import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.dal.io.DirectoryComparisonResult;
-import sk.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
 
 //CHECKSTYLE:ON
 
@@ -29,7 +28,6 @@ public class ReferenceMediaNode extends MediaBranchNode {
 	private ReferenceMediaNode fullMirror;
 	private ReferenceMediaNode selectionMirror;
 	private boolean fullAlbum;
-	private DirectoryIoFacade directoryIoFacade;
 
 	/**
 	 * Creates instance of media node in reference storage.
@@ -43,18 +41,6 @@ public class ReferenceMediaNode extends MediaBranchNode {
 	 */
 	public ReferenceMediaNode(TreeStorageBranchNode parent, File file, String relativePath) {
 		super(parent, file, relativePath);
-	}
-
-	/**
-	 * Gets directory handler IO handlers facade.
-	 * 
-	 * @return IO handlers facade for this media node
-	 */
-	public DirectoryIoFacade getDirectoryIoFacade() {
-		if (directoryIoFacade == null) {
-			directoryIoFacade = new DirectoryIoFacade(getFile());
-		}
-		return directoryIoFacade;
 	}
 
 	/**

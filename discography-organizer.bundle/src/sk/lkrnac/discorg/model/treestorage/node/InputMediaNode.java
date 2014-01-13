@@ -1,17 +1,16 @@
 package sk.lkrnac.discorg.model.treestorage.node;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang3.math.NumberUtils;
 
 import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
+import sk.lkrnac.discorg.model.dal.io.DirectoryComparisonResult;
 
 /**
  * Represents media node in input storage.
@@ -82,25 +81,24 @@ public class InputMediaNode extends MediaBranchNode {
 	 *            reference mirror node to compare
 	 */
 	public void compareMediaFilesWithMirror(ReferenceMediaNode mirror) {
-		if (mirror != null) {
-			List<String> mirrorFilesNames = mirror.getMediaFilesNames();
-			int difference = mirrorFilesNames.size() - this.getMediaFilesNames().size();
-
-			if (difference < NumberUtils.INTEGER_ZERO) {
-				addMediaIssue(MediaIssueCode.INPUT_MISSING_MEDIA_FILES, true, null);
+		try {
+			DirectoryComparisonResult result =
+					getDirectoryIoFacade().compareDirectories(mirror.getFile(), this.getFile());
+			if (DirectoryComparisonResult.DIFFERENT_FILES.equals(result)) {
 				this.setNodeStatus(BranchNodeStatus.ERROR);
-			} else {
-				if (difference > NumberUtils.INTEGER_ZERO) {
-					this.setNodeStatus(BranchNodeStatus.UPDATE);
-					getReferenceStorageCache().putItemForUpdate(this);
-				}
-				for (String mediaFile : this.getMediaFilesNames()) {
-					mirrorFilesNames.remove(mediaFile);
-				}
-				if (mirrorFilesNames.size() != difference) {
-					addMediaIssue(MediaIssueCode.GENERIC_DIFFERENT_NAMES, false, null);
-				}
+				addMediaIssue(MediaIssueCode.GENERIC_DIFFERENT_NAMES, true, null);
+			} else if (DirectoryComparisonResult.MISSING_MEDIA_FILES_IN_FULL.equals(result)) {
+				this.setNodeStatus(BranchNodeStatus.ERROR);
+				addMediaIssue(MediaIssueCode.INPUT_MISSING_MEDIA_FILES, true, null);
+			} else if (DirectoryComparisonResult.MISSING_MEDIA_FILES_IN_SELECTION.equals(result)) {
+				this.setNodeStatus(BranchNodeStatus.UPDATE);
+			} else if (DirectoryComparisonResult.EQUAL.equals(result)) {
+				this.setNodeStatus(BranchNodeStatus.OK);
 			}
+		} catch (IOException ioException) {
+			addMediaIssue(MediaIssueCode.GENERIC_IO_ERROR_DURING_COMPARISON, true,
+					ioException.getLocalizedMessage());
+			this.setNodeStatus(BranchNodeStatus.ERROR);
 		}
 	}
 

@@ -2,14 +2,13 @@ package sk.lkrnac.discorg.model.treestorage.node;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.ArrayList;
-import java.util.List;
 
 import sk.lkrnac.discorg.general.DiscOrgException;
 import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
+import sk.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
 
 /**
@@ -20,6 +19,7 @@ import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
  */
 public class MediaBranchNode extends TreeStorageBranchNode {
 	private NodeStatus audioFormatType;
+	private DirectoryIoFacade directoryIoFacade;
 
 	/**
 	 * Creates new instance of {@link MediaBranchNode}.
@@ -46,19 +46,6 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	}
 
 	/**
-	 * @return list of the media files in this directory
-	 */
-	public List<String> getMediaFilesNames() {
-		ArrayList<String> retVal = new ArrayList<String>();
-		for (File subFile : getFile().listFiles()) {
-			if (getFileDesignator().isMediaFile(subFile)) {
-				retVal.add(subFile.getName());
-			}
-		}
-		return retVal;
-	}
-
-	/**
 	 * @return List where media issues are stored
 	 */
 	public MediaIssuesCache getMediaIssuesCache() {
@@ -70,6 +57,18 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	 */
 	public ReferenceStorageCache getReferenceStorageCache() {
 		return getDiscOrgContextAdapter().getBean(ReferenceStorageCache.class);
+	}
+
+	/**
+	 * Gets directory handler IO handlers facade.
+	 * 
+	 * @return IO handlers facade for this media node
+	 */
+	public DirectoryIoFacade getDirectoryIoFacade() {
+		if (directoryIoFacade == null) {
+			directoryIoFacade = new DirectoryIoFacade(getFile());
+		}
+		return directoryIoFacade;
 	}
 
 	/**
