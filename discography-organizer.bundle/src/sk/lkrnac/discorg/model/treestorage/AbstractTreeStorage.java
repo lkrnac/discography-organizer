@@ -1,5 +1,6 @@
 package sk.lkrnac.discorg.model.treestorage;
 
+import java.beans.Introspector;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import sk.lkrnac.discorg.general.context.DiscOrgBeanQualifiers;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
 import sk.lkrnac.discorg.model.treestorage.node.FileDesignator;
 import sk.lkrnac.discorg.model.treestorage.node.MediaBranchNode;
@@ -161,8 +161,8 @@ public abstract class AbstractTreeStorage implements ApplicationContextAware {
 	 */
 	private TreeStorageBranchNode createTreeStorageBranchNode(TreeStorageBranchNode parentNode,
 			String relativePath, File file) {
-		return (TreeStorageBranchNode) applicationContext.getBean(
-				DiscOrgBeanQualifiers.TREE_STORAGE_BRANCH_NODE, parentNode, file, relativePath);
+		String beanName = Introspector.decapitalize(TreeStorageBranchNode.class.getSimpleName());
+		return (TreeStorageBranchNode) applicationContext.getBean(beanName, parentNode, file, relativePath);
 	}
 
 	/**
@@ -175,8 +175,8 @@ public abstract class AbstractTreeStorage implements ApplicationContextAware {
 	 * @return created {@link TreeStorageNode} instance
 	 */
 	private TreeStorageNode createTreeStorageNode(TreeStorageBranchNode parentNode, File file) {
-		return (TreeStorageNode) getApplicationContext().getBean(DiscOrgBeanQualifiers.TREE_STORAGE_NODE,
-				parentNode, file);
+		String beanName = Introspector.decapitalize(TreeStorageNode.class.getSimpleName());
+		return (TreeStorageNode) getApplicationContext().getBean(beanName, parentNode, file);
 	}
 
 	/**

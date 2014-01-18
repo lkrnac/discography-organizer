@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import sk.lkrnac.discorg.general.constants.MediaIssueCode;
-import sk.lkrnac.discorg.general.context.DiscOrgBeanQualifiers;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.dal.io.DirectoryComparisonResult;
@@ -27,7 +26,7 @@ import sk.lkrnac.discorg.model.dal.io.DirectoryComparisonResult;
  * 
  * @author sitko
  */
-@Component(DiscOrgBeanQualifiers.REFERENCE_MEDIA_NODE)
+@Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class ReferenceMediaNode extends MediaBranchNode {
 	private InputMediaNode inputMirror;

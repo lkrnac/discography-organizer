@@ -1,11 +1,11 @@
 package sk.lkrnac.discorg.model.treestorage;
 
+import java.beans.Introspector;
 import java.io.File;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import sk.lkrnac.discorg.general.context.DiscOrgBeanQualifiers;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
 import sk.lkrnac.discorg.model.preferences.StoragesPreferences;
@@ -94,7 +94,7 @@ public class ReferenceStorage extends AbstractTreeStorage {
 	@Override
 	protected final MediaBranchNode createMediaNode(TreeStorageBranchNode parent, File file,
 			String relativePath) {
-		return (ReferenceMediaNode) getApplicationContext().getBean(
-				DiscOrgBeanQualifiers.REFERENCE_MEDIA_NODE, parent, file, relativePath);
+		String beanName = Introspector.decapitalize(ReferenceMediaNode.class.getSimpleName());
+		return (ReferenceMediaNode) getApplicationContext().getBean(beanName, parent, file, relativePath);
 	}
 }

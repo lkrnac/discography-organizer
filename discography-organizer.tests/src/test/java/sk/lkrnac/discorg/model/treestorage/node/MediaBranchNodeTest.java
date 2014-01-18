@@ -3,8 +3,6 @@ package sk.lkrnac.discorg.model.treestorage.node;
 import java.io.File;
 import java.util.Locale;
 
-import org.mockito.Mockito;
-import org.mockito.internal.util.reflection.Whitebox;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -53,6 +51,7 @@ public class MediaBranchNodeTest {
 
 	@Spy
 	private FileDesignator fileDesignator;
+
 	/**
 	 * Data provider for test
 	 * {@link MediaBranchNodeTest#testGetAudioFormatTypeNotInitialized(NodeStatus, String, MediaIssueCode)}
@@ -101,12 +100,6 @@ public class MediaBranchNodeTest {
 		File file = new File(absolutePath);
 
 		//see NOTE in javadoc
-		MediaBranchNode testingObject = new InputMediaNode(null, file, "");
-
-		MediaIssuesCache mediaIssuesCache = new MediaIssuesCache();
-		FileDesignator fileDesignator = mockFileDesignator();
-		initSpringContextMocks(testingObject, mediaIssuesCache, fileDesignator);
-
 		fileDesignator = mockFileDesignator();
 		mediaIssuesCache = new MediaIssuesCache();
 		testingObject = new InputMediaNode(null, file, "");
@@ -173,22 +166,6 @@ public class MediaBranchNodeTest {
 	}
 
 	/**
-	 * Initializes spring beans mocks into testing object
-	 * 
-	 * @param testingObject
-	 *            testing object
-	 * @param mediaIssuesCache
-	 *            media issues cache to stub into Spring context mock
-	 * @param fileDesignator
-	 *            file designator to stub into Spring context mock
-	 */
-	private void initSpringContextMocks(MediaBranchNode testingObject, MediaIssuesCache mediaIssuesCache,
-			FileDesignator fileDesignator) {
-		TestUtils.stubBeanIntoContextAdapter(testingObject, MediaIssuesCache.class, mediaIssuesCache);
-		TestUtils.stubBeanIntoContextAdapter(testingObject, FileDesignator.class, fileDesignator);
-	}
-
-	/**
 	 * Unit test for {@link MediaBranchNode#getAudioFormatType()} when audio
 	 * format type is already initialized
 	 */
@@ -213,14 +190,6 @@ public class MediaBranchNodeTest {
 	 */
 	@Test
 	public void testGetAudioFormatTypeFileNotInitialized() {
-		MediaBranchNode testingObject = new MediaBranchNode(null, null, "");
-		FileDesignator fileDesignatorMock = Mockito.mock(FileDesignator.class);
-		TestUtils.stubBeanIntoContextAdapter(testingObject, FileDesignator.class, fileDesignatorMock);
-
-		NodeStatus actualStatus = testingObject.getAudioFormatType();
-
-		Assert.assertEquals(actualStatus, NodeStatus.NONE, "Audio format type");
-		Mockito.verifyZeroInteractions(fileDesignatorMock);
 		MockitoAnnotations.initMocks(this);
 
 		//call testing method

@@ -445,26 +445,6 @@ public class ReferenceMediaNodeTest {
 	}
 
 	/**
-<<<<<<< Updated upstream
-	 * Initializes spring beans mocks into testing object
-	 * 
-	 * @param testingObject
-	 *            testing object
-	 * @param mediaIssuesCache
-	 *            media issues cache to stub into Spring context mock
-	 * @param referenceStorageCache
-	 *            reference storage cache to stub into Spring context mock
-	 */
-	private void initSpringContextMocks(ReferenceMediaNode testingObject, MediaIssuesCache mediaIssuesCache,
-			ReferenceStorageCache referenceStorageCache) {
-		TestUtils.stubBeanIntoContextAdapter(testingObject, MediaIssuesCache.class, mediaIssuesCache);
-		TestUtils.stubBeanIntoContextAdapter(testingObject, ReferenceStorageCache.class,
-				referenceStorageCache);
-	}
-
-	/**
-=======
->>>>>>> Stashed changes
 	 * Initialize mocks for full/selection check tests
 	 * 
 	 * @param parentDirectoryPath

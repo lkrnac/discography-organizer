@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
-import org.mockito.Mockito;
-import org.powermock.reflect.Whitebox;
-import org.testng.Assert;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -22,9 +19,6 @@ import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
 import sk.lkrnac.discorg.model.dal.io.DirectoryComparisonResult;
 import sk.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
 import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
-
-import sk.lkrnac.discorg.test.utils.TestUtils;
-
 
 /**
  * Unit test for class {@link InputMediaNode}
@@ -107,10 +101,7 @@ public class InputMediaNodeTest {
 
 		//create testing object
 		File inputDir = new File(INPUT_DIR_PATH);
-		InputMediaNode testingObject = new InputMediaNode(null, inputDir, "inputDirRelativePath");
 
-		//mock directory IO facade
-		DirectoryIoFacade directoryIoFacadeMock = Mockito.mock(DirectoryIoFacade.class);
 		//mock directory IO facade
 		if (!throwIoException) {
 			Mockito.when(directoryIoFacadeMock.compareDirectories(referenceDir, inputDir)).thenReturn(
@@ -119,11 +110,6 @@ public class InputMediaNodeTest {
 			Mockito.when(directoryIoFacadeMock.compareDirectories(referenceDir, inputDir)).thenThrow(
 					new IOException(IO_EXCEPTION_MESSAGE));
 		}
-		Whitebox.setInternalState(testingObject, DirectoryIoFacade.class, directoryIoFacadeMock);
-
-		//stub media issue cache into testing object
-		MediaIssuesCache mediaIssueCache = new MediaIssuesCache();
-		TestUtils.stubBeanIntoContextAdapter(testingObject, MediaIssuesCache.class, mediaIssueCache);
 
 		//call testing object
 		testingObject.compareMediaFilesWithMirror(referenceMediaNodeMock);

@@ -5,12 +5,13 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import sk.lkrnac.discorg.general.context.DiscOrgBeanQualifiers;
 import sk.lkrnac.discorg.model.interfaces.INodeStatus;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
 
@@ -20,7 +21,7 @@ import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
  * @author sitko
  * 
  */
-@Component(DiscOrgBeanQualifiers.TREE_STORAGE_NODE)
+@Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class TreeStorageNode implements ITreeStorageNode {
 	@Autowired
@@ -48,9 +49,6 @@ public class TreeStorageNode implements ITreeStorageNode {
 	 */
 	public TreeStorageNode(TreeStorageBranchNode parent, File file) {
 		this.file = file;
-		if (file != null) {
-			initStatus(file);
-		}
 		if (parent != null) {
 			parent.children.add(this);
 			parent.iterator = parent.children.iterator();
@@ -60,17 +58,20 @@ public class TreeStorageNode implements ITreeStorageNode {
 
 	/**
 	 * Initializes status of media node base on file instance.
-	 * 
-	 * @param file
-	 *            file object belonging to media node
+	 * <p>
+	 * NOPMD: Method is invoked by Spring
 	 */
-	private void initStatus(File file) {
-		this.setNodeStatus(NodeStatus.NONE);
-		if (file.isFile()) {
-			if (fileDesignator.isLossLessMediaFile(file)) {
-				this.setNodeStatus(NodeStatus.LOSSLESS);
-			} else if (fileDesignator.isLossyMediaFile(file)) {
-				this.setNodeStatus(NodeStatus.LOSSY);
+	@PostConstruct
+	@SuppressWarnings("PMD.UnusedPrivateMethod")
+	private void initStatus() {
+		if (file != null) {
+			this.setNodeStatus(NodeStatus.NONE);
+			if (file.isFile()) {
+				if (fileDesignator.isLossLessMediaFile(file)) {
+					this.setNodeStatus(NodeStatus.LOSSLESS);
+				} else if (fileDesignator.isLossyMediaFile(file)) {
+					this.setNodeStatus(NodeStatus.LOSSY);
+				}
 			}
 		}
 	}

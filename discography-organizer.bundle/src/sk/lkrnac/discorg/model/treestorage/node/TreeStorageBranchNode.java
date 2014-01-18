@@ -9,7 +9,6 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import sk.lkrnac.discorg.general.context.DiscOrgBeanQualifiers;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
 
 /**
@@ -18,7 +17,7 @@ import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
  * @author sitko
  * 
  */
-@Component(DiscOrgBeanQualifiers.TREE_STORAGE_BRANCH_NODE)
+@Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class TreeStorageBranchNode extends TreeStorageNode {
 	private String relativePath;

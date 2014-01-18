@@ -8,12 +8,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
 import sk.lkrnac.discorg.general.constants.MediaIssueCode;
-import sk.lkrnac.discorg.general.context.DiscOrgBeanQualifiers;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
 import sk.lkrnac.discorg.model.dal.io.DirectoryComparisonResult;
 
@@ -25,7 +24,7 @@ import sk.lkrnac.discorg.model.dal.io.DirectoryComparisonResult;
  * @author sitko
  * 
  */
-@Component(DiscOrgBeanQualifiers.INPUT_MEDIA_NODE)
+@Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class InputMediaNode extends MediaBranchNode {
 	private final Collection<ReferenceMediaNode> referenceMirrors;
