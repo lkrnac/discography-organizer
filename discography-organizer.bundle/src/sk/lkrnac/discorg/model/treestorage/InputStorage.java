@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sk.lkrnac.discorg.general.context.DiscOrgBeanQualifiers;
 import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
 import sk.lkrnac.discorg.model.preferences.StoragesPreferences;
@@ -44,8 +45,8 @@ public class InputStorage extends AbstractTreeStorage {
 		if (node instanceof InputMediaNode) {
 			InputMediaNode mediaNode = (InputMediaNode) node;
 			// find pairs
-			Collection<ReferenceMediaNode> referenceMirrors = referenceStorageCache
-					.getReferenceItems(mediaNode.getRelativePath());
+			Collection<ReferenceMediaNode> referenceMirrors =
+					referenceStorageCache.getReferenceItems(mediaNode.getRelativePath());
 
 			if (referenceMirrors == null || referenceMirrors.isEmpty()) {
 				mediaNode.setNodeStatus(BranchNodeStatus.UPLOAD);
@@ -90,7 +91,8 @@ public class InputStorage extends AbstractTreeStorage {
 	@Override
 	protected final MediaBranchNode createMediaNode(TreeStorageBranchNode parent, File file,
 			String relativePath) {
-		return new InputMediaNode(parent, file, relativePath);
+		return (InputMediaNode) getApplicationContext().getBean(DiscOrgBeanQualifiers.INPUT_MEDIA_NODE,
+				parent, file, relativePath);
 	}
 
 }

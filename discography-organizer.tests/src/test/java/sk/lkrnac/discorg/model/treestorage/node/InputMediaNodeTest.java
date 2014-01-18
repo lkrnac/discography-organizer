@@ -7,6 +7,13 @@ import java.util.Collection;
 import org.mockito.Mockito;
 import org.powermock.reflect.Whitebox;
 import org.testng.Assert;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -15,7 +22,9 @@ import sk.lkrnac.discorg.model.cache.MediaIssuesCache;
 import sk.lkrnac.discorg.model.dal.io.DirectoryComparisonResult;
 import sk.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
 import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
+
 import sk.lkrnac.discorg.test.utils.TestUtils;
+
 
 /**
  * Unit test for class {@link InputMediaNode}
@@ -24,6 +33,24 @@ import sk.lkrnac.discorg.test.utils.TestUtils;
  * 
  */
 public class InputMediaNodeTest {
+	private File inputDir = new File(INPUT_DIR_PATH);
+
+	@InjectMocks
+	private InputMediaNode testingObject = new InputMediaNode(null, inputDir, "inputDirRelativePath");
+
+	@Spy
+	private MediaIssuesCache mediaIssueCache = new MediaIssuesCache();
+
+	@Mock
+	private DirectoryIoFacade directoryIoFacadeMock;
+
+	/**
+	 * Injects mocks into testing object
+	 */
+	@BeforeMethod(alwaysRun = true)
+	public void initMocks() {
+		MockitoAnnotations.initMocks(this);
+	}
 
 	private static final String IO_EXCEPTION_MESSAGE = "ioExceptionMessage";
 	private static final String INPUT_DIR_PATH = "inputDirPath";
@@ -84,6 +111,7 @@ public class InputMediaNodeTest {
 
 		//mock directory IO facade
 		DirectoryIoFacade directoryIoFacadeMock = Mockito.mock(DirectoryIoFacade.class);
+		//mock directory IO facade
 		if (!throwIoException) {
 			Mockito.when(directoryIoFacadeMock.compareDirectories(referenceDir, inputDir)).thenReturn(
 					comparisonResult);

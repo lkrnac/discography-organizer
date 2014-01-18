@@ -5,6 +5,11 @@ import java.util.Locale;
 
 import org.mockito.Mockito;
 import org.mockito.internal.util.reflection.Whitebox;
+import org.mockito.InjectMocks;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import org.powermock.reflect.Whitebox;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -40,6 +45,14 @@ public class MediaBranchNodeTest {
 	private static String CASE_11_LOSSY_LOSSLESS_UNKNOWN_FILES = "11-lossy-lossless-unknown-files";
 	//@formatter:on
 
+	@InjectMocks
+	private MediaBranchNode testingObject;
+
+	@Spy
+	private MediaIssuesCache mediaIssuesCache = new MediaIssuesCache();
+
+	@Spy
+	private FileDesignator fileDesignator;
 	/**
 	 * Data provider for test
 	 * {@link MediaBranchNodeTest#testGetAudioFormatTypeNotInitialized(NodeStatus, String, MediaIssueCode)}
@@ -93,6 +106,11 @@ public class MediaBranchNodeTest {
 		MediaIssuesCache mediaIssuesCache = new MediaIssuesCache();
 		FileDesignator fileDesignator = mockFileDesignator();
 		initSpringContextMocks(testingObject, mediaIssuesCache, fileDesignator);
+
+		fileDesignator = mockFileDesignator();
+		mediaIssuesCache = new MediaIssuesCache();
+		testingObject = new InputMediaNode(null, file, "");
+		MockitoAnnotations.initMocks(this);
 
 		//call testing method
 		NodeStatus actualAudioFormatType = testingObject.getAudioFormatType();
@@ -148,8 +166,9 @@ public class MediaBranchNodeTest {
 		Mockito.when(workbenchEnvironmentMock.getCurrentLocale()).thenReturn(Locale.GERMANY);
 
 		FileDesignator fileDesignator = new FileDesignator();
-		Whitebox.setInternalState(fileDesignator, "audioFormatPreferences", audioFormatPreferencesMock);
-		Whitebox.setInternalState(fileDesignator, "workbenchEnvironment", workbenchEnvironmentMock);
+		Whitebox.setInternalState(fileDesignator, AudioFormatsPreferences.class, audioFormatPreferencesMock);
+		Whitebox.setInternalState(fileDesignator, WorkbenchEnvironmentFacade.class, workbenchEnvironmentMock);
+
 		return fileDesignator;
 	}
 
@@ -175,17 +194,17 @@ public class MediaBranchNodeTest {
 	 */
 	@Test
 	public void testGetAudioFormatTypeInitialized() {
-		MediaBranchNode testingObject = new MediaBranchNode(null, new File(""), "");
+		testingObject = new MediaBranchNode(null, new File(""), "");
+		MockitoAnnotations.initMocks(this);
+
 		NodeStatus nodeStatusMock = Mockito.mock(NodeStatus.class);
-		Whitebox.setInternalState(testingObject, "audioFormatType", nodeStatusMock);
+		Whitebox.setInternalState(testingObject, NodeStatus.class, nodeStatusMock);
 
-		FileDesignator fileDesignatorMock = Mockito.mock(FileDesignator.class);
-		TestUtils.stubBeanIntoContextAdapter(testingObject, FileDesignator.class, fileDesignatorMock);
-
+		//call testing method
 		NodeStatus actualStatus = testingObject.getAudioFormatType();
 
 		Assert.assertEquals(actualStatus, nodeStatusMock, "Audio format type");
-		Mockito.verifyZeroInteractions(fileDesignatorMock);
+		Mockito.verifyZeroInteractions(fileDesignator);
 	}
 
 	/**
@@ -195,7 +214,6 @@ public class MediaBranchNodeTest {
 	@Test
 	public void testGetAudioFormatTypeFileNotInitialized() {
 		MediaBranchNode testingObject = new MediaBranchNode(null, null, "");
-
 		FileDesignator fileDesignatorMock = Mockito.mock(FileDesignator.class);
 		TestUtils.stubBeanIntoContextAdapter(testingObject, FileDesignator.class, fileDesignatorMock);
 
@@ -203,6 +221,13 @@ public class MediaBranchNodeTest {
 
 		Assert.assertEquals(actualStatus, NodeStatus.NONE, "Audio format type");
 		Mockito.verifyZeroInteractions(fileDesignatorMock);
+		MockitoAnnotations.initMocks(this);
+
+		//call testing method
+		NodeStatus actualStatus = testingObject.getAudioFormatType();
+
+		Assert.assertEquals(actualStatus, NodeStatus.NONE, "Audio format type");
+		Mockito.verifyZeroInteractions(fileDesignator);
 	}
 
 }

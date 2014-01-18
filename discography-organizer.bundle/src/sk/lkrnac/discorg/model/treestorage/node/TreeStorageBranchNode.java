@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import sk.lkrnac.discorg.general.context.DiscOrgBeanQualifiers;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
 
 /**
@@ -13,6 +18,8 @@ import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
  * @author sitko
  * 
  */
+@Component(DiscOrgBeanQualifiers.TREE_STORAGE_BRANCH_NODE)
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class TreeStorageBranchNode extends TreeStorageNode {
 	private String relativePath;
 	/**

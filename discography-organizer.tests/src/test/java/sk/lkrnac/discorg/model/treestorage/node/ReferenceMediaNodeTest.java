@@ -7,7 +7,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.mockito.InjectMocks;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.powermock.reflect.Whitebox;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -20,7 +23,6 @@ import sk.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import sk.lkrnac.discorg.model.dal.io.DirectoryComparisonResult;
 import sk.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
 import sk.lkrnac.discorg.model.interfaces.IMediaIssue;
-import sk.lkrnac.discorg.test.utils.TestUtils;
 
 /**
  * Tests {@link ReferenceMediaNode}
@@ -35,12 +37,21 @@ public class ReferenceMediaNodeTest {
 	private static final String DIR_NAME_FULL_ALBUM = "=[full]";
 	private static final String FULL_PARENT_ABSOLUTE_PATH = TEST_PATH + File.separator + DIR_NAME_FULL_ALBUM;
 
+	@InjectMocks
+	private ReferenceMediaNode testingObject;
+
+	@Spy
+	private MediaIssuesCache mediaIssuesCache;
+
+	//	@Spy
+	//	private ReferenceStorageCache referenceStorageCache;
+
 	//@formatter:off
 	/**
 	 * Prepares testing data for test
 	 * 
 	 * {@link ReferenceMediaNodeTest# testCheckFullAlbumForSelection 
-	 * (int, String, Object, Object, Object, boolean, boolean, boolean, boolean)}
+	 * (int, String, ReferenceStorageCache, Object, Object, boolean, boolean, boolean, boolean)}
 	 * 
 	 * 
 	 * @return parameters for test
@@ -272,7 +283,7 @@ public class ReferenceMediaNodeTest {
 	 *            identifies test case (not used)
 	 * @param pathToFullMirror
 	 *            relative path to full mirror mock
-	 * @param referenceStorageCacheObj
+	 * @param referenceStorageCache
 	 *            meta-data where are testing data for comparison stored
 	 * @param expectedStatusObj
 	 *            expected node status
@@ -292,16 +303,15 @@ public class ReferenceMediaNodeTest {
 	 */
 	@Test(dataProvider = DP_TEST_CHECK_FULL_ALBUM_FOR_SELECTION)
 	public void testCheckFullAlbumForSelection(int testCaseId, String pathToFullMirror,
-			Object referenceStorageCacheObj, Object expectedStatusObj, Object expectedIssueObj,
+			ReferenceStorageCache referenceStorageCache, Object expectedStatusObj, Object expectedIssueObj,
 			boolean dirComparisonSucceed, boolean throwIoErrorDuringDirComparison,
 			boolean hardLinksCheckPassed, boolean throwIoErrorDuringHardLinksCheck) throws IOException {
-		ReferenceStorageCache referenceStorageCache = (ReferenceStorageCache) referenceStorageCacheObj;
-
-		ReferenceMediaNode testingObject =
+		testingObject =
 				initializeMocks(TEST_PATH, dirComparisonSucceed, throwIoErrorDuringDirComparison,
 						hardLinksCheckPassed, throwIoErrorDuringHardLinksCheck);
-		MediaIssuesCache mediaIssuesCache = new MediaIssuesCache();
-		initSpringContextMocks(testingObject, mediaIssuesCache, referenceStorageCache);
+		mediaIssuesCache = new MediaIssuesCache();
+		MockitoAnnotations.initMocks(this);
+		Whitebox.setInternalState(testingObject, ReferenceStorageCache.class, referenceStorageCache);
 
 		// call testing method
 		testingObject.checkFullAlbumForSelection(DIR_NAME_FULL_ALBUM);
@@ -331,7 +341,7 @@ public class ReferenceMediaNodeTest {
 	/**
 	 * Prepares testing data for test
 	 * {@link ReferenceMediaNodeTest#testCheckSelectionForFullAlbum
-	 * (int, Object, Object, Object, boolean, boolean, boolean)}
+	 * (int, ReferenceStorageCache, Object, Object, boolean, boolean, boolean)}
 	 * 
 	 * @return parameters for test
 	 */
@@ -394,7 +404,7 @@ public class ReferenceMediaNodeTest {
 	 * <li>expected media issue</li>
 	 * </ul>
 	 * 
-	 * @param referenceStorageCacheObj
+	 * @param referenceStorageCache
 	 *            meta-data where are testing data for comparison stored
 	 * @param expectedStatusObj
 	 *            expected node status
@@ -413,17 +423,16 @@ public class ReferenceMediaNodeTest {
 	 *             if I/O error occurs
 	 */
 	@Test(dataProvider = DP_TEST_CHECK_SELECTION_FOR_FULL_ALBUM)
-	public void testCheckSelectionForFullAlbum(int testCaseId, Object referenceStorageCacheObj,
+	public void testCheckSelectionForFullAlbum(int testCaseId, ReferenceStorageCache referenceStorageCache,
 			Object expectedStatusObj, Object expectedIssueObj, boolean dirComparisonSucceed,
 			boolean expectedResult, boolean throwIoError) throws IOException {
-		ReferenceStorageCache referenceStorageCache = (ReferenceStorageCache) referenceStorageCacheObj;
-
-		ReferenceMediaNode testingObject =
+		testingObject =
 				initializeMocks(FULL_PARENT_ABSOLUTE_PATH, dirComparisonSucceed, throwIoError, null, null);
 		testingObject.setFullAlbum(true);
 
-		MediaIssuesCache mediaIssuesCache = new MediaIssuesCache();
-		initSpringContextMocks(testingObject, mediaIssuesCache, referenceStorageCache);
+		mediaIssuesCache = new MediaIssuesCache();
+		MockitoAnnotations.initMocks(this);
+		Whitebox.setInternalState(testingObject, ReferenceStorageCache.class, referenceStorageCache);
 
 		// call testing method
 		boolean result = testingObject.checkSelectionForFullAlbum(DIR_NAME_FULL_ALBUM);
@@ -436,6 +445,7 @@ public class ReferenceMediaNodeTest {
 	}
 
 	/**
+<<<<<<< Updated upstream
 	 * Initializes spring beans mocks into testing object
 	 * 
 	 * @param testingObject
@@ -453,6 +463,8 @@ public class ReferenceMediaNodeTest {
 	}
 
 	/**
+=======
+>>>>>>> Stashed changes
 	 * Initialize mocks for full/selection check tests
 	 * 
 	 * @param parentDirectoryPath
@@ -523,8 +535,8 @@ public class ReferenceMediaNodeTest {
 	 */
 	private ReferenceStorageCache getReferenceStorageCacheMock(String pathToFileMock, int numberOfMirrors,
 			Boolean passFullMirrorChecks) {
-		ReferenceStorageCache referenceStorageCache = Mockito.mock(ReferenceStorageCache.class);
-		Mockito.when(referenceStorageCache.toString()).thenReturn(
+		ReferenceStorageCache referenceStorageCacheMock = Mockito.mock(ReferenceStorageCache.class);
+		Mockito.when(referenceStorageCacheMock.toString()).thenReturn(
 				"Mock for " + ReferenceStorageCache.class.getSimpleName() + "[pathToFileMock = \""
 						+ ((pathToFileMock == null) ? "null" : pathToFileMock) + "\"]");
 
@@ -542,8 +554,8 @@ public class ReferenceMediaNodeTest {
 			}
 		}
 
-		Mockito.when(referenceStorageCache.getReferenceItems(pathToFileMock)).thenReturn(mirrorMocksList);
-		return referenceStorageCache;
+		Mockito.when(referenceStorageCacheMock.getReferenceItems(pathToFileMock)).thenReturn(mirrorMocksList);
+		return referenceStorageCacheMock;
 	}
 
 	/**

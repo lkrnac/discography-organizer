@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import sk.lkrnac.discorg.general.context.DiscOrgBeanQualifiers;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
 import sk.lkrnac.discorg.model.treestorage.node.FileDesignator;
 import sk.lkrnac.discorg.model.treestorage.node.MediaBranchNode;
@@ -59,7 +60,7 @@ public abstract class AbstractTreeStorage implements ApplicationContextAware {
 	public final void loadStorage() {
 		// if this is a first load -> create root node
 		if (getRootNode() == null) {
-			rootNode = new TreeStorageBranchNode(null, null, null);
+			rootNode = createTreeStorageBranchNode(null, null, null);
 		}
 
 		// clear previous load and load again
@@ -133,7 +134,7 @@ public abstract class AbstractTreeStorage implements ApplicationContextAware {
 
 					loadNode(childNode);
 				} else {
-					childNode = new TreeStorageBranchNode(parentNode, childFile, relativePath);
+					childNode = createTreeStorageBranchNode(parentNode, relativePath, childFile);
 				}
 
 				// recursively read sub items
@@ -142,9 +143,40 @@ public abstract class AbstractTreeStorage implements ApplicationContextAware {
 				// adjust parent status
 				parentNode.setNodeStatus(childNode.getNodeStatus());
 			} else {
-				childNode = new TreeStorageNode(parentNode, childFile);
+				childNode = createTreeStorageNode(parentNode, childFile);
 			}
 		}
+	}
+
+	/**
+	 * Creates tree storage branch node as prototype bean.
+	 * 
+	 * @param parentNode
+	 *            parent node
+	 * @param relativePath
+	 *            relative path of the node
+	 * @param file
+	 *            file belonging to the node
+	 * @return created {@link TreeStorageBranchNode} instance
+	 */
+	private TreeStorageBranchNode createTreeStorageBranchNode(TreeStorageBranchNode parentNode,
+			String relativePath, File file) {
+		return (TreeStorageBranchNode) applicationContext.getBean(
+				DiscOrgBeanQualifiers.TREE_STORAGE_BRANCH_NODE, parentNode, file, relativePath);
+	}
+
+	/**
+	 * Creates tree storage node as prototype bean.
+	 * 
+	 * @param parentNode
+	 *            parent node
+	 * @param file
+	 *            file belonging to node
+	 * @return created {@link TreeStorageNode} instance
+	 */
+	private TreeStorageNode createTreeStorageNode(TreeStorageBranchNode parentNode, File file) {
+		return (TreeStorageNode) getApplicationContext().getBean(DiscOrgBeanQualifiers.TREE_STORAGE_NODE,
+				parentNode, file);
 	}
 
 	/**

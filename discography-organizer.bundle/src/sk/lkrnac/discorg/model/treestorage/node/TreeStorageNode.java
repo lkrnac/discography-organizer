@@ -5,7 +5,12 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 
-import sk.lkrnac.discorg.general.context.DiscOrgContextAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import sk.lkrnac.discorg.general.context.DiscOrgBeanQualifiers;
 import sk.lkrnac.discorg.model.interfaces.INodeStatus;
 import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
 
@@ -15,7 +20,12 @@ import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
  * @author sitko
  * 
  */
+@Component(DiscOrgBeanQualifiers.TREE_STORAGE_NODE)
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class TreeStorageNode implements ITreeStorageNode {
+	@Autowired
+	private FileDesignator fileDesignator;
+
 	/**
 	 * Parent node in composite structure.
 	 */
@@ -27,8 +37,6 @@ public class TreeStorageNode implements ITreeStorageNode {
 	private final File file;
 
 	private INodeStatus nodeStatus;
-
-	private DiscOrgContextAdapter discOrgContextAdapter;
 
 	/**
 	 * Creates instance of tree node.
@@ -59,22 +67,12 @@ public class TreeStorageNode implements ITreeStorageNode {
 	private void initStatus(File file) {
 		this.setNodeStatus(NodeStatus.NONE);
 		if (file.isFile()) {
-			if (getFileDesignator().isLossLessMediaFile(file)) {
+			if (fileDesignator.isLossLessMediaFile(file)) {
 				this.setNodeStatus(NodeStatus.LOSSLESS);
-			} else if (getFileDesignator().isLossyMediaFile(file)) {
+			} else if (fileDesignator.isLossyMediaFile(file)) {
 				this.setNodeStatus(NodeStatus.LOSSY);
 			}
 		}
-	}
-
-	/**
-	 * @return Spring context adapter, create it if needed
-	 */
-	protected DiscOrgContextAdapter getDiscOrgContextAdapter() {
-		if (discOrgContextAdapter == null) {
-			discOrgContextAdapter = new DiscOrgContextAdapter();
-		}
-		return discOrgContextAdapter;
 	}
 
 	/**
@@ -93,10 +91,10 @@ public class TreeStorageNode implements ITreeStorageNode {
 	}
 
 	/**
-	 * @return file designator retrieved from Spring context
+	 * @return file designator
 	 */
 	protected FileDesignator getFileDesignator() {
-		return getDiscOrgContextAdapter().getBean(FileDesignator.class);
+		return fileDesignator;
 	}
 
 	/**

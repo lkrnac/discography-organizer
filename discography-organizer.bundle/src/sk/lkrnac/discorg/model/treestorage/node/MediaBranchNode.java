@@ -3,6 +3,8 @@ package sk.lkrnac.discorg.model.treestorage.node;
 import java.io.File;
 import java.io.FileFilter;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import sk.lkrnac.discorg.general.DiscOrgException;
 import sk.lkrnac.discorg.general.constants.MediaIssueCode;
 import sk.lkrnac.discorg.model.cache.MediaIssue;
@@ -20,6 +22,12 @@ import sk.lkrnac.discorg.model.interfaces.ITreeStorageNode;
 public class MediaBranchNode extends TreeStorageBranchNode {
 	private NodeStatus audioFormatType;
 	private DirectoryIoFacade directoryIoFacade;
+
+	@Autowired
+	private MediaIssuesCache mediaIssuesCache;
+
+	@Autowired
+	private ReferenceStorageCache referenceStorageCache;
 
 	/**
 	 * Creates new instance of {@link MediaBranchNode}.
@@ -49,14 +57,14 @@ public class MediaBranchNode extends TreeStorageBranchNode {
 	 * @return List where media issues are stored
 	 */
 	public MediaIssuesCache getMediaIssuesCache() {
-		return getDiscOrgContextAdapter().getBean(MediaIssuesCache.class);
+		return mediaIssuesCache;
 	}
 
 	/**
 	 * @return Meta-data holder object
 	 */
 	public ReferenceStorageCache getReferenceStorageCache() {
-		return getDiscOrgContextAdapter().getBean(ReferenceStorageCache.class);
+		return referenceStorageCache;
 	}
 
 	/**
