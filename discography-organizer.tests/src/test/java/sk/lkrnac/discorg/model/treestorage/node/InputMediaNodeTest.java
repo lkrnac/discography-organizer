@@ -68,7 +68,7 @@ public class InputMediaNodeTest {
 			new Object [] { DirectoryComparisonResult.DIFFERENT_FILES, false, 
 					BranchNodeStatus.ERROR, MediaIssueCode.GENERIC_DIFFERENT_NAMES, true },
 			new Object [] { null, true, 
-					BranchNodeStatus.ERROR, MediaIssueCode.GENERIC_IO_ERROR_DURING_COMPARISON, true },
+					BranchNodeStatus.ERROR, MediaIssueCode.GENERIC_DIFFERENT_NAMES, true },
 		};
 		//@formatter:on
 	}
