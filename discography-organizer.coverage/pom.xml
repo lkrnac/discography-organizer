@@ -5,12 +5,12 @@
 	<!-- It is crucial for project that has tests and code split in various projects -->
 	<!-- Configuration was created according to http://www.lordofthejars.com/2012/07/jacoco-in-maven-multi-module-projects.html -->
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>sk.lkrnac.discorg</groupId>
+	<groupId>net.lkrnac.discorg</groupId>
 	<artifactId>discography-organizer.coverage</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<parent>
-		<groupId>sk.lkrnac.discorg</groupId>
+		<groupId>net.lkrnac.discorg</groupId>
 		<artifactId>discography-organizer.dependencies.parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../discography-organizer.dependencies.parent</relativePath>

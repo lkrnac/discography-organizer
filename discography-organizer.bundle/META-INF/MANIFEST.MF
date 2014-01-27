@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-SymbolicName: discography-organizer.bundle;singleton:=true
 Bundle-Version: 0.0.1.qualifier
-Bundle-Activator: sk.lkrnac.discorg.Activator
+Bundle-Activator: net.lkrnac.discorg.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.console;bundle-version="3.5.100"

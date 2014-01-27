@@ -7,14 +7,14 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="sk.lkrnac.discorg.Application">
+               class="net.lkrnac.discorg.Application">
          </run>
       </application>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="sk.lkrnac.discorg.perspectives.TreePairPerspective"
+            class="net.lkrnac.discorg.perspectives.TreePairPerspective"
             id="discographyorganizer.perspectives.TreePairPerspective"
             name="%perspective.name">
       </perspective>
@@ -22,17 +22,17 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            class="sk.lkrnac.discorg.view.ReferenceStorageView"
+            class="net.lkrnac.discorg.view.ReferenceStorageView"
             id="discographyorganizer.views.ReferenceStorageView"
             name="%view.name">
       </view>
       <view
-            class="sk.lkrnac.discorg.view.InputStorageView"
+            class="net.lkrnac.discorg.view.InputStorageView"
             id="discographyorganizer.views.InputStorageView"
             name="%view.name.0">
       </view>
       <view
-            class="sk.lkrnac.discorg.view.MediaIssuesView"
+            class="net.lkrnac.discorg.view.MediaIssuesView"
             id="discographyorganizer.views.MediaIssuesView"
             name="%view.name.1">
       </view>
@@ -83,17 +83,17 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="sk.lkrnac.discorg.view.preferences.StoragesPreferencePage"
+            class="net.lkrnac.discorg.view.preferences.StoragesPreferencePage"
             id="DiscographyOrganizer.storaged"
             name="%page.name">
       </page>
       <page
-            class="sk.lkrnac.discorg.view.preferences.FileNamesPreferencePage"
+            class="net.lkrnac.discorg.view.preferences.FileNamesPreferencePage"
             id="DiscographyOrganizer.fileNames"
             name="%page.name.0">
       </page>
       <page
-            class="sk.lkrnac.discorg.view.preferences.AudioFormatsPreferencePage"
+            class="net.lkrnac.discorg.view.preferences.AudioFormatsPreferencePage"
             id="DiscographyOrganizer.audioFormats"
             name="%page.name.1">
       </page>
@@ -101,17 +101,17 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="sk.lkrnac.discorg.controller.handlers.SyncStoragesController"
+            defaultHandler="net.lkrnac.discorg.controller.handlers.SyncStoragesController"
             id="DiscographyOrganizer.syncStorages"
             name="%command.name">
       </command>
       <command
-            defaultHandler="sk.lkrnac.discorg.controller.handlers.LoadStoragesController"
+            defaultHandler="net.lkrnac.discorg.controller.handlers.LoadStoragesController"
             id="DiscographyOrganizer.loadStorages"
             name="%command.name.0">
       </command>
       <command
-            defaultHandler="sk.lkrnac.discorg.controller.handlers.BuildHardLinksController"
+            defaultHandler="net.lkrnac.discorg.controller.handlers.BuildHardLinksController"
             id="DiscographyOrganizer.buildHardLinks"
             name="%command.name.1">
       </command>

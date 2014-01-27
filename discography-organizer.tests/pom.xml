@@ -5,7 +5,7 @@
 	<packaging>jar</packaging>
 
 	<parent>
-		<groupId>sk.lkrnac.discorg</groupId>
+		<groupId>net.lkrnac.discorg</groupId>
 		<artifactId>discography-organizer.dependencies.parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../discography-organizer.dependencies.parent</relativePath>
@@ -67,7 +67,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>sk.lkrnac.discorg</groupId>
+			<groupId>net.lkrnac.discorg</groupId>
 			<artifactId>${bundle.name}</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>test</scope>
