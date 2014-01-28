@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.collections4.comparators.NullComparator;
+import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * Test utility class for comparing collections
@@ -54,7 +55,7 @@ public final class CollectionsComparator {
 
 		for (int idx = 0; idx < collection1.size(); idx++) {
 			result = comparator.compare(list1.get(idx), list1.get(idx));
-			if (result != 0) {
+			if (result != NumberUtils.INTEGER_ZERO) {
 				break;
 			}
 		}
