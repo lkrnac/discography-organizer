@@ -8,10 +8,6 @@ import net.lkrnac.discorg.general.context.WorkbenchEnvironmentFacade;
 import net.lkrnac.discorg.model.cache.MediaIssuesCache;
 import net.lkrnac.discorg.model.interfaces.IMediaIssue;
 import net.lkrnac.discorg.model.preferences.AudioFormatsPreferences;
-import net.lkrnac.discorg.model.treestorage.node.FileDesignator;
-import net.lkrnac.discorg.model.treestorage.node.InputMediaNode;
-import net.lkrnac.discorg.model.treestorage.node.MediaBranchNode;
-import net.lkrnac.discorg.model.treestorage.node.NodeStatus;
 import net.lkrnac.discorg.test.utils.TestUtils;
 
 import org.mockito.InjectMocks;
@@ -34,23 +30,25 @@ public class MediaBranchNodeTest {
 	private static final String LOSSLESS_FORMAT = "flac";
 
 	//@formatter:off
-	private static String CASE_01_EMPTY_DIR                    = "01-empty-dir";
-	private static String CASE_02_LOSSY_FILE                   = "02-lossy-file";
-	private static String CASE_03_LOSSLESS_FILE                = "03-lossless-file";
-	private static String CASE_04_UNKNOWN_FILE                 = "04-unknown-file";
-	private static String CASE_05_LOSSY_FILES                  = "05-lossy-files";
-	private static String CASE_06_LOSSLESS_FILES               = "06-lossless-files";
-	private static String CASE_07_UNKNOWN_FILES                = "07-unknown-files";
-	private static String CASE_08_LOSSY_UNKNOWN_FILES          = "08-lossy-unknown-files";
-	private static String CASE_09_LOSSLESS_UNKNOWN_FILES       = "09-lossless-unknown-files";
-	private static String CASE_10_LOSSY_LOSSLESS_FILES         = "10-lossy-lossless-files";
-	private static String CASE_11_LOSSY_LOSSLESS_UNKNOWN_FILES = "11-lossy-lossless-unknown-files";
+	private static final String CASE_01_EMPTY_DIR                    = "01-empty-dir";
+	private static final String CASE_02_LOSSY_FILE                   = "02-lossy-file";
+	private static final String CASE_03_LOSSLESS_FILE                = "03-lossless-file";
+	private static final String CASE_04_UNKNOWN_FILE                 = "04-unknown-file";
+	private static final String CASE_05_LOSSY_FILES                  = "05-lossy-files";
+	private static final String CASE_06_LOSSLESS_FILES               = "06-lossless-files";
+	private static final String CASE_07_UNKNOWN_FILES                = "07-unknown-files";
+	private static final String CASE_08_LOSSY_UNKNOWN_FILES          = "08-lossy-unknown-files";
+	private static final String CASE_09_LOSSLESS_UNKNOWN_FILES       = "09-lossless-unknown-files";
+	private static final String CASE_10_LOSSY_LOSSLESS_FILES         = "10-lossy-lossless-files";
+	private static final String CASE_11_LOSSY_LOSSLESS_UNKNOWN_FILES = "11-lossy-lossless-unknown-files";
 	//@formatter:on
 
 	@InjectMocks
 	private MediaBranchNode testingObject;
 
 	@Spy
+	// NOPMD: It has to be field, because it suppose to be injected into testing object
+	@SuppressWarnings("PMD.SingularField")
 	private MediaIssuesCache mediaIssuesCache = new MediaIssuesCache();
 
 	@Spy
@@ -129,7 +127,7 @@ public class MediaBranchNodeTest {
 	 * @param mediaIssuesCache
 	 *            media issues cache
 	 */
-	void verifyMediaIssue(String directoryName, MediaIssueCode expectedMediaIssueCode, File file,
+	private void verifyMediaIssue(String directoryName, MediaIssueCode expectedMediaIssueCode, File file,
 			MediaIssuesCache mediaIssuesCache) {
 		int expectedMediaIssuesCacheSize = 0;
 		if (expectedMediaIssueCode != null) {

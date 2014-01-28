@@ -43,22 +43,44 @@ public class DirectoryComparator extends AbstractDirectoryHandler {
 			File[] selectionArray = selectionDir.listFiles();
 			if (fullArray.length == NumberUtils.INTEGER_ZERO
 					|| selectionArray.length == NumberUtils.INTEGER_ZERO) {
-				return DirectoryComparisonResult.DIFFERENT_FILES;
-			}
-			missingInSelectionList = new ArrayList<>(Arrays.asList(fullArray));
-			missingInFullList = new ArrayList<>();
-
-			// do the comparison
-			super.fileFacingLoop(Arrays.asList(selectionArray), Arrays.asList(fullArray));
-			if (missingInSelectionList.isEmpty() && missingInFullList.isEmpty()) {
-				result = DirectoryComparisonResult.EQUAL;
-			} else if (!missingInSelectionList.isEmpty() && !missingInFullList.isEmpty()) {
 				result = DirectoryComparisonResult.DIFFERENT_FILES;
-			} else if (!missingInSelectionList.isEmpty()) {
-				result = DirectoryComparisonResult.MISSING_MEDIA_FILES_IN_SELECTION;
-			} else if (!missingInFullList.isEmpty()) {
-				result = DirectoryComparisonResult.MISSING_MEDIA_FILES_IN_FULL;
+			} else {
+				result = performComparison(fullArray, selectionArray);
 			}
+		}
+		return result;
+	}
+
+	/**
+	 * Performs comparison of directories.
+	 * <p>
+	 * NOMPD: Can't think of better result matcher for now
+	 * 
+	 * @param fullArray
+	 *            array of file names belonging to full media directory
+	 * @param selectionArray
+	 *            array of file names belonging to selection media directory
+	 * @return comparison result
+	 * @throws IOException
+	 *             if I/O error occurs
+	 */
+	@SuppressWarnings("PMD.ConfusingTernary")
+	private DirectoryComparisonResult performComparison(File[] fullArray, File[] selectionArray)
+			throws IOException {
+		missingInSelectionList = new ArrayList<>(Arrays.asList(fullArray));
+		missingInFullList = new ArrayList<>();
+		DirectoryComparisonResult result = null;
+
+		// do the comparison
+		super.fileFacingLoop(Arrays.asList(selectionArray), Arrays.asList(fullArray));
+		if (missingInSelectionList.isEmpty() && missingInFullList.isEmpty()) {
+			result = DirectoryComparisonResult.EQUAL;
+		} else if (!missingInSelectionList.isEmpty() && !missingInFullList.isEmpty()) {
+			result = DirectoryComparisonResult.DIFFERENT_FILES;
+		} else if (!missingInSelectionList.isEmpty()) {
+			result = DirectoryComparisonResult.MISSING_MEDIA_FILES_IN_SELECTION;
+		} else if (!missingInFullList.isEmpty()) {
+			result = DirectoryComparisonResult.MISSING_MEDIA_FILES_IN_FULL;
 		}
 		return result;
 	}

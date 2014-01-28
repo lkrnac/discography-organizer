@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import net.lkrnac.discorg.Activator;
 import net.lkrnac.discorg.general.constants.AudioFormatsPreferenceIds;
 
@@ -23,14 +25,6 @@ public class AudioFormatsPreferences extends AbstractPreferences {
 	private boolean warningIfEmpty;
 
 	/**
-	 * Creates instance of the audio format preferences holder.
-	 */
-	public AudioFormatsPreferences() {
-		super();
-		readAudioFormats();
-	}
-
-	/**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -41,6 +35,7 @@ public class AudioFormatsPreferences extends AbstractPreferences {
 	/**
 	 * Reads audio formats from preference page.
 	 */
+	@PostConstruct
 	public void readAudioFormats() {
 		lossy = parsePreferenceString(AudioFormatsPreferenceIds.LOSSY_FORMATS);
 		lossless = parsePreferenceString(AudioFormatsPreferenceIds.LOSSLESS_FORMATS);

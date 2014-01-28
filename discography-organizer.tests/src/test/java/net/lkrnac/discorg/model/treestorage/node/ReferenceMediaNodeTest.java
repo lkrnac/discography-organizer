@@ -14,8 +14,6 @@ import net.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import net.lkrnac.discorg.model.dal.io.DirectoryComparisonResult;
 import net.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
 import net.lkrnac.discorg.model.interfaces.IMediaIssue;
-import net.lkrnac.discorg.model.treestorage.node.BranchNodeStatus;
-import net.lkrnac.discorg.model.treestorage.node.ReferenceMediaNode;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
@@ -59,6 +57,8 @@ public class ReferenceMediaNodeTest {
 	 * @return parameters for test
 	 */
 	//@formatter:on
+	//NOPMD: This test is planned to be refactored 
+	@SuppressWarnings("PMD.ExcessiveMethodLength")
 	@DataProvider(name = DP_TEST_CHECK_FULL_ALBUM_FOR_SELECTION)
 	public Object[][] testCheckFullAlbumForSelection() {
 		String pathToFullMirror = FULL_PARENT_ABSOLUTE_PATH + File.separator + DIR_NAME_TEST_ALBUM_1;

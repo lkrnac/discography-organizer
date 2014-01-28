@@ -1,7 +1,5 @@
 package net.lkrnac.discorg.model.dal.io;
 
-import net.lkrnac.discorg.model.dal.io.DirectoryComparisonResult;
-
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -42,7 +40,7 @@ public class DirectoryComparisonResultTest {
 	 *            {@link DirectoryComparisonResult#areMirrors()}
 	 */
 	@Test(dataProvider = "testAreMirrors")
-	public static void testAreMirrors(DirectoryComparisonResult testingResult, boolean expectedResult) {
+	public void testAreMirrors(DirectoryComparisonResult testingResult, boolean expectedResult) {
 		Assert.assertEquals(testingResult.areMirrors(), expectedResult);
 	}
 }

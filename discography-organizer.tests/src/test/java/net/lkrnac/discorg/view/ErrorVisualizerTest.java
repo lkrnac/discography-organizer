@@ -3,7 +3,6 @@ package net.lkrnac.discorg.view;
 import net.lkrnac.discorg.general.DiscOrgException;
 import net.lkrnac.discorg.general.constants.MediaIssueCode;
 import net.lkrnac.discorg.general.context.WorkbenchEnvironmentFacade;
-import net.lkrnac.discorg.view.ErrorVisualizer;
 import net.lkrnac.discorg.view.messages.ErrorMessages;
 import net.lkrnac.discorg.view.messages.MediaIssueMessages;
 

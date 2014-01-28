@@ -18,12 +18,16 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 /**
- * Abstract storage of tree elements.
+ * Abstract storage of tree elements. It represents root of media
+ * files/directories tree.
  * <p>
- * It reflects directory with media files
+ * NOPMD: This abstract class contains template methods and few abstract methods
+ * that are used by its children. It is less than 300 lines long. Decided not to
+ * re-factor it because of methods count.
  * 
  * @author sitko
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public abstract class AbstractTreeStorage implements ApplicationContextAware {
 	private TreeStorageBranchNode rootNode;
 
@@ -50,14 +54,14 @@ public abstract class AbstractTreeStorage implements ApplicationContextAware {
 	/**
 	 * @return root node of tree storage
 	 */
-	public final TreeStorageBranchNode getRootNode() {
+	public TreeStorageBranchNode getRootNode() {
 		return rootNode;
 	}
 
 	/**
 	 * Clear old meta data and reload storage from disk.
 	 */
-	public final void loadStorage() {
+	public void loadStorage() {
 		// if this is a first load -> create root node
 		if (getRootNode() == null) {
 			rootNode = createTreeStorageBranchNode(null, null, null);

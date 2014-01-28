@@ -64,14 +64,12 @@ public class TreeStorageNode implements ITreeStorageNode {
 	@PostConstruct
 	@SuppressWarnings("PMD.UnusedPrivateMethod")
 	private void initStatus() {
-		if (file != null) {
-			this.setNodeStatus(NodeStatus.NONE);
-			if (file.isFile()) {
-				if (fileDesignator.isLossLessMediaFile(file)) {
-					this.setNodeStatus(NodeStatus.LOSSLESS);
-				} else if (fileDesignator.isLossyMediaFile(file)) {
-					this.setNodeStatus(NodeStatus.LOSSY);
-				}
+		this.setNodeStatus(NodeStatus.NONE);
+		if (file != null && file.isFile()) {
+			if (fileDesignator.isLossLessMediaFile(file)) {
+				this.setNodeStatus(NodeStatus.LOSSLESS);
+			} else if (fileDesignator.isLossyMediaFile(file)) {
+				this.setNodeStatus(NodeStatus.LOSSY);
 			}
 		}
 	}

@@ -3,8 +3,6 @@ package net.lkrnac.discorg.model.dal.io;
 import java.io.File;
 import java.io.IOException;
 
-import net.lkrnac.discorg.model.dal.io.DirectoryComparator;
-import net.lkrnac.discorg.model.dal.io.DirectoryComparisonResult;
 import net.lkrnac.discorg.test.utils.TestUtils;
 
 import org.testng.Assert;
@@ -61,14 +59,14 @@ public class DirectoryComparatorTest {
 	@Test(dataProvider = "testCompareDirectories")
 	public void testCompareDirectories(String testingDataLocation, DirectoryComparisonResult expectedResult)
 			throws IOException {
-		String resourcesPath = TestUtils.getResourcesPathMethod() + File.separator
-				+ testingDataLocation + File.separator;
+		String resourcesPath =
+				TestUtils.getResourcesPathMethod() + File.separator + testingDataLocation + File.separator;
 
 		File fullFile = getTestingDir(resourcesPath, DIR_FULL);
 		File selectionFile = getTestingDir(resourcesPath, DIR_SELECTION);
 
-		DirectoryComparisonResult result = new DirectoryComparator().compareDirectories(fullFile,
-				selectionFile);
+		DirectoryComparisonResult result =
+				new DirectoryComparator().compareDirectories(fullFile, selectionFile);
 
 		Assert.assertEquals(result, expectedResult);
 	}

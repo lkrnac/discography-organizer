@@ -37,11 +37,12 @@ public final class CollectionsComparator {
 	 */
 	public static <T> int compare(Collection<T> collection1, Collection<T> collection2,
 			Comparator<T> comparator, boolean sort) {
+		int result = 1;
 		if (collection1 == null || collection2 == null) {
-			return new NullComparator<Collection<T>>().compare(collection1, collection2);
+			result = new NullComparator<Collection<T>>().compare(collection1, collection2);
 		}
 		if (collection1.size() != collection2.size()) {
-			return collection1.size() - collection2.size();
+			result = collection1.size() - collection2.size();
 		}
 
 		List<T> list1 = new ArrayList<>(collection1);
@@ -52,11 +53,11 @@ public final class CollectionsComparator {
 		}
 
 		for (int idx = 0; idx < collection1.size(); idx++) {
-			int result = comparator.compare(list1.get(idx), list1.get(idx));
+			result = comparator.compare(list1.get(idx), list1.get(idx));
 			if (result != 0) {
-				return result;
+				break;
 			}
 		}
-		return 0;
+		return result;
 	}
 }

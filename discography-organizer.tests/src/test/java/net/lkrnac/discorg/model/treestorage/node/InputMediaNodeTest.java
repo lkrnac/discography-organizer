@@ -27,13 +27,15 @@ import org.testng.annotations.Test;
  * 
  */
 public class InputMediaNodeTest {
-	private File inputDir = new File(INPUT_DIR_PATH);
+	private static final int EXPECTED_ISSUE_COUNT = 1;
+
+	private final File INPUT_DIR = new File(INPUT_DIR_PATH);
 
 	@InjectMocks
-	private InputMediaNode testingObject = new InputMediaNode(null, inputDir, "inputDirRelativePath");
+	private InputMediaNode testingObject;
 
 	@Spy
-	private MediaIssuesCache mediaIssueCache = new MediaIssuesCache();
+	private MediaIssuesCache mediaIssueCache;
 
 	@Mock
 	private DirectoryIoFacade directoryIoFacadeMock;
@@ -43,19 +45,23 @@ public class InputMediaNodeTest {
 	 */
 	@BeforeMethod(alwaysRun = true)
 	public void initMocks() {
+		testingObject = new InputMediaNode(null, INPUT_DIR, "inputDirRelativePath");
+		mediaIssueCache = new MediaIssuesCache();
 		MockitoAnnotations.initMocks(this);
 	}
 
 	private static final String IO_EXCEPTION_MESSAGE = "ioExceptionMessage";
 	private static final String INPUT_DIR_PATH = "inputDirPath";
 
+	//@formatter:off
 	/**
 	 * Data provider for test
-	 * {@link InputMediaNodeTest#testCompareMediaFilesWithMirror (DirectoryComparisonResult, boolean, BranchNodeStatus, MediaIssueCode, Boolean)}
-	 * .
+	 * {@link InputMediaNodeTest#testCompareMediaFilesWithMirror 
+	 * (DirectoryComparisonResult, boolean, BranchNodeStatus, MediaIssueCode, Boolean)}.
 	 * 
 	 * @return test cases
 	 */
+	//@formatter:on
 	@DataProvider
 	public final Object[][] testCompareMediaFilesWithMirror() {
 		//@formatter:off
@@ -103,12 +109,12 @@ public class InputMediaNodeTest {
 		File inputDir = new File(INPUT_DIR_PATH);
 
 		//mock directory IO facade
-		if (!throwIoException) {
-			Mockito.when(directoryIoFacadeMock.compareDirectories(referenceDir, inputDir)).thenReturn(
-					comparisonResult);
-		} else {
+		if (throwIoException) {
 			Mockito.when(directoryIoFacadeMock.compareDirectories(referenceDir, inputDir)).thenThrow(
 					new IOException(IO_EXCEPTION_MESSAGE));
+		} else {
+			Mockito.when(directoryIoFacadeMock.compareDirectories(referenceDir, inputDir)).thenReturn(
+					comparisonResult);
 		}
 
 		//call testing object
@@ -123,7 +129,7 @@ public class InputMediaNodeTest {
 		Assert.assertEquals(actualPathsForIssue.size(), expectedNumberOfIssues, "Number of issues");
 
 		//verify issue
-		if (expectedNumberOfIssues == 1) {
+		if (expectedNumberOfIssues == EXPECTED_ISSUE_COUNT) {
 			String issuePath = actualPathsForIssue.iterator().next();
 			Assert.assertEquals(issuePath, inputDir.getAbsolutePath(), "Input directory path for issue");
 			if (throwIoException) {

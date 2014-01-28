@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.lkrnac.discorg.model.dal.io.AbstractDirectoryHandler;
-
 import org.apache.commons.lang3.math.NumberUtils;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;

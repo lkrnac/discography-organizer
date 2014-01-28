@@ -8,8 +8,6 @@ import net.lkrnac.discorg.general.constants.MediaIssueCode;
 import net.lkrnac.discorg.model.cache.MediaIssuesCache;
 import net.lkrnac.discorg.model.cache.ReferenceStorageCache;
 import net.lkrnac.discorg.model.dal.io.DirectoryIoFacade;
-import net.lkrnac.discorg.model.handlers.BuildHardLinksHandler;
-import net.lkrnac.discorg.model.handlers.LoadStoragesHandler;
 import net.lkrnac.discorg.model.preferences.StoragesPreferences;
 import net.lkrnac.discorg.model.treestorage.node.ReferenceMediaNode;
 

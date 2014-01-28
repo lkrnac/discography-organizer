@@ -1,7 +1,5 @@
 package net.lkrnac.discorg.view.messages;
 
-import net.lkrnac.discorg.view.messages.ErrorMessages;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

@@ -6,8 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import net.lkrnac.discorg.model.dal.io.DirectoryComparator;
-import net.lkrnac.discorg.model.dal.io.HardLinksHandler;
 import net.lkrnac.discorg.test.utils.TestUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -28,8 +26,6 @@ public class HardLinksHandlerTest {
 	private static final String DIR_NAME_TEMP = "temp";
 
 	private String resourcesPath;
-	private HardLinksHandler testingObj;
-	private File fullDir;
 
 	/**
 	 * Indicates type copy of testing data into testing temporary directory
@@ -112,8 +108,8 @@ public class HardLinksHandlerTest {
 	 *             if I/O error occurs during copying into temporary directory
 	 */
 	private File getTestingDir(String testingDirName, boolean isFull, boolean copyToTemp) throws IOException {
-		String albumRelativePath = (isFull ? File.separator + DIR_NAME_FULL_ALBUM : "") + File.separator
-				+ testingDirName;
+		String albumRelativePath =
+				(isFull ? File.separator + DIR_NAME_FULL_ALBUM : "") + File.separator + testingDirName;
 		File testDir = new File(resourcesPath + albumRelativePath);
 		File tmpTestDir = new File(resourcesPath + File.separator + DIR_NAME_TEMP + albumRelativePath);
 
@@ -150,8 +146,8 @@ public class HardLinksHandlerTest {
 		} else {
 			int idx = 0;
 			for (File file : sourceDir.listFiles()) {
-				Path destinationPath = Paths.get(destinationDir.getAbsolutePath() + File.separator
-						+ file.getName());
+				Path destinationPath =
+						Paths.get(destinationDir.getAbsolutePath() + File.separator + file.getName());
 				if (ECopyIntoTempType.COPY_SOME_HARD_LINKS.equals(copyType) && idx++ % 2 == 0) {
 					Files.copy(file.toPath(), destinationPath);
 				} else {
@@ -199,8 +195,8 @@ public class HardLinksHandlerTest {
 	public void testBuildHardLinks(String testingAlbumName, boolean expectedResult) throws IOException {
 		resourcesPath = TestUtils.getResourcesPathMethod();
 		File selectionDir = getTestingDir(testingAlbumName, false, true);
-		testingObj = new HardLinksHandler(selectionDir);
-		fullDir = getTestingDir(testingAlbumName, true, true);
+		HardLinksHandler testingObj = new HardLinksHandler(selectionDir);
+		File fullDir = getTestingDir(testingAlbumName, true, true);
 		DirectoryComparator dirComparator = new DirectoryComparator();
 
 		// call testing method
