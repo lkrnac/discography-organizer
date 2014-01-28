@@ -1,4 +1,3 @@
-//SUPPRESS CHECKSTYLE 1
 package net.lkrnac.discorg.model.dal.io;
 
 import java.io.File;
