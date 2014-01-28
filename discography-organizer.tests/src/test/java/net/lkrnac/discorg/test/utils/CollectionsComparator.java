@@ -38,7 +38,7 @@ public final class CollectionsComparator {
 	 */
 	public static <T> int compare(Collection<T> collection1, Collection<T> collection2,
 			Comparator<T> comparator, boolean sort) {
-		int result = 1;
+		int result = 0;
 		if (collection1 == null || collection2 == null) {
 			result = new NullComparator<Collection<T>>().compare(collection1, collection2);
 		}
