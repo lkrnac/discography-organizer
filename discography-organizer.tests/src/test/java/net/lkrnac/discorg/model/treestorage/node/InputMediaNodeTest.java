@@ -21,7 +21,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * Unit test for class {@link InputMediaNode}
+ * Unit test for class {@link InputMediaNode}.
  * 
  * @author lubos krnac
  * 
@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 public class InputMediaNodeTest {
 	private static final int EXPECTED_ISSUE_COUNT = 1;
 
-	private final File INPUT_DIR = new File(INPUT_DIR_PATH);
+	private final File inputDir = new File(INPUT_DIR_PATH);
 
 	@InjectMocks
 	private InputMediaNode testingObject;
@@ -41,11 +41,11 @@ public class InputMediaNodeTest {
 	private DirectoryIoFacade directoryIoFacadeMock;
 
 	/**
-	 * Injects mocks into testing object
+	 * Injects mocks into testing object.
 	 */
 	@BeforeMethod(alwaysRun = true)
 	public void initMocks() {
-		testingObject = new InputMediaNode(null, INPUT_DIR, "inputDirRelativePath");
+		testingObject = new InputMediaNode(null, inputDir, "inputDirRelativePath");
 		mediaIssueCache = new MediaIssuesCache();
 		MockitoAnnotations.initMocks(this);
 	}

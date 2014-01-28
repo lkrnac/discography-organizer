@@ -20,7 +20,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * Unit tests for class {@link MediaBranchNode}
+ * Unit tests for class {@link MediaBranchNode}.
  * 
  * @author lubos krnac
  * 
@@ -74,8 +74,10 @@ public class MediaBranchNodeTest {
 			new Object [] { NodeStatus.NONE    , CASE_07_UNKNOWN_FILES                , null },
 			new Object [] { NodeStatus.LOSSY   , CASE_08_LOSSY_UNKNOWN_FILES          , null },
 			new Object [] { NodeStatus.LOSSLESS, CASE_09_LOSSLESS_UNKNOWN_FILES       , null },
-			new Object [] { NodeStatus.NONE    , CASE_10_LOSSY_LOSSLESS_FILES         , MediaIssueCode.GENERIC_VARIOUS_AUDIO_FORMAT_TYPES },
-			new Object [] { NodeStatus.NONE    , CASE_11_LOSSY_LOSSLESS_UNKNOWN_FILES , MediaIssueCode.GENERIC_VARIOUS_AUDIO_FORMAT_TYPES },
+			new Object [] { NodeStatus.NONE    , CASE_10_LOSSY_LOSSLESS_FILES         , 
+					MediaIssueCode.GENERIC_VARIOUS_AUDIO_FORMAT_TYPES },
+			new Object [] { NodeStatus.NONE    , CASE_11_LOSSY_LOSSLESS_UNKNOWN_FILES , 
+					MediaIssueCode.GENERIC_VARIOUS_AUDIO_FORMAT_TYPES },
 		};
 		//@formatter:on
 	}
@@ -116,7 +118,7 @@ public class MediaBranchNodeTest {
 	}
 
 	/**
-	 * Verify media issue if expected
+	 * Verify media issue if expected.
 	 * 
 	 * @param directoryName
 	 *            directory name
@@ -146,7 +148,7 @@ public class MediaBranchNodeTest {
 	}
 
 	/**
-	 * Prepare file designator for testing and mock audio format preferences
+	 * Prepare file designator for testing and mock audio format preferences.
 	 * 
 	 * @return instance of {@link FileDesignator} for testing
 	 */
@@ -169,7 +171,7 @@ public class MediaBranchNodeTest {
 
 	/**
 	 * Unit test for {@link MediaBranchNode#getAudioFormatType()} when audio
-	 * format type is already initialized
+	 * format type is already initialized.
 	 */
 	@Test
 	public void testGetAudioFormatTypeInitialized() {
@@ -188,7 +190,7 @@ public class MediaBranchNodeTest {
 
 	/**
 	 * Unit test for {@link MediaBranchNode#getAudioFormatType()} when audio
-	 * format type and belonging file instance are not initialized
+	 * format type and belonging file instance are not initialized.
 	 */
 	@Test
 	public void testGetAudioFormatTypeFileNotInitialized() {

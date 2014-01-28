@@ -14,7 +14,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * Unit test for class {@link BuildHardLinksController}
+ * Unit test for class {@link BuildHardLinksController}.
  * 
  * @author sitko
  * 
@@ -33,7 +33,7 @@ public class BuildHardLinksControllerTest {
 	private DiscOrgContextAdapter discOrgContextAdapterMock;
 
 	/**
-	 * Injects mocks into testing object
+	 * Injects mocks into testing object.
 	 */
 	@BeforeMethod(alwaysRun = true)
 	public void initMocks() {
@@ -59,6 +59,7 @@ public class BuildHardLinksControllerTest {
 	/**
 	 * Tests method
 	 * {@link BuildHardLinksController#execute(org.eclipse.core.commands.ExecutionEvent)}
+	 * .
 	 * 
 	 * @param throwError
 	 *            if build hard links listener throws error for test case

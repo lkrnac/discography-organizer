@@ -9,18 +9,24 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- * Unit test for class {@link DiscOrgContextAdapter}
+ * Unit test for class {@link DiscOrgContextAdapter}.
  * 
  * @author sitko
  * 
  */
 @PrepareForTest(DiscOrgContextHolder.class)
 public class DiscOrgContextAdapterTest extends PowerMockTestCase {
+	/**
+	 * Dummy class used during test.
+	 * 
+	 * @author sitko
+	 * 
+	 */
 	private class DummyClass {
 	}
 
 	/**
-	 * Test for {@link DiscOrgContextAdapter#getBean(Class)}
+	 * Test for {@link DiscOrgContextAdapter#getBean(Class)}.
 	 */
 	@Test
 	public void testGetBean() {

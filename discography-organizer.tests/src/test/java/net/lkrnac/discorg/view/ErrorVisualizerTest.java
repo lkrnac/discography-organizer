@@ -32,7 +32,7 @@ public class ErrorVisualizerTest {
 	private WorkbenchEnvironmentFacade workbenchEnvironment;
 
 	/**
-	 * Inject mocks into testing object
+	 * Inject mocks into testing object.
 	 */
 	@BeforeClass(alwaysRun = true)
 	public void initMocks() {
@@ -50,8 +50,8 @@ public class ErrorVisualizerTest {
 		//@formatter:off
 		return new Object [][]{
 			new Object [] { new DiscOrgException(TEST_RESOURCE_PATH, TEST_ISSUE_CODE),
-					ErrorMessages.getErrorDialogPrefix(TEST_RESOURCE_PATH) +
-					MediaIssueMessages.getMessageForMessageCode(TEST_ISSUE_CODE) },
+					ErrorMessages.getErrorDialogPrefix(TEST_RESOURCE_PATH) 
+					+ MediaIssueMessages.getMessageForMessageCode(TEST_ISSUE_CODE) },
 			new Object [] { new DiscOrgException(TEST_RESOURCE_PATH, new Exception(ERROR_MESSAGE)),
 					ErrorMessages.getErrorDialogPrefix(TEST_RESOURCE_PATH) + ERROR_MESSAGE },
 		};
@@ -59,7 +59,7 @@ public class ErrorVisualizerTest {
 	}
 
 	/**
-	 * Unit test for {@link ErrorMessages#getErrorDialogPrefix(String)}
+	 * Unit test for {@link ErrorMessages#getErrorDialogPrefix(String)}.
 	 * 
 	 * @param testingError
 	 *            testing error

@@ -25,7 +25,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * Tests {@link ReferenceMediaNode}
+ * Tests {@link ReferenceMediaNode}.
  * 
  * @author sitko
  */
@@ -48,7 +48,7 @@ public class ReferenceMediaNodeTest {
 
 	//@formatter:off
 	/**
-	 * Prepares testing data for test
+	 * Prepares testing data for test.
 	 * 
 	 * {@link ReferenceMediaNodeTest# testCheckFullAlbumForSelection 
 	 * (int, String, ReferenceStorageCache, Object, Object, boolean, boolean, boolean, boolean)}
@@ -58,6 +58,7 @@ public class ReferenceMediaNodeTest {
 	 */
 	//@formatter:on
 	//NOPMD: This test is planned to be refactored 
+	//CHECKSTYLE:OFF 
 	@SuppressWarnings("PMD.ExcessiveMethodLength")
 	@DataProvider(name = DP_TEST_CHECK_FULL_ALBUM_FOR_SELECTION)
 	public Object[][] testCheckFullAlbumForSelection() {
@@ -339,11 +340,13 @@ public class ReferenceMediaNodeTest {
 		}
 	}
 
+	//CHECKSTYLE:ON 
+
 	//@formatter:off
 	/**
 	 * Prepares testing data for test
 	 * {@link ReferenceMediaNodeTest#testCheckSelectionForFullAlbum
-	 * (int, ReferenceStorageCache, Object, Object, boolean, boolean, boolean)}
+	 * (int, ReferenceStorageCache, Object, Object, boolean, boolean, boolean)}.
 	 * 
 	 * @return parameters for test
 	 */
@@ -447,7 +450,7 @@ public class ReferenceMediaNodeTest {
 	}
 
 	/**
-	 * Initialize mocks for full/selection check tests
+	 * Initialize mocks for full/selection check tests.
 	 * 
 	 * @param parentDirectoryPath
 	 *            parent directory path of testing object
@@ -501,7 +504,7 @@ public class ReferenceMediaNodeTest {
 
 	/**
 	 * Creates and returns storage meta-data maps mock object with included mock
-	 * {@link ReferenceMediaNode}, which suppose to be mirror album for testing
+	 * {@link ReferenceMediaNode}, which suppose to be mirror album for testing.
 	 * <p>
 	 * Is used for testing where methods where content in storage meta-data is
 	 * expected
@@ -541,7 +544,7 @@ public class ReferenceMediaNodeTest {
 	}
 
 	/**
-	 * Check if testing object caused expected media issue
+	 * Check if testing object caused expected media issue.
 	 * 
 	 * @param expectedIssue
 	 *            media issue that is expected to be raised by testing method

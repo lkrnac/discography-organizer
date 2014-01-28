@@ -10,7 +10,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * Unit tests for {@link DirectoryComparatorTest}
+ * Unit tests for {@link DirectoryComparatorTest}.
  * 
  * @author sitko
  * 
@@ -22,6 +22,7 @@ public class DirectoryComparatorTest {
 	/**
 	 * Data provider for test
 	 * {@link DirectoryComparatorTest# testCompareDirectories(String, DirectoryComparisonResult)}
+	 * .
 	 * 
 	 * @return parameters for various test runs
 	 */
@@ -44,7 +45,7 @@ public class DirectoryComparatorTest {
 
 	/**
 	 * Unit test for method
-	 * {@link DirectoryComparator#compareDirectories(File, File)}
+	 * {@link DirectoryComparator#compareDirectories(File, File)}.
 	 * <p>
 	 * This test expects specific testing directory and file structure on the
 	 * hard disk
@@ -72,7 +73,7 @@ public class DirectoryComparatorTest {
 	}
 
 	/**
-	 * Creates File object of testing directory and verifies its existence
+	 * Creates File object of testing directory and verifies its existence.
 	 * 
 	 * @param resourcesPath
 	 *            path to the testing directory

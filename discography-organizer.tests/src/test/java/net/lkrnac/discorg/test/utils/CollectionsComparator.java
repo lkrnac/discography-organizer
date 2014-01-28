@@ -10,20 +10,23 @@ import org.apache.commons.collections4.comparators.NullComparator;
 import org.apache.commons.lang3.math.NumberUtils;
 
 /**
- * Test utility class for comparing collections
+ * Test utility class for comparing collections.
  * 
  * @author lubos krnac
  * 
  */
 public final class CollectionsComparator {
 	/**
-	 * Avoid instantiation
+	 * Avoid instantiation.
 	 */
 	private CollectionsComparator() {
 	};
 
 	/**
 	 * Utility method for comparing collections based on elements.
+	 * 
+	 * @param <T>
+	 *            Element type
 	 * 
 	 * @param collection1
 	 *            collection1 to compare

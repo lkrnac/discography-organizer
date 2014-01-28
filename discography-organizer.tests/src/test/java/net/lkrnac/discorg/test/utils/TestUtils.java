@@ -8,29 +8,29 @@ import org.mockito.Mockito;
 import org.powermock.reflect.Whitebox;
 
 /**
- * Various test related utility methods
+ * Various test related utility methods.
  * 
  * @author sitko
  */
 public final class TestUtils {
 	/**
-	 * Base path for test resources
+	 * Base path for test resources.
 	 */
 	private static final String TEST_RESOURCES_PATH = "src" + File.separator + "test" + File.separator
 			+ "resources" + File.separator;
 
 	/**
-	 * Private constructor to avoid instantiation
+	 * Private constructor to avoid instantiation.
 	 */
 	private TestUtils() {
 	}
 
 	/**
 	 * Returns relative path where test resources for calling test method
-	 * should be stored
+	 * should be stored.
 	 * <p>
-	 * <b><u> This method expects that is called directly from testing method
-	 * (not some sub-method) </u></b>
+	 * <b>This method expects that is called directly from testing method (not
+	 * some sub-method)</b>
 	 * <p>
 	 * Desired path would be {@link TestUtils#TEST_RESOURCES_PATH}
 	 * /[test_package]/[test_class]/[test_method]
@@ -46,7 +46,7 @@ public final class TestUtils {
 
 	/**
 	 * Returns relative path where test resources for given test class
-	 * should be stored
+	 * should be stored.
 	 * <p>
 	 * Desired path would be {@link TestUtils#TEST_RESOURCES_PATH}
 	 * /[test_package]/ [test_class]
@@ -70,6 +70,9 @@ public final class TestUtils {
 	 * If not initializes one and stubs given bean into it.
 	 * This way simulates Spring beans for classes that use
 	 * {@link DiscOrgContextAdapter}.
+	 * 
+	 * @param <T>
+	 *            Type of the bean to get from application context
 	 * 
 	 * @param testingObject
 	 *            testing object

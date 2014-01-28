@@ -20,7 +20,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * Unit test for {@link BuildHardLinksHandler}
+ * Unit test for {@link BuildHardLinksHandler}.
  * 
  * @author sitko
  * 
@@ -49,7 +49,7 @@ public class BuildHardLinksHandlerTest {
 	private LoadStoragesHandler loadStoragesHandlerMock;
 
 	/**
-	 * Initialize mocks and testing object spy
+	 * Initialize mocks and testing object spy.
 	 */
 	@BeforeClass(alwaysRun = true)
 	public void initMocks() {
@@ -58,7 +58,7 @@ public class BuildHardLinksHandlerTest {
 
 	/**
 	 * Data provider for test
-	 * {@link BuildHardLinksHandlerTest#testOnBuildHardLinks(List, List, List)}
+	 * {@link BuildHardLinksHandlerTest#testOnBuildHardLinks(List, List, List)}.
 	 * 
 	 * @return test cases
 	 */
@@ -98,7 +98,7 @@ public class BuildHardLinksHandlerTest {
 	}
 
 	/**
-	 * Unite test for {@link BuildHardLinksHandler#onBuildHardLinks()}
+	 * Unite test for {@link BuildHardLinksHandler#onBuildHardLinks()}.
 	 * 
 	 * @param selectionPaths
 	 *            collection of directories to test

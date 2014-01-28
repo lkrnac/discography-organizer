@@ -13,7 +13,7 @@ public class ErrorMessagesTest {
 	private static final String TEST_RESOURCE = " test resource"; //$NON-NLS-1$
 
 	/**
-	 * Unit test for {@link ErrorMessages#getErrorDialogPrefix(String)}
+	 * Unit test for {@link ErrorMessages#getErrorDialogPrefix(String)}.
 	 */
 	@Test
 	public void testErrorMessage() {

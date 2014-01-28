@@ -5,7 +5,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * Unit test for logic in enumeration {@link DirectoryComparisonResult}
+ * Unit test for logic in enumeration {@link DirectoryComparisonResult}.
  * 
  * @author sitko
  * 
@@ -31,7 +31,7 @@ public class DirectoryComparisonResultTest {
 	}
 
 	/**
-	 * Unit test for method {@link DirectoryComparisonResult#areMirrors()}
+	 * Unit test for method {@link DirectoryComparisonResult#areMirrors()}.
 	 * 
 	 * @param testingResult
 	 *            testing enumeration value

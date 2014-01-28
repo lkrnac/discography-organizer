@@ -1,3 +1,4 @@
+//SUPPRESS CHECKSTYLE 1
 package net.lkrnac.discorg.model.dal.io;
 
 import java.io.File;
@@ -11,7 +12,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * Unit tests for {@link AbstractDirectoryHandler}
+ * Unit tests for {@link AbstractDirectoryHandler}.
  * 
  * @author sitko
  * 
@@ -22,6 +23,7 @@ public class AbstractDirectoryHandlerTest {
 	/**
 	 * Builds testing data for test
 	 * {@link AbstractDirectoryHandler#fileFacingLoop(java.util.Collection, java.util.Collection)}
+	 * .
 	 * <p>
 	 * Generates arrays of files to perform file mirrors facing and also
 	 * expected matches
@@ -31,6 +33,7 @@ public class AbstractDirectoryHandlerTest {
 	@DataProvider
 	public Object[][] testFileFacingLoop() {
 		int idx = 0;
+		//SUPPRESS CHECKSTYLE MagicNumber 30 Ignore literals for test cases generation
 		return new Object[][] {
 				new Object[] { idx++, generateFiles(0, 3, 1), generateFiles(0, 3, 1),
 						new Integer[] { 0, 1, 2, 3 }, new Integer[] {} },
@@ -61,6 +64,7 @@ public class AbstractDirectoryHandlerTest {
 	/**
 	 * Tests
 	 * {@link AbstractDirectoryHandler#fileFacingLoop(java.util.Collection, java.util.Collection)}
+	 * .
 	 * 
 	 * @param testCaseId
 	 *            test case id - is not used in test
@@ -98,7 +102,7 @@ public class AbstractDirectoryHandlerTest {
 	}
 
 	/**
-	 * Generates files map for testing
+	 * Generates files map for testing.
 	 * 
 	 * @param startIdx
 	 *            specifies start of generated files

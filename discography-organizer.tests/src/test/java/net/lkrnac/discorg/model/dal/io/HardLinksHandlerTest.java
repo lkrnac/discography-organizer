@@ -15,7 +15,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * Unit test for {@link HardLinksHandler}
+ * Unit test for {@link HardLinksHandler}.
  * 
  * @author sitko
  * 
@@ -28,7 +28,7 @@ public class HardLinksHandlerTest {
 	private String resourcesPath;
 
 	/**
-	 * Indicates type copy of testing data into testing temporary directory
+	 * Indicates type copy of testing data into testing temporary directory.
 	 * 
 	 * @author sitko
 	 */
@@ -39,7 +39,7 @@ public class HardLinksHandlerTest {
 	}
 
 	/**
-	 * Deletes temporary directory after test
+	 * Deletes temporary directory after test.
 	 * 
 	 * @throws IOException
 	 *             if I/O error occurs during deletion
@@ -53,6 +53,7 @@ public class HardLinksHandlerTest {
 	/**
 	 * Prepares testing data for test
 	 * {@link HardLinksHandlerTest# testVerifyHardLinks(ECopyIntoTempType, boolean)}
+	 * .
 	 * 
 	 * @return parameters for test
 	 */
@@ -64,7 +65,7 @@ public class HardLinksHandlerTest {
 	}
 
 	/**
-	 * Tests {@link HardLinksHandler#verifyHardLinks(File)}
+	 * Tests {@link HardLinksHandler#verifyHardLinks(File)}.
 	 * <p>
 	 * This test expects specific testing directory and file structure on the
 	 * hard disk
@@ -159,7 +160,7 @@ public class HardLinksHandlerTest {
 
 	/**
 	 * Prepares testing data for test
-	 * {@link HardLinksHandlerTest# testBuildHardLinks(String, boolean)}
+	 * {@link HardLinksHandlerTest# testBuildHardLinks(String, boolean)}.
 	 * 
 	 * @return parameters for test
 	 */
@@ -179,7 +180,7 @@ public class HardLinksHandlerTest {
 
 	/**
 	 * Tests success use case of
-	 * {@link HardLinksHandler#buildHardLinks(File, DirectoryComparator)}
+	 * {@link HardLinksHandler#buildHardLinks(File, DirectoryComparator)}.
 	 * <p>
 	 * This test expects specific testing directory and file structure on the
 	 * hard disk

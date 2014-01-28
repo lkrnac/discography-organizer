@@ -14,12 +14,13 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * Test for class {@link MediaIssuesCache}
+ * Test for class {@link MediaIssuesCache}.
  * 
  * @author sitko
  * 
  */
 public class MediaIssuesCacheTest {
+	private static final int TESTING_CODES_COUNT = 3;
 	private static final int MAX_ISSUES_COUNT = 20;
 	private static final String DP_GENERATE_MEDIA_ISSUES = "generateMediaIssues";
 
@@ -62,7 +63,7 @@ public class MediaIssuesCacheTest {
 	}
 
 	/**
-	 * Generates random path
+	 * Generates random path.
 	 * 
 	 * @return random path
 	 */
@@ -71,7 +72,7 @@ public class MediaIssuesCacheTest {
 	}
 
 	/**
-	 * Generates media issues for testing
+	 * Generates media issues for testing.
 	 * 
 	 * @param path
 	 *            testing path
@@ -84,8 +85,8 @@ public class MediaIssuesCacheTest {
 		for (int idx = 0; idx < count; idx++) {
 			boolean error = idx % 2 == 0 ? true : false;
 			String sourceAbsolutePath = idx + "_" + path;
-			mediaIssues.add(new MediaIssue(sourceAbsolutePath, MediaIssueCode.values()[idx % 3],
-					sourceAbsolutePath, error));
+			mediaIssues.add(new MediaIssue(sourceAbsolutePath, MediaIssueCode.values()[idx
+					% TESTING_CODES_COUNT], sourceAbsolutePath, error));
 		}
 		return mediaIssues;
 	}
@@ -93,7 +94,7 @@ public class MediaIssuesCacheTest {
 	/**
 	 * Tests methods {@link MediaIssuesCache#getInputMediaIssues()},
 	 * {@link MediaIssuesCache#addInputMediaIssue(IMediaIssue)} and
-	 * {@link MediaIssuesCache#addReferenceMediaIssue(IMediaIssue)}
+	 * {@link MediaIssuesCache#addReferenceMediaIssue(IMediaIssue)}.
 	 * 
 	 * @param inputMediaIssues
 	 *            testing input media issues
@@ -124,7 +125,7 @@ public class MediaIssuesCacheTest {
 	}
 
 	/**
-	 * Creates and initializes testing object with given issues
+	 * Creates and initializes testing object with given issues.
 	 * 
 	 * @param inputMediaIssues
 	 *            testing input media issues
