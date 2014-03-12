@@ -8,7 +8,7 @@
 	public final Object[][] ${newName}() {
 		//@formatter:off
 		return new Object [][]{
-			new Object [] {  },
+			{  },
 		};
 		//@formatter:on
 	}</template><template autoinsert="false" context="java-members" deleted="false" description="SITKO - Mockito mock annotations initialize method" enabled="true" name="InitMocks">	/**
